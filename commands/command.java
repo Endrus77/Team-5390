@@ -1,25 +1,51 @@
 //Overall structure of commands
-//Will be extended by indivisual objects
+//Will be extended by individual objects
+//All commands musts have these functions and variables
+
+//imports
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 public class Command {
+
+	//Variables
+	private static int DIAMETER;
+	private static int CIRCUMFRENCE;
+	private static int ENCODERTICKS;
+
+	//Initialization
+	DIAMETER = 4;
+	CIRCUMFRENCE = 4 * 2 * Math.PI;
+	ENCODERTICKS = 1680;
+
+	//Constructor
+	public Command() {
+
+	}
+
 	//Setup
-	//Initialize variables here
-	void init() {
+	public void init() {
 
 	}
 
 	//Runs at start
 	//Runs once
-	void start() {
+	public void start() {
 
 	}
 
 	//Loops
-	void loop() {
+	public void loop() {
 
 	}
 
-	//Stops motors
-	void stop(){
+	//Stops
+	public void stop(){
 
 	}
 }
