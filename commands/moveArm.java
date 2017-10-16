@@ -33,7 +33,7 @@ public class MoveArm extends Command{
 
 	//Constructor
 	public MoveArm(DcMotor m1, DcMotor m2, DcMotor m3, int p1, int p2, int p3, int a1, int a2, int a3) {
-		//set to passed variables
+		//Set to passed variables
 		
 		//Motors
 		motor1 = m1;
@@ -87,12 +87,13 @@ public class MoveArm extends Command{
 
 	//Loops
 	public void loop() {
-		//Wait for the encoders to finish moving
+		//Wait for motors to finish moving
 		while (motor1.isBusy() || motor2.isBusy() || motor3.isBusy()) {}
 	}
 
 	//Stops motors
 	public void stop(){
+		//Stop motors
 		motor1.setPower(0);
 		motor2.setPower(0);
 		motor3.setPower(0);
