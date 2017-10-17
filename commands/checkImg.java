@@ -1,7 +1,7 @@
 //checkImg()
 //Compares passed image to phone image
 //Returns bool
-public class CheckImg {
+public class CheckImg extends Command {
 
 	//variables
 	boolean match;

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class Command {
+public class MoveForward extends Command{
 
 	//Variables
 	

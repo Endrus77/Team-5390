@@ -20,7 +20,7 @@ public class Command {
 
 	//Initialization
 	DIAMETER = 4;
-	CIRCUMFRENCE = 4 * 2 * Math.PI;
+	CIRCUMFRENCE = 4 * Math.PI;
 	ENCODERTICKS = 1680;
 
 	//Constructor
