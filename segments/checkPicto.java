@@ -18,14 +18,11 @@ public class CheckPicto extends Segment {
 	
 	//Command Array
 	Command[] commands = new Command[];
+	//blank arrays here
 
 	//Spot
 	//Corner is 0, straight is 1
 	private int spot;
-
-	//Color
-	//Red is 0, blue is 1
-	private int color;
 
 	//Motors
 	//Arm motors
@@ -44,19 +41,14 @@ public class CheckPicto extends Segment {
 
 	//Commands
 	CheckImage checkImage = new CheckImage();
-	MoveArm hitBallR = new MoveArm();
-	MoveArm hitBallL = new MoveArm();
-
 
 	//Initialization
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(m1, m2, m3, mR, mL, c, l, v, col, spt) {
+	public CheckPicto(m1, m2, m3, mR, mL, c, l, v, spt) {
 		//Set passed values to object values here
 
-		//Color
-		color = col;
 
 		//Spot
 		spot = spt;
@@ -79,22 +71,65 @@ public class CheckPicto extends Segment {
 
 	//Setup
 	public void init() {
-		//Run any initialization procedures: motor encoders, reset runtime, Etc.
+		//Assume CheckImage returns int 1, 2, or 3
+
+		//Move next to shelf then place box directly to side instead of moving the arm a lot
+
+		//if spot=0, moveForward, moveTurn, moveForward depending on picto, rotateTurret to face shelf, extend arm, open claw
+		if (spot == 0) {
+			//Inititalizes array for Image 1
+			//Fill in parameters once we get the measurements
+			commands = {moveForward(), moveTurn(), moveForward(), rotateTurret(), moveArm(), moveClaw()};+
+
+			//Changes second moveForward depending on which image was scanned
+			if (imageNumber == 2) {
+				commands[2] = moveForward();
+			}
+			else if (imageNumber == 3) {
+				commands[2] = moveForward();
+			}
+
+		}		
+
+
+		//if spot=1, moveForward depending on picto, rotateTurret to face shelf, extend arm, open claw
+		if (spot == 1) {
+			//Initializes array for Image 1
+			//Fill in parameters once we get the measurments
+			commands = {moveForward(), rotateTurret(), moveArm(), moveClaw()};
+
+			//Changes first moveForward depending on which image was scanned
+			if (imageNumber == 2) {
+				commands[0] = moveForward();
+			}
+			else if (imageNumber == 3) {
+				commands[0] = moveForward();
+			}
+		}
+		
 	}
 
 	//Runs at start
 	//Runs once
 	public void start() {
-		//Run any start time processes: set motor positions, start elapsed time, Etc.
+		int imageNumber;
+		imageNumber = checkImage;
 	}
 
 	//Loops
 	public void loop() {
-		//Loop. Will most likely just be a while loop waiting for motors to reach position, or waiting set time for servos
+		for (int i = 0; i < commands.length; i++) {
+				commands[i].init();
+				commands[i].start();
+				commands[i].loop();
+				commands[i].stop();
+		}
 	}
 
 	//Stops
 	public void stop(){
 		//Stop motors
+		motorR.setPower(0);
+		motorL.setPower(0);
 	}
 }
