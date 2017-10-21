@@ -1,4 +1,5 @@
-//ADD DESCRIPTION OF PROGRAM HERE
+//Rotates turret
+//Takes 1 motor, power, and angle
 
 //imports
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,38 +10,62 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class Command {
+public class rotateTurret extends Command {
 
 	//Variables
-	//Declare variables here
+	
+	//Motor
+	private DcMotor motor;
+	//Power
+	private int motorP;
+	//Angle
+	private int motorA;
+	//Motor Encoder Value
+	private int motorE;
 
-	//Initialization
-	//Set global variables here (prob wont use)
 
 	//Constructor
-	//Add values to be taken here
-	public Command() {
-		//Set passed values to object values here
+	public rotateTurret(DcMotor m, int p, int a) {
+		//Set to passed variables
+
+		//Motor
+		motor = m;
+		//Power
+		motorP = p;
+		//Angle
+		motorA = a;
 	}
 
 	//Setup
 	public void init() {
-		//Run any initialization procedures: motor encoders, reset runtime, Etc.
+		//Encoder
+		motorE = (motorA / 360) * Command.ENCODERTICKS;
+
+		//Sets encoders
+		motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+	
 	}
 
 	//Runs at start
 	//Runs once
 	public void start() {
-		//Run any start time processes: set motor positions, start elapsed time, Etc.
+		//Set motor power
+		motor.setPower(motorP);
+
+		//Set motor position
+		motor.setPosition(motorE);
 	}
 
 	//Loops
 	public void loop() {
-		//Loop. Will most likely just be a while loop waiting for motors to reach position, or waiting set time for servos
+		//Wait for motors to finish moving
+		while (motor.isBusy()) {}
 	}
 
-	//Stops
+	//Stops motor
 	public void stop(){
-		//Stop motors
+		//Stop motor
+		motor.setPower(0);
 	}
 }
