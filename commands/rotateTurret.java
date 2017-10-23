@@ -41,6 +41,9 @@ public class rotateTurret extends Command {
 		//Encoder
 		motorE = (motorA / 360) * Command.ENCODERTICKS;
 
+		//Sets direction
+		motor.setDirection(DcMotor.Direction.FORWARD);
+
 		//Sets encoders
 		motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
