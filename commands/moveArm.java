@@ -50,11 +50,17 @@ public class MoveArm extends Command{
 	}
 
 	//Setup
+	@Override
 	public void init() {
 		//Encoders
 		motor1E = (motor1A / 360) * Command.ENCODERTICKS;
 		motor2E = (motor2A / 360) * Command.ENCODERTICKS;
 		motor3E = (motor3A / 360) * Command.ENCODERTICKS;
+
+		//Sets direction
+		motor1.setDirection(DcMotor.Direction.FORWARD);
+		motor2.setDirection(DcMotor.Direction.FORWARD);
+		motor3.setDirection(DcMotor.Direction.FORWARD);
 
 		//Sets encoders
 		motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,6 +76,7 @@ public class MoveArm extends Command{
 
 	//Runs at start
 	//Runs once
+	@Override
 	public void start() {
 		//Set motor powers
 		motor1.setPower(motor1P);
@@ -86,12 +93,14 @@ public class MoveArm extends Command{
 	}
 
 	//Loops
+	@Override
 	public void loop() {
 		//Wait for motors to finish moving
 		while (motor1.isBusy() || motor2.isBusy() || motor3.isBusy()) {}
 	}
 
 	//Stops motors
+	@Override
 	public void stop(){
 		//Stop motors
 		motor1.setPower(0);

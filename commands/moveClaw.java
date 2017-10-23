@@ -18,38 +18,34 @@ public class MoveClaw extends Command {
 	private Servo claw;
 	private Servo lateral;
 	private Servo vertical;
-	private Servo rotate;
 	//Servo Position
 	private int clawPosition;
 	private int lateralPosition;
 	private int vericalPosition;
-	private int rotatePosition;
 	//Elapsed Time
 	private ElapsedTime runTime;
 
 	//Constructor
-	public MoveClaw(Servo c, Servo l, Servo v, Servo r, int cP, int lP, int vP, int rP) {
+	public MoveClaw(Servo c, Servo l, Servo v, int cP, int lP, int vP) {
 		//Sets to passed variables
 
 		//Servos
 		claw = c;
 		lateral = l;
 		vertical = v;
-		rotate = r;
 		//Servo Positions
 		clawPosition = cP;
 		lateralPosition = lP;
 		verticalPosition = vP;
-		rotatePosition = rP;
 	}
 
 	//Setup
+	@Override
 	public void init() {
 		//Reset servo positions
 		claw.setPosition(0);
 		lateral.setPosition(0);
 		vertical.setPosition(0);
-		rotate.setPosition(0);
 
 		//Elapsed Time
 		runTime = new ElapsedTime();
@@ -57,24 +53,26 @@ public class MoveClaw extends Command {
 
 	//Runs at start
 	//Runs once
+	@Override
 	public void start() {
 		//Set servo positionss
 		claw.setPosition(clawPosition);
 		lateral.setPosition(lateralPosition);
 		vertical.setPosition(verticalPosition);
-		rotate.setPosition(rotatePosition);
 
 		//Reset Elapsed Time
 		runTime.reset();
 	}
 
 	//Loops
+	@Override
 	public void loop() {
 		//Wait for 1 second
 		while(runTime.time() < 1) {}
 	}
 
 	//Stops
+	@Override
 	public void stop(){
 		//Empty
 	}

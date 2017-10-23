@@ -45,10 +45,14 @@ public class MoveForward extends Command{
 	}
 
 	//Setup
+	@Override
 	public void init() {
+		motorR.setDirection(DcMotor.Direction.REVERSE);	
+		motorL.setDirection(DcMotor.Direction.FORWARD);		
+
 		//Encoders
-		motorRE = ((motorRD * Math.PI) / Command.DIAMETER) * Command.ENCODERTICKS;
-		motorLE = ((motorLD * Math.PI) / Command.DIAMETER) * Command.ENCODERTICKS;
+		motorRE = ((motorRD * Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
+		motorLE = ((motorLD * Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
 		
 		//Sets encoders
 		motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODERS);
@@ -59,6 +63,7 @@ public class MoveForward extends Command{
 
 	//Runs at start
 	//Runs once
+	@Override
 	public void start() {
 		//Set motor powers
 		motorR.setPower(motorRP);
@@ -70,12 +75,14 @@ public class MoveForward extends Command{
 	}
 
 	//Loops
+	@Override
 	public void loop() {
 		//Wait for motors to stop moving
 		while (motorR.isBusy() || motorL.isBusy()) {}
 	}
 
 	//Stops
+	@Override
 	public void stop(){
 		//Stop motors
 		motorR.setPower(0);
