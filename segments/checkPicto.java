@@ -32,6 +32,8 @@ public class CheckPicto extends Segment {
 	//Wheel motors
 	private DcMotor motorR;
 	private DcMotor motorL;
+	//Turret motor
+	private DcMotor turret;
 
 	//Servos
 	//Claw servos
@@ -42,9 +44,8 @@ public class CheckPicto extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(m1, m2, m3, mR, mL, c, l, v, spt) {
+	public CheckPicto(m1, m2, m3, mR, mL, t, c, l, v, spt) {
 		//Set passed values to object values here
-
 
 		//Spot
 		spot = spt;
@@ -57,6 +58,8 @@ public class CheckPicto extends Segment {
 		//Wheel motors
 		motorR = mR;
 		motorL = mL;
+		//Turret motor
+		turret = t;
 
 		//Servos
 		//Claw Servos
@@ -71,23 +74,23 @@ public class CheckPicto extends Segment {
 		CheckImage checkImage = new CheckImage();
 
 		//Spot 0 Commands
-		moveForward s0mF = new moveForward();
-		moveTurn s0mT = new moveTurn();
+		moveForward s0mF = new moveForward(motorR, motorL);
+		moveTurn s0mT = new moveTurn(motorR, motorL);
 		//1 moveForward per image
-		moveForward s0mF1 = new moveForward();
-		moveForward s0mF2 = new moveForward();
-		moveForward s0mF3 = new moveForward();
-		rotateTurret s0rT = new rotateTurret();
-		moveArm s0mA = new moveArm();
-		moveClaw s0mC = new moveClaw();
+		moveForward s0mF1 = new moveForward(motorR, motorL);
+		moveForward s0mF2 = new moveForward(motorR, motorL);
+		moveForward s0mF3 = new moveForward(motorR, motorL);
+		rotateTurret s0rT = new rotateTurret(turret);
+		moveArm s0mA = new moveArm(motor1, motor2, motor3);
+		moveClaw s0mC = new moveClaw(claw, lateral, vertical);
 
 		//Spot 1 Commands
-		moveForward s1mF1 = new moveForward();
-		moveForward s1mF2 = new moveForward();
-		moveForward s1mF3 = new moveForward();
-		rotateTurret s1rT = new rotateTurret();
-		moveArm s1mA = new moveArm();
-		moveClaw s1mC = new moveClaw();
+		moveForward s1mF1 = new moveForward(motorR, motorL);
+		moveForward s1mF2 = new moveForward(motorR, motorL);
+		moveForward s1mF3 = new moveForward(motorR, motorL);
+		rotateTurret s1rT = new rotateTurret(turret);
+		moveArm s1mA = new moveArm(motor1, motor2, motor3);
+		moveClaw s1mC = new moveClaw(claw, lateral, vertical);
 	}
 
 	//Runs at start
@@ -97,23 +100,18 @@ public class CheckPicto extends Segment {
 		imageNumber = checkImage;
 
 		//Assume CheckImage returns int 1, 2, or 3
-
 		//Move next to shelf then place box directly to side instead of moving the arm a lot
-
 		//if spot=0, moveForward, moveTurn, moveForward depending on picto, rotateTurret to face shelf, extend arm, open claw
 		if (spot == 0) {
 			//Inititalizes array for Image 1
 			//Fill in parameters once we get the measurements
-			commands = {moveForward(), moveTurn(), moveForward(), rotateTurret(), moveArm(), moveClaw()};
+			commands = {s0mF, s0mT, s0mF1, s0rT, s0mA, s0mC};
 
 			//Changes second moveForward depending on which image was scanned
-			if (imageNumber == 2) {
-				commands[2] = moveForward();
-			}
-			else if (imageNumber == 3) {
-				commands[2] = moveForward();
-			}
-
+			if (imageNumber == 2)
+				commands[2] = s0mF2;
+			else if (imageNumber == 3)
+				commands[2] = s0mF3;
 		}		
 
 
@@ -121,15 +119,13 @@ public class CheckPicto extends Segment {
 		if (spot == 1) {
 			//Initializes array for Image 1
 			//Fill in parameters once we get the measurments
-			commands = {moveForward(), rotateTurret(), moveArm(), moveClaw()};
+			commands = {s1mF1, s1rT, s1mA, s1mc};
 
 			//Changes first moveForward depending on which image was scanned
-			if (imageNumber == 2) {
-				commands[0] = moveForward();
-			}
-			else if (imageNumber == 3) {
-				commands[0] = moveForward();
-			}
+			if (imageNumber == 2)
+				commands[0] = s1mF2;
+			else if (imageNumber == 3)
+				commands[0] = s1mF3;
 		}	
 	}
 
@@ -146,6 +142,10 @@ public class CheckPicto extends Segment {
 	//Stops
 	public void stop(){
 		//Stop motors
+		motor1.setPower(0);
+		motor2.setPower(0);
+		motor3.setPower(0);
+		turret.setPower(0);
 		motorR.setPower(0);
 		motorL.setPower(0);
 	}
