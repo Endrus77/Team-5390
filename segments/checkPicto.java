@@ -39,10 +39,6 @@ public class CheckPicto extends Segment {
 	private Servo lateral;
 	private Servo vertical;
 
-	//Commands
-	CheckImage checkImage = new CheckImage();
-
-	//Initialization
 
 	//Constructor
 	//Add values to be taken here
@@ -71,6 +67,35 @@ public class CheckPicto extends Segment {
 
 	//Setup
 	public void init() {
+		//Initialize Objects here
+		CheckImage checkImage = new CheckImage();
+
+		//Spot 0 Commands
+		moveForward s0mF = new moveForward();
+		moveTurn s0mT = new moveTurn();
+		//1 moveForward per image
+		moveForward s0mF1 = new moveForward();
+		moveForward s0mF2 = new moveForward();
+		moveForward s0mF3 = new moveForward();
+		rotateTurret s0rT = new rotateTurret();
+		moveArm s0mA = new moveArm();
+		moveClaw s0mC = new moveClaw();
+
+		//Spot 1 Commands
+		moveForward s1mF1 = new moveForward();
+		moveForward s1mF2 = new moveForward();
+		moveForward s1mF3 = new moveForward();
+		rotateTurret s1rT = new rotateTurret();
+		moveArm s1mA = new moveArm();
+		moveClaw s1mC = new moveClaw();
+	}
+
+	//Runs at start
+	//Runs once
+	public void start() {
+		private int imageNumber;
+		imageNumber = checkImage;
+
 		//Assume CheckImage returns int 1, 2, or 3
 
 		//Move next to shelf then place box directly to side instead of moving the arm a lot
@@ -79,7 +104,7 @@ public class CheckPicto extends Segment {
 		if (spot == 0) {
 			//Inititalizes array for Image 1
 			//Fill in parameters once we get the measurements
-			commands = {moveForward(), moveTurn(), moveForward(), rotateTurret(), moveArm(), moveClaw()};+
+			commands = {moveForward(), moveTurn(), moveForward(), rotateTurret(), moveArm(), moveClaw()};
 
 			//Changes second moveForward depending on which image was scanned
 			if (imageNumber == 2) {
@@ -105,15 +130,7 @@ public class CheckPicto extends Segment {
 			else if (imageNumber == 3) {
 				commands[0] = moveForward();
 			}
-		}
-		
-	}
-
-	//Runs at start
-	//Runs once
-	public void start() {
-		int imageNumber;
-		imageNumber = checkImage;
+		}	
 	}
 
 	//Loops
