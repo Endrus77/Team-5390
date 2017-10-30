@@ -96,7 +96,7 @@ public class CheckPicto extends Segment {
 	//Runs at start
 	//Runs once
 	public void start() {
-		private int imageNumber;
+		int imageNumber;
 		imageNumber = checkImage;
 
 		//Assume CheckImage returns int 1, 2, or 3
