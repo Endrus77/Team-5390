@@ -14,14 +14,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Command {
 
 	//Variables
-	private static int DIAMETER;
-	private static int CIRCUMFRENCE;
-	private static int ENCODERTICKS;
+	public static int DIAMETER;
+	public static int CIRCUMFRENCE;
+	public static int ENCODERTICKS;
+	public static int WHEELDISTANCE;
+	public static int WHEELCIRCUMFRENCE;
 
 	//Initialization
 	DIAMETER = 4;
 	CIRCUMFRENCE = 4 * Math.PI;
 	ENCODERTICKS = 1680;
+	WHEELDISTANCE = 16.5;
+	WHEELCIRCUMFRENCE = 16.5 * 2 * Math.PI;
 
 	//Constructor
 	public Command() {

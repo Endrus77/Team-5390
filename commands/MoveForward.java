@@ -47,13 +47,13 @@ public class MoveForward extends Command{
 	//Setup
 	@Override
 	public void init() {
+		//Encoders
+		motorRE = (motorRD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
+		motorLE = (motorLD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
+		
+		//Set directions
 		motorR.setDirection(DcMotor.Direction.REVERSE);	
 		motorL.setDirection(DcMotor.Direction.FORWARD);		
-
-		//Encoders
-		motorRE = ((motorRD * Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
-		motorLE = ((motorLD * Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
-		
 		//Sets encoders
 		motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODERS);
 		motorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
