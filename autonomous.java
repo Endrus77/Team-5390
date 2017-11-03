@@ -26,16 +26,16 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
+import segments.*;
 /*
  * This file contains an example of an iterative (Non-Linear) "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -50,19 +50,19 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
+@TeleOp(name="Auto", group="Iterative Opmode")
 @Disabled
-public class BasicOpMode_Iterative extends OpMode
+public class autonomous extends OpMode
 {
 	private ElapsedTime runtime = new ElapsedTime();
 
 	//Array
-	Segment[] commands = new Segment[];
+	private Segment[] commands = new Segment[2];
 
 	//Motors
-       	private DcMotor mR;
+	private DcMotor mR;
 	private DcMotor mL;
-       	private DcMotor m1;
+	private DcMotor m1;
 	private DcMotor m2;
 	private DcMotor m3;
 	private DcMotor t;
@@ -85,16 +85,16 @@ public class BasicOpMode_Iterative extends OpMode
 	 public void init() {
  	       telemetry.addData("Status", "Initialized");
 	
-	        // Initialize the hardware variables. Note that the strings used here as parameters
-	        // to 'get' must correspond to the names assigned during the robot configuration
-      		// step (using the FTC Robot Controller app on the phone).
+		 // Initialize the hardware variables. Note that the strings used here as parameters
+		 // to 'get' must correspond to the names assigned during the robot configuration
+		 // step (using the FTC Robot Controller app on the phone).
 		//Motors
-		mR = hardwareMap.get(DcMotor.class, ""):
-		mL = hardwareMap.get(DcMotor.class, ""):
-		m1 = hardwareMap.get(DcMotor.class, ""):
-		m2 = hardwareMap.get(DcMotor.class, ""):
-		m3 = hardwareMap.get(DcMotor.class, ""):
-		t = hardwareMap.get(DcMotor.class, ""):
+		mR = hardwareMap.get(DcMotor.class, "");
+		mL = hardwareMap.get(DcMotor.class, "");
+		m1 = hardwareMap.get(DcMotor.class, "");
+		m2 = hardwareMap.get(DcMotor.class, "");
+		m3 = hardwareMap.get(DcMotor.class, "");
+		t = hardwareMap.get(DcMotor.class, "");
 
 		//Servos
 		c = hardwareMap.get(Servo.class, "");
@@ -108,13 +108,7 @@ public class BasicOpMode_Iterative extends OpMode
 		clr = 0;
 		spt = 0;
 
-		//Segments
-		CheckPicto checkPicto = new CheckPicto(m1, m2, m3, mR, mL, t, c, l, v, spt, clr);
-		CheckBall checkBall = new CheckBall(m1, m2, m3, t, c, l, v, clr);
-		
-		//Array
-		commands[0] = checkBall;
-		commands[1] = checkPicto;
+
 
         	// Tell the driver that initialization is complete.
         	telemetry.addData("Status", "Initialized");
@@ -132,6 +126,13 @@ public class BasicOpMode_Iterative extends OpMode
      	*/
     	@Override
     	public void start() {
+			//Segments
+			CheckPicto checkPicto = new CheckPicto(m1, m2, m3, mR, mL, t, c, l, v, clr);
+			CheckBall checkBall = new CheckBall(m1, m2, m3, t, c, l, v, clr);
+
+			//Array
+			commands[0] = checkBall;
+			commands[1] = checkPicto;
         	runtime.reset();
     	}
 
@@ -140,13 +141,13 @@ public class BasicOpMode_Iterative extends OpMode
      	*/
     	@Override
     	public void loop() {
-		if (loop < commands.length) {
-			commands[loop].init();
-			commands[loop].start();
-			commands[loop].loop();
-			commands[loop].stop();
-		}
-		loop++;
+			if (loop < commands.length) {
+				commands[loop].init();
+				commands[loop].start();
+				commands[loop].loop();
+				commands[loop].stop();
+			}
+			loop++;
     	}
 
     	/*
@@ -154,7 +155,7 @@ public class BasicOpMode_Iterative extends OpMode
     	 */
     	@Override
     	public void stop() {
-		if (loop < commands.length)
-			commands[loop].stop();
+			if (loop < commands.length)
+				commands[loop].stop();
     	}
 }
