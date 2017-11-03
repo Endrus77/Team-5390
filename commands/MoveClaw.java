@@ -2,11 +2,9 @@
 //Takes 4 sero positions
 
 //imports
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
+
+package commands;
+
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -21,24 +19,26 @@ public class MoveClaw extends Command {
 	//Servo Position
 	private int clawPosition;
 	private int lateralPosition;
-	private int vericalPosition;
+	private int verticalPosition;
 	//Elapsed Time
 	private ElapsedTime runTime;
 
 	//Constructor
-	public MoveClaw(Servo c, Servo l, Servo v, int cP, int lP, int vP) {
+	public MoveClaw(int cP, int lP, int vP) {
 		//Sets to passed variables
 
-		//Servos
-		claw = c;
-		lateral = l;
-		vertical = v;
 		//Servo Positions
 		clawPosition = cP;
 		lateralPosition = lP;
 		verticalPosition = vP;
 	}
 
+	public void setServos(Servo c, Servo l, Servo v) {
+		//Servos
+		claw = c;
+		lateral = l;
+		vertical = v;
+	}
 	//Setup
 	@Override
 	public void init() {

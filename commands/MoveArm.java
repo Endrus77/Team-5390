@@ -2,13 +2,10 @@
 //Takes 3 motors, powers and angles
 
 //import
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+package commands;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class MoveArm extends Command{
 
@@ -32,13 +29,9 @@ public class MoveArm extends Command{
 	private int motor3E;
 
 	//Constructor
-	public MoveArm(DcMotor m1, DcMotor m2, DcMotor m3, int p1, int p2, int p3, int a1, int a2, int a3) {
+	public MoveArm(int p1, int p2, int p3, int a1, int a2, int a3) {
 		//Set to passed variables
-		
-		//Motors
-		motor1 = m1;
-		motor2 = m2;
-		motor3 = m3;
+
 		//Power
 		motor1P = p1;
 		motor2P = p2;
@@ -49,13 +42,20 @@ public class MoveArm extends Command{
 		motor3A = a3;
 	}
 
+	public void setMotors(DcMotor m1, DcMotor m2, DcMotor m3) {
+		//Motors
+		motor1 = m1;
+		motor2 = m2;
+		motor3 = m3;
+	}
+
 	//Setup
 	@Override
 	public void init() {
 		//Encoders
-		motor1E = (motor1A / 360) * Command.ENCODERTICKS;
-		motor2E = (motor2A / 360) * Command.ENCODERTICKS;
-		motor3E = (motor3A / 360) * Command.ENCODERTICKS;
+		motor1E = (int)((motor1A / 360) * Command.ENCODERTICKS);
+		motor2E = (int)((motor2A / 360) * Command.ENCODERTICKS);
+		motor3E = (int)((motor3A / 360) * Command.ENCODERTICKS);
 
 		//Sets direction
 		motor1.setDirection(DcMotor.Direction.FORWARD);
@@ -70,8 +70,6 @@ public class MoveArm extends Command{
 		motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-		//Elapsed Time
-		runTime = new ElapsedTime();
 	}
 
 	//Runs at start
@@ -84,12 +82,10 @@ public class MoveArm extends Command{
 		motor3.setPower(motor3P);
 
 		//Set motor positions
-		motor1.setPosition(motor1E);
-		motor2.setPosition(motor2E);
-		motor3.setPosition(motor3E);
+		motor1.setTargetPosition(motor1E);
+		motor2.setTargetPosition(motor2E);
+		motor3.setTargetPosition(motor3E);
 
-		//Reset Elapsed Time
-		runTime.reset();
 	}
 
 	//Loops

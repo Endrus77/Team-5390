@@ -3,13 +3,20 @@
 //For now the distances will be hardcoded
 
 //imports
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+package segments;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
+import commands.CheckImg;
+import commands.Command;
+import commands.MoveArm;
+import commands.MoveClaw;
+import commands.MoveForward;
+import commands.MoveTurn;
+import commands.RotateTurret;
+
 //import Commands
 
 public class CheckPicto extends Segment {
@@ -17,7 +24,7 @@ public class CheckPicto extends Segment {
 	//Variables
 	
 	//Command Array
-	Command[] commands = new Command[];
+	private Command[] commands = new Command[6];
 	//blank arrays here
 
 	//Spot
@@ -41,10 +48,30 @@ public class CheckPicto extends Segment {
 	private Servo lateral;
 	private Servo vertical;
 
+	CheckImg checkImage = new CheckImg();
+
+	//Spot 0 Commands
+	MoveForward s0mF = new MoveForward(0, 0, 0, 0);
+	MoveTurn s0mT = new MoveTurn(0, 0, 0);
+	//1 moveForward per image
+	MoveForward s0mF1 = new MoveForward(0, 0, 0, 0);
+	MoveForward s0mF2 = new MoveForward(0, 0, 0, 0);
+	MoveForward s0mF3 = new MoveForward(0, 0, 0, 0);
+	RotateTurret s0rT = new RotateTurret(0, 0);
+	MoveArm s0mA = new MoveArm(0, 0, 0, 0, 0, 0);
+	MoveClaw s0mC = new MoveClaw(0, 0, 0);
+
+	//Spot 1 Commands
+	MoveForward s1mF1 = new MoveForward(0, 0, 0, 0);
+	MoveForward s1mF2 = new MoveForward(0, 0, 0, 0);
+	MoveForward s1mF3 = new MoveForward(0, 0, 0, 0);
+	RotateTurret s1rT = new RotateTurret(0, 0);
+	MoveArm s1mA = new MoveArm(0, 0, 0, 0, 0, 0);
+	MoveClaw s1mC = new MoveClaw(0, 0, 0);
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(m1, m2, m3, mR, mL, t, c, l, v, spt) {
+	public CheckPicto(DcMotor m1, DcMotor m2, DcMotor m3, DcMotor mR, DcMotor mL, DcMotor t, Servo c, Servo l, Servo v, int spt) {
 		//Set passed values to object values here
 
 		//Spot
@@ -71,33 +98,32 @@ public class CheckPicto extends Segment {
 	//Setup
 	public void init() {
 		//Initialize Objects here
-		CheckImage checkImage = new CheckImage();
 
 		//Spot 0 Commands
-		moveForward s0mF = new moveForward(motorR, motorL);
-		moveTurn s0mT = new moveTurn(motorR, motorL);
+		s0mF.setMotors(motorR, motorL);
+		s0mT.setMotors(motorR, motorL);
 		//1 moveForward per image
-		moveForward s0mF1 = new moveForward(motorR, motorL);
-		moveForward s0mF2 = new moveForward(motorR, motorL);
-		moveForward s0mF3 = new moveForward(motorR, motorL);
-		rotateTurret s0rT = new rotateTurret(turret);
-		moveArm s0mA = new moveArm(motor1, motor2, motor3);
-		moveClaw s0mC = new moveClaw(claw, lateral, vertical);
+		s0mF1.setMotors(motorR, motorL);
+		s0mF2.setMotors(motorR, motorL);
+		s0mF3.setMotors(motorR, motorL);
+		s0rT.setMotor(turret);
+		s0mA.setMotors(motor1, motor2, motor3);
+		s0mC.setServos(claw, lateral, vertical);
 
 		//Spot 1 Commands
-		moveForward s1mF1 = new moveForward(motorR, motorL);
-		moveForward s1mF2 = new moveForward(motorR, motorL);
-		moveForward s1mF3 = new moveForward(motorR, motorL);
-		rotateTurret s1rT = new rotateTurret(turret);
-		moveArm s1mA = new moveArm(motor1, motor2, motor3);
-		moveClaw s1mC = new moveClaw(claw, lateral, vertical);
+		s1mF1.setMotors(motorR, motorL);
+		s1mF2.setMotors(motorR, motorL);
+		s1mF3.setMotors(motorR, motorL);
+		s1rT.setMotor(turret);
+		s1mA.setMotors(motor1, motor2, motor3);
+		s1mC.setServos(claw, lateral, vertical);
 	}
 
 	//Runs at start
 	//Runs once
 	public void start() {
 		int imageNumber;
-		imageNumber = checkImage;
+		imageNumber = checkImage.getValue();
 
 		//Assume CheckImage returns int 1, 2, or 3
 		//Move next to shelf then place box directly to side instead of moving the arm a lot
@@ -105,7 +131,12 @@ public class CheckPicto extends Segment {
 		if (spot == 0) {
 			//Inititalizes array for Image 1
 			//Fill in parameters once we get the measurements
-			commands = {s0mF, s0mT, s0mF1, s0rT, s0mA, s0mC};
+			commands[0] = s0mF;
+			commands[1] = s0mT;
+			commands[2] = s0mF1;
+			commands[3] = s0rT;
+			commands[4] = s0mA;
+			commands[5] = s0mC;
 
 			//Changes second moveForward depending on which image was scanned
 			if (imageNumber == 2)
@@ -119,7 +150,10 @@ public class CheckPicto extends Segment {
 		if (spot == 1) {
 			//Initializes array for Image 1
 			//Fill in parameters once we get the measurments
-			commands = {s1mF1, s1rT, s1mA, s1mc};
+			commands[0] = s1mF1;
+			commands[1] = s1rT;
+			commands[2] = s1mA;
+			commands[3] = s1mC;
 
 			//Changes first moveForward depending on which image was scanned
 			if (imageNumber == 2)

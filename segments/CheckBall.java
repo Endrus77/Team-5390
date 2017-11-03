@@ -3,21 +3,25 @@
 //For now the distances will be hardcoded
 
 //imports
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-//import Commands
 
-public class CheckPicto extends Segment {
+package segments;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import commands.CheckImg;
+import commands.MoveArm;
+import commands.RotateTurret;
+
+//import Commands
+import commands.*;
+
+public class CheckBall extends Segment {
 
 	//Variables
 	
 	//Command Array
-	Command[] commands = new Command[];
+	private Command[] commands = new Command[4];
 	//blank arrays here
 
 	//Color
@@ -40,13 +44,22 @@ public class CheckPicto extends Segment {
 	private Servo vertical;
 
 	//Commands
-	CheckImage checkImage = new CheckImage();
+	private CheckImg checkImage = new CheckImg();
 
 	//Initialization
+	private MoveArm moveUp = new MoveArm(0, 0, 0, 0, 0, 0); //Still needs values
+	private RotateTurret rotateTo = new RotateTurret(0, 0); //Still needs values
+	private MoveArm moveBetween = new MoveArm(0, 0, 0, 0, 0, 0); //Still needs values
+
+	//Branch
+	//If right
+	private RotateTurret rotateRight = new RotateTurret(0, 0); //Still needs values;
+	//If left
+	private RotateTurret rotateLeft = new RotateTurret(0, 0); //Still needs values;
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBall(m1, m2, m3, c, l, v, clr){
+	public CheckBall(DcMotor m1, DcMotor m2, DcMotor m3, DcMotor t, Servo c, Servo l, Servo v, int clr){
 		//Set passed values to object values here
 
 		//Color
@@ -57,6 +70,8 @@ public class CheckPicto extends Segment {
 		motor1 = m1;
 		motor2 = m2;
 		motor3 = m3;
+		//Turret
+		turret = t;
 
 		//Servos
 		//Claw Servos
@@ -69,25 +84,28 @@ public class CheckPicto extends Segment {
 	public void init () {
 		//Make commands
 		//First move arm and turret
-		MoveArm moveUp = new MoveArm(motor1, motor2, motor3); //Still needs values
-		MoveTurret rotateTo = new MoveTurret(turret); //Still needs values
-		MoveArm moveBetween = new MoveArm(motor1, motor2, motor3); //Still needs values
+		moveUp.setMotors(motor1, motor2, motor3);
+		rotateTo.setMotor(turret);
+		moveBetween.setMotors(motor1, motor2, motor3);
 
 		//Branch
 		//If right
-		MoveTurret rotateRight = new MoveTurret(turret); //Still needs values;
+		rotateRight.setMotor(turret);
 		//If left
-		MoveTurret rotateLeft = new MoveTurret(turret); //Still needs values;
+		rotateLeft.setMotor(turret);
 	}
 
 	//Runs at start
 	//Runs once
 	public void start() {
 		int imageNumber;
-		imageNumber = checkImage;
+		imageNumber = checkImage.getValue();
 
 		//Intialize commands. Defualted to rotate right
-		commands = {moveUp, rotateTo, moveBetween, rotateRight};
+		commands[0] = moveUp;
+		commands[1] = rotateTo;
+		commands[2] = moveBetween;
+		commands[3] = rotateRight;
 		//Switch to roate left if ball is on other side
 		if (imageNumber == color)
 			commands[3] = rotateLeft;

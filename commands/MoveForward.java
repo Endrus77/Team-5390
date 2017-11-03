@@ -2,13 +2,10 @@
 //Takes 2 motor values, powers, and distances
 
 //imports
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+package commands;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class MoveForward extends Command{
 
@@ -30,12 +27,9 @@ public class MoveForward extends Command{
 	//Initialization
 
 	//Constructor
-	public MoveForward(DcMotor mR, DcMotor mL, int pR, int pL, int dR, int dL) {
+	public MoveForward(int pR, int pL, int dR, int dL) {
 		//Sets to passed variables
-		
-		//Motors
-		motorR = mR;
-		motorL = mL;
+
 		//Power
 		motorRP = pR;
 		motorLP = pL;
@@ -44,20 +38,26 @@ public class MoveForward extends Command{
 		motorLD = dR;
 	}
 
+	public void setMotors(DcMotor mR, DcMotor mL) {
+		//Motors
+		motorR = mR;
+		motorL = mL;
+	}
+
 	//Setup
 	@Override
 	public void init() {
 		//Encoders
-		motorRE = (motorRD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
-		motorLE = (motorLD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
+		motorRE = (int)((motorRD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS);
+		motorLE = (int)((motorLD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS);
 		
 		//Set directions
 		motorR.setDirection(DcMotor.Direction.REVERSE);	
 		motorL.setDirection(DcMotor.Direction.FORWARD);		
 		//Sets encoders
-		motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODERS);
+		motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		motorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODERS);
+		motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		motorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	}
 
@@ -70,8 +70,8 @@ public class MoveForward extends Command{
 		motorL.setPower(motorLP);
 
 		//Set motor positions
-		motorR.setPosition(motorRE);
-		motorL.setPosition(motorLE);
+		motorR.setTargetPosition(motorRE);
+		motorL.setTargetPosition(motorLE);
 	}
 
 	//Loops

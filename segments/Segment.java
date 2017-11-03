@@ -3,20 +3,17 @@
 //All commands must have these functions and variables
 
 //imports
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
+package segments;
+
 //import Commands
+
 
 public class Segment {
 
 	//Variables
 	//Command Array
-	Command[] commands = new Command[];
+	//Command[] commands = new Command[];
 
 	//Initialization
 

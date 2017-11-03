@@ -1,6 +1,9 @@
 //checkImg()
 //Compares passed image to phone image
 //Returns bool
+
+package commands;
+
 public class CheckImg extends Command {
 
 	//variables
@@ -9,7 +12,7 @@ public class CheckImg extends Command {
 	int image;
 
 	//Constructor
-	CheckImg() {
+	public CheckImg() {
 		match = false;
 		//image = passedImage;
 	}
@@ -37,5 +40,9 @@ public class CheckImg extends Command {
 	@Override
 	public void stop() {
 		//stop compare
+	}
+
+	public int getValue(){
+		return (0);
 	}
 }

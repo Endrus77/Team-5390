@@ -2,15 +2,12 @@
 //Takes 1 motor, power, and angle
 
 //imports
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class rotateTurret extends Command {
+package commands;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+public class RotateTurret extends Command {
 
 	//Variables
 	
@@ -25,21 +22,24 @@ public class rotateTurret extends Command {
 
 
 	//Constructor
-	public rotateTurret(DcMotor m, int p, int a) {
+	public RotateTurret(int p, int a) {
 		//Set to passed variables
 
-		//Motor
-		motor = m;
 		//Power
 		motorP = p;
 		//Angle
 		motorA = a;
 	}
 
+	public void setMotor(DcMotor m) {
+		//Motor
+		motor = m;
+	}
+
 	//Setup
 	public void init() {
 		//Encoder
-		motorE = (motorA / 360) * Command.ENCODERTICKS;
+		motorE = (int)((motorA / 360) * Command.ENCODERTICKS);
 
 		//Sets direction
 		motor.setDirection(DcMotor.Direction.FORWARD);
@@ -57,7 +57,7 @@ public class rotateTurret extends Command {
 		motor.setPower(motorP);
 
 		//Set motor position
-		motor.setPosition(motorE);
+		motor.setTargetPosition(motorE);
 	}
 
 	//Loops

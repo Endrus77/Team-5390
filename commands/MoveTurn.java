@@ -1,13 +1,10 @@
 //ADD DESCRIPTION OF PROGRAM HERE
 
 //imports
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+package commands;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class MoveTurn extends Command {
 
@@ -17,8 +14,6 @@ public class MoveTurn extends Command {
 	private DcMotor motorL;
 	//Motor Powers
 	private int motorP;
-	//Motor Distance
-	private int motorD;
 	//Motor Encoder
 	private int motorE;
 
@@ -32,38 +27,43 @@ public class MoveTurn extends Command {
 
 	//Constructor
 	//Add values to be taken here
-	public MoveTurn(DcMotor mR, DcMotor mL, int p, int w, int a) {
+	public MoveTurn(int p, int w, int a) {
 		//Set passed values to object values here
 
-		//Motors
-		motorR = mR;
-		motorL = mL;
 		//Power
 		motorP = p;
 
 		//Angle
 		angle = a;
 		//Wheel
-		wheel = w;
+		wheel = w;;
+	}
+
+	public void setMotors(DcMotor mR, DcMotor mL) {
+		//Motors
+		motorR = mR;
+		motorL = mL;
 	}
 
 	//Setup
 	@Override
 	public void init() {
+		int motorD;
 		//Distances
-		motorD = (angle / 360) * Command.WHEELCIRCUMFRENCE;
+		motorD = (int)((angle / 360) * Command.WHEELCIRCUMFRENCE);
+
 		//Encoders
-		motorE = (motorD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS;
+		motorE = (int)((motorD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS);
 
 		//Set Motors up
-		if (wheel = 0) {
+		if (wheel == 0) {
 			motorR.setDirection(DcMotor.Direction.REVERSE);
-			motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODERS);
+			motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 			motorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		}
 		else {
-			motorL.setDirection(DcMotor.Directions.FORWARD);
-			motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODERS);
+			motorL.setDirection(DcMotor.Direction.FORWARD);
+			motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 			motorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		}
 	}
@@ -74,11 +74,11 @@ public class MoveTurn extends Command {
 		//Set speed and position
 		if (wheel == 0) {
 			motorR.setPower(motorP);
-			motorR.setPosition(motorE);
+			motorR.setTargetPosition(motorE);
 		}
 		else {
 			motorL.setPower(motorP);
-			motorL.setPosition(motorE);
+			motorL.setTargetPosition(motorE);
 		}
 	}
 
