@@ -34,8 +34,8 @@ public class Command {
 	}
 
 	//Loops
-	public void loop() {
-
+	public boolean loop() {
+		return true;
 	}
 
 	//Stops

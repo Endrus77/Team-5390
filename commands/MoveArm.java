@@ -90,9 +90,9 @@ public class MoveArm extends Command{
 
 	//Loops
 	@Override
-	public void loop() {
+	public boolean loop() {
 		//Wait for motors to finish moving
-		while (motor1.isBusy() || motor2.isBusy() || motor3.isBusy()) {}
+		return (motor1.isBusy() || motor2.isBusy() || motor3.isBusy());
 	}
 
 	//Stops motors

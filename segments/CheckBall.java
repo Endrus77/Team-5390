@@ -27,6 +27,7 @@ public class CheckBall extends Segment {
 	//Color
 	//1 is blue, 2 is red
 	private int color;
+	private int index;
 
 	//Motors
 	//Arm motors
@@ -109,15 +110,25 @@ public class CheckBall extends Segment {
 		//Switch to roate left if ball is on other side
 		if (imageNumber == color)
 			commands[3] = rotateLeft;
+		index = 0;
+		commands[index].init();
+		commands[index].start();
 	}
 
 	//Loops
-	public void loop() {
-		for (int i = 0; i < commands.length; i++) {
-				commands[i].init();
-				commands[i].start();
-				commands[i].loop();
-				commands[i].stop();
+	public boolean loop() {
+		if (commands[index].loop())
+			return true;
+		else {
+			commands[index].stop();
+			index++;
+			if (index == commands.length)
+				return false;
+			else {
+				commands[index].init();
+				commands[index].start();
+				return true;
+			}
 		}
 	}
 

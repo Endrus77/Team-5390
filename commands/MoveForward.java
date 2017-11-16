@@ -15,11 +15,11 @@ public class MoveForward extends Command{
 	private DcMotor motorR;
 	private DcMotor motorL;
 	//Motor Powers
-	private int motorRP;
-	private int motorLP;
+	private double motorRP;
+	private double motorLP;
 	//Motor Distances
-	private int motorRD;
-	private int motorLD;
+	private double motorRD;
+	private double motorLD;
 	//Motor Encoder Values
 	private int motorRE;
 	private int motorLE;
@@ -27,7 +27,7 @@ public class MoveForward extends Command{
 	//Initialization
 
 	//Constructor
-	public MoveForward(int pR, int pL, int dR, int dL) {
+	public MoveForward(double pR, double pL, double dR, double dL) {
 		//Sets to passed variables
 
 		//Power
@@ -52,8 +52,8 @@ public class MoveForward extends Command{
 		motorLE = (int)((motorLD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS);
 		
 		//Set directions
-		motorR.setDirection(DcMotor.Direction.REVERSE);	
-		motorL.setDirection(DcMotor.Direction.FORWARD);		
+		motorR.setDirection(DcMotor.Direction.REVERSE);
+		motorL.setDirection(DcMotor.Direction.FORWARD);
 		//Sets encoders
 		motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		motorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -76,9 +76,9 @@ public class MoveForward extends Command{
 
 	//Loops
 	@Override
-	public void loop() {
+	public boolean loop() {
 		//Wait for motors to stop moving
-		while (motorR.isBusy() || motorL.isBusy()) {}
+		return (motorR.isBusy() || motorL.isBusy());
 	}
 
 	//Stops

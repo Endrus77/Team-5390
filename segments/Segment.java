@@ -35,8 +35,9 @@ public class Segment {
 	}
 
 	//Loops
-	public void loop() {
+	public boolean loop() {
 		//Loop. Will most likely just be a while loop waiting for motors to reach position, or waiting set time for servos
+		return true;
 	}
 
 	//Stops

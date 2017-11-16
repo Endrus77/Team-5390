@@ -83,9 +83,9 @@ public class MoveTurn extends Command {
 	}
 
 	//Loops
-	public void loop() {
+	public boolean loop() {
 		//Wait for motors to stop moving
-		while (motorR.isBusy() || motorL.isBusy()) {}
+		return (motorR.isBusy() || motorL.isBusy());
 	}
 
 	//Stops

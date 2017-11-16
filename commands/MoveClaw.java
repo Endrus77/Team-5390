@@ -66,9 +66,9 @@ public class MoveClaw extends Command {
 
 	//Loops
 	@Override
-	public void loop() {
+	public boolean loop() {
 		//Wait for 1 second
-		while(runTime.time() < 1) {}
+		return (runTime.time() < 1);
 	}
 
 	//Stops

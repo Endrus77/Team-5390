@@ -49,8 +49,8 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Remote", group="Linear Opmode")
-public class RemoteControl extends LinearOpMode {
+@TeleOp(name="RemoteNoLateral", group="Linear Opmode")
+public class RemoteControlNoLateral extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -63,7 +63,7 @@ public class RemoteControl extends LinearOpMode {
         DcMotor leftDrive;
         DcMotor rightDrive;
         DcMotor claw;
-        DcMotor lateral;
+        //DcMotor lateral;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -71,14 +71,14 @@ public class RemoteControl extends LinearOpMode {
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         claw = hardwareMap.get(DcMotor.class,"claw");
-        lateral = hardwareMap.get(DcMotor.class, "lateral");
+        //lateral = hardwareMap.get(DcMotor.class, "lateral");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         claw.setDirection(DcMotor.Direction.FORWARD);
-        lateral.setDirection(DcMotor.Direction.FORWARD);
+        //lateral.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -91,24 +91,25 @@ public class RemoteControl extends LinearOpMode {
             double leftPower;
             double rightPower;
             double clawPower;
-            double lateralPower;
+            //double lateralPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
             if (gamepad1.right_trigger != 0)
-                clawPower = 0.5;
+                clawPower = 0.2;
             else if (gamepad1.right_bumper)
-                clawPower = -0.5;
+                clawPower = -0.2;
             else
                 clawPower = 0;
-
+            /*
             if (gamepad1.left_trigger != 0)
                 lateralPower = 0.5;
             else if (gamepad1.left_bumper)
                 lateralPower = -0.5;
             else
                 lateralPower = 0;
+                */
 
             double driveL = gamepad1.left_stick_y;
             double driveR  =  gamepad1.right_stick_y;
@@ -124,13 +125,13 @@ public class RemoteControl extends LinearOpMode {
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
             claw.setPower(clawPower);
-            lateral.setPower(lateralPower);
+            //lateral.setPower(lateralPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Claw", "Power: " + clawPower);
-            telemetry.addData("Lateral", "Power: " + lateralPower);
+            //telemetry.addData("Lateral", "Power: " + lateralPower);
             telemetry.update();
         }
     }

@@ -61,9 +61,9 @@ public class RotateTurret extends Command {
 	}
 
 	//Loops
-	public void loop() {
+	public boolean loop() {
 		//Wait for motors to finish moving
-		while (motor.isBusy()) {}
+		return (motor.isBusy());
 	}
 
 	//Stops motor

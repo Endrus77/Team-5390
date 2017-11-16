@@ -32,8 +32,9 @@ public class CheckImg extends Command {
 
 	//Loops
 	@Override
-	public void loop() {
+	public boolean loop() {
 		//compare images here
+		return true;
 	}
 
 	//Stops
