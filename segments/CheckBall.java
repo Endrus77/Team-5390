@@ -9,12 +9,14 @@ package segments;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import commands.CheckImg;
+import colorDetection.BeaconAnalyzer;
+
+import commands.Command;
 import commands.MoveArm;
+import colorDetection.ReadBall;
 import commands.RotateTurret;
 
 //import Commands
-import commands.*;
 
 public class CheckBall extends Segment {
 
@@ -27,7 +29,9 @@ public class CheckBall extends Segment {
 	//Color
 	//1 is blue, 2 is red
 	private int color;
-	private int index;
+
+	//Screen Orientation
+	private final double angle = 90;
 
 	//Motors
 	//Arm motors
@@ -57,6 +61,9 @@ public class CheckBall extends Segment {
 	private RotateTurret rotateRight = new RotateTurret(0, 0); //Still needs values;
 	//If left
 	private RotateTurret rotateLeft = new RotateTurret(0, 0); //Still needs values;
+
+	//Color Detection
+	private ReadBall ReadBall = new ReadBall();
 
 	//Constructor
 	//Add values to be taken here
@@ -94,13 +101,18 @@ public class CheckBall extends Segment {
 		rotateRight.setMotor(turret);
 		//If left
 		rotateLeft.setMotor(turret);
+
+		ReadBall.init();
 	}
 
 	//Runs at start
 	//Runs once
 	public void start() {
+
+		ReadBall.loop();
+
 		int imageNumber;
-		imageNumber = checkImage.getValue();
+		imageNumber = BeaconAnalyzer.bColor;
 
 		//Intialize commands. Defualted to rotate right
 		commands[0] = moveUp;
@@ -110,25 +122,15 @@ public class CheckBall extends Segment {
 		//Switch to roate left if ball is on other side
 		if (imageNumber == color)
 			commands[3] = rotateLeft;
-		index = 0;
-		commands[index].init();
-		commands[index].start();
 	}
 
 	//Loops
-	public boolean loop() {
-		if (commands[index].loop())
-			return true;
-		else {
-			commands[index].stop();
-			index++;
-			if (index == commands.length)
-				return false;
-			else {
-				commands[index].init();
-				commands[index].start();
-				return true;
-			}
+	public void loop() {
+		for (int i = 0; i < commands.length; i++) {
+				commands[i].init();
+				commands[i].start();
+				commands[i].loop();
+				commands[i].stop();
 		}
 	}
 
