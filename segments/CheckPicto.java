@@ -9,6 +9,7 @@ package segments;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import commands.CheckImg;
 import commands.Command;
 import commands.MoveArm;
 import commands.MoveClaw;
@@ -67,6 +68,8 @@ public class CheckPicto extends Segment {
 	RotateTurret s1rT = new RotateTurret(0, 0);
 	MoveArm s1mA = new MoveArm(0, 0, 0, 0, 0, 0);
 	MoveClaw s1mC = new MoveClaw(0, 0, 0);
+
+	private int index;
 
 	//Constructor
 	//Add values to be taken here
@@ -159,16 +162,27 @@ public class CheckPicto extends Segment {
 				commands[0] = s1mF2;
 			else if (imageNumber == 3)
 				commands[0] = s1mF3;
-		}	
+		}
+
+		index = 0;
+		commands[index].init();
+		commands[index].start();
 	}
 
 	//Loops
-	public void loop() {
-		for (int i = 0; i < commands.length; i++) {
-				commands[i].init();
-				commands[i].start();
-				commands[i].loop();
-				commands[i].stop();
+	public boolean loop() {
+		if (commands[index].loop())
+			return true;
+		else {
+			commands[index].stop();
+			index++;
+			if (index == commands.length)
+				return false;
+			else {
+				commands[index].init();
+				commands[index].start();
+			}
+			return true;
 		}
 	}
 

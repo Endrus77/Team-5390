@@ -21,7 +21,9 @@ import commands.RotateTurret;
 public class CheckBall extends Segment {
 
 	//Variables
-	
+
+	private int index;
+
 	//Command Array
 	private Command[] commands = new Command[4];
 	//blank arrays here
@@ -47,9 +49,6 @@ public class CheckBall extends Segment {
 	private Servo claw;
 	private Servo lateral;
 	private Servo vertical;
-
-	//Commands
-	private CheckImg checkImage = new CheckImg();
 
 	//Initialization
 	private MoveArm moveUp = new MoveArm(0, 0, 0, 0, 0, 0); //Still needs values
@@ -127,7 +126,7 @@ public class CheckBall extends Segment {
 		commands[index].start();}
 
 	//Loops
-	public void loop() {
+	public boolean loop() {
 		if (commands[index].loop())
 			return true;
 		else {
