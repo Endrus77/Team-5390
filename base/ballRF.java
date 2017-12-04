@@ -31,9 +31,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import segments.CheckBallDrop;
+import segments.CheckBallHit;
+import segments.Segment;
 
 
 /**
@@ -49,89 +53,75 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="RemoteOnlyDrive", group="Linear Opmode")
-public class RemoteControlOnlyDrive extends LinearOpMode {
+@TeleOp(name="ballRF", group="Linear Opmode")
+public class ballRF extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+    //Array
+    private Segment[] commands = new Segment[2];
+
+    //Motors
+    private DcMotor mR;
+    private DcMotor mL;
+    private DcMotor l;
+    private Servo bHl;
+    private Servo bA;
+    private Servo bHt;
+
+    //Loop Counter
+    private int loop;
+
+    private ColorSensor cS;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        DcMotor leftDrive;
-        DcMotor rightDrive;
-        //DcMotor claw;
-        //DcMotor lateral;
-
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        //claw = hardwareMap.get(DcMotor.class,"claw");
-        //lateral = hardwareMap.get(DcMotor.class, "lateral");
+        mR = hardwareMap.get(DcMotor.class, "right_drive");
+        mL = hardwareMap.get(DcMotor.class, "left_drive");
+        l = hardwareMap.get(DcMotor.class, "lift");
+        bHl = hardwareMap.get(Servo.class, "bHl");
+        bA = hardwareMap.get(Servo.class, "bA");
+        bHt = hardwareMap.get(Servo.class, "bHt");
+        cS = hardwareMap.get(ColorSensor.class, "cS");
 
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        //claw.setDirection(DcMotor.Direction.FORWARD);
-        //lateral.setDirection(DcMotor.Direction.FORWARD);
+        //Segments
+        CheckBallDrop drop = new CheckBallDrop(bHl, bA, bHt);
+        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, 1);
+
+
+        //Array
+        commands[0] = drop;
+        commands[1] = hit;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-
-            // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
-            double rightPower;
-            //double clawPower;
-            //double lateralPower;
-
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-            /*
-            if (gamepad1.right_trigger != 0)
-                clawPower = 0.5;
-            else if (gamepad1.right_bumper)
-                clawPower = -0.5;
-            else
-                clawPower = 0;
-            /*
-            if (gamepad1.left_trigger != 0)
-                lateralPower = 0.5;
-            else if (gamepad1.left_bumper)
-                lateralPower = -0.5;
-            else
-                lateralPower = 0;
-                */
-
-            double driveL = gamepad1.left_stick_y;
-            double driveR  =  gamepad1.right_stick_y;
-            leftPower    = Range.clip(driveL, -1.0, 1.0) ;
-            rightPower   = Range.clip(driveR, -1.0, 1.0) ;
-
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
-
-            // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
-            //claw.setPower(clawPower);
-            //lateral.setPower(lateralPower);
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            //telemetry.addData("Claw", "Power: " + clawPower);
-            //telemetry.addData("Lateral", "Power: " + lateralPower);
+        loop = 0;
+        int looping = 0;
+        telemetry.addData("Loop", "Loop: " + loop);
+        telemetry.update();
+        while (loop < commands.length && opModeIsActive()) {
+            commands[loop].init();
+            commands[loop].start();
+            looping = 0;
+            telemetry.addData("Init and Started", "Segment: " + loop);
+            telemetry.update();
+            while (commands[loop].loop() && opModeIsActive()) {
+                telemetry.addData("Looping", "Loop" + looping);
+                telemetry.update();
+                looping++;
+            }
+            telemetry.addData("About to stop", 0);
+            telemetry.update();
+            commands[loop].stop();
+            telemetry.addData("Stopped", "Segment: " + loop);
+            loop++;
+            telemetry.addData("Loop", "Loop: " + loop);
             telemetry.update();
         }
     }

@@ -13,12 +13,12 @@ public class MoveTurn extends Command {
 	private DcMotor motorR;
 	private DcMotor motorL;
 	//Motor Powers
-	private int motorP;
+	private double motorP;
 	//Motor Encoder
 	private int motorE;
 
 	//Rotation angle
-	private int angle;
+	private double angle;
 	//Wheel to turn
 	//0 is right, 1 is left
 	private int wheel;
@@ -27,7 +27,7 @@ public class MoveTurn extends Command {
 
 	//Constructor
 	//Add values to be taken here
-	public MoveTurn(int p, int w, int a) {
+	public MoveTurn(double p, int w, double a) {
 		//Set passed values to object values here
 
 		//Power
@@ -36,7 +36,7 @@ public class MoveTurn extends Command {
 		//Angle
 		angle = a;
 		//Wheel
-		wheel = w;;
+		wheel = w;
 	}
 
 	public void setMotors(DcMotor mR, DcMotor mL) {
@@ -48,9 +48,9 @@ public class MoveTurn extends Command {
 	//Setup
 	@Override
 	public void init() {
-		int motorD;
+		double motorD;
 		//Distances
-		motorD = (int)((angle / 360) * Command.WHEELCIRCUMFRENCE);
+		motorD = ((angle / 360) * Command.WHEELCIRCUMFRENCE) * Command.FIX;
 
 		//Encoders
 		motorE = (int)((motorD / Command.CIRCUMFRENCE) * Command.ENCODERTICKS);

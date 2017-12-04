@@ -31,8 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -51,8 +49,8 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Remote", group="Linear Opmode")
-public class RemoteControl extends LinearOpMode {
+@TeleOp(name="Move Servos", group="Linear Opmode")
+public class moveServos extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -62,120 +60,67 @@ public class RemoteControl extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        DcMotor leftDrive;
-        DcMotor rightDrive;
-        DcMotor lift;
-        DcMotor board;
+        Servo one;
+        Servo two;
+        Servo three;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        lift = hardwareMap.get(DcMotor.class, "lift");
-        board = hardwareMap.get(DcMotor.class, "board");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        lift.setDirection(DcMotor.Direction.FORWARD);
-        board.setDirection(DcMotor.Direction.FORWARD);
-
-
-        Servo clawR;
-        Servo clawL;
-        Servo ballArm;
-
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        clawR = hardwareMap.get(Servo.class, "one");
-        clawL = hardwareMap.get(Servo.class, "two");
-        ballArm = hardwareMap.get(Servo.class, "bA");
+        one = hardwareMap.get(Servo.class, "one");
+        two = hardwareMap.get(Servo.class, "two");
+        three = hardwareMap.get(Servo.class, "three");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-
-        ColorSensor colorSensor;
-
-        colorSensor = hardwareMap.get(ColorSensor.class, "cS");
-
-        colorSensor.enableLed(true);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
 
-        double clawRP = 1;
-        double clawLP = 0;
+        double oneP = 0;
+        double twoP = 0;
+        double threeP = 0.8;
 
-        clawR.setPosition(clawRP);
-        clawL.setPosition(clawLP);
-        ballArm.setPosition(0);
+        one.setPosition(oneP);
+        two.setPosition(twoP);
+        three.setPosition(threeP);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
-            double rightPower;
-            double liftPower;
-            double boardPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
-            if (gamepad1.right_trigger != 0) {
-                clawRP -= 0.2;
-                clawLP += 0.2;
-            }
-            else if (gamepad1.right_bumper) {
-                clawRP += 0.2;
-                clawLP -= 0.2;
-            }
-            clawRP = Range.clip(clawRP, 0, 1.0);
-            clawLP = Range.clip(clawLP, 0, 1.0);
-
-            if (gamepad1.y)
-                boardPower = -0.7;
-            else if (gamepad1.b)
-                boardPower = 0.7;
-            else
-                boardPower = 0;
+            if (gamepad1.right_trigger != 0)
+                oneP = oneP + 0.02;
+            else if (gamepad1.right_bumper)
+                oneP = oneP - 0.02;
 
             if (gamepad1.left_trigger != 0)
-                liftPower = -0.5;
+                twoP = twoP + 0.02;
             else if (gamepad1.left_bumper)
-                liftPower = 0.5;
-            else
-                liftPower = 0;
+                twoP = twoP -0.02;
 
-            double driveL = gamepad1.left_stick_y;
-            double driveR  =  gamepad1.right_stick_y;
-            leftPower    = Range.clip(driveL, -1.0, 1.0) ;
-            rightPower   = Range.clip(driveR, -1.0, 1.0) ;
+            if (gamepad1.dpad_left)
+                threeP = threeP += 0.02;
+            else if (gamepad1.dpad_right)
+                threeP = threeP -= 0.02;
 
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
 
-            // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
-            board.setPower(boardPower);
-            lift.setPower(liftPower);
-            clawR.setPosition(clawRP);
-            clawL.setPosition(clawLP);
+            oneP = Range.clip(oneP, 0, 1.0) ;
+            twoP = Range.clip(twoP, 0, 1.0) ;
+            threeP = Range.clip(threeP, 0, 1.0) ;
 
+            one.setPosition(oneP);
+            two.setPosition(twoP);
+            three.setPosition(threeP);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("Lift", "Power: " + liftPower);
-            telemetry.addData("Color", "Red Value: " + colorSensor.red());
             telemetry.update();
         }
     }

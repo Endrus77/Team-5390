@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import commands.CheckImg;
 import commands.Command;
 import commands.MoveArm;
-import commands.MoveClaw;
 import commands.MoveForward;
 import commands.MoveTurn;
 import commands.RotateTurret;
@@ -59,7 +58,7 @@ public class CheckPicto extends Segment {
 	MoveForward s0mF3 = new MoveForward(0, 0, 0, 0);
 	RotateTurret s0rT = new RotateTurret(0, 0);
 	MoveArm s0mA = new MoveArm(0, 0, 0, 0, 0, 0);
-	MoveClaw s0mC = new MoveClaw(0, 0, 0);
+	//MoveClaw s0mC = new MoveClaw(0, 0, 0);
 
 	//Spot 1 Commands
 	MoveForward s1mF1 = new MoveForward(0, 0, 0, 0);
@@ -67,7 +66,7 @@ public class CheckPicto extends Segment {
 	MoveForward s1mF3 = new MoveForward(0, 0, 0, 0);
 	RotateTurret s1rT = new RotateTurret(0, 0);
 	MoveArm s1mA = new MoveArm(0, 0, 0, 0, 0, 0);
-	MoveClaw s1mC = new MoveClaw(0, 0, 0);
+	//MoveClaw s1mC = new MoveClaw(0, 0, 0);
 
 	private int index;
 
@@ -110,7 +109,7 @@ public class CheckPicto extends Segment {
 		s0mF3.setMotors(motorR, motorL);
 		s0rT.setMotor(turret);
 		s0mA.setMotors(motor1, motor2, motor3);
-		s0mC.setServos(claw, lateral, vertical);
+		//s0mC.setServos(claw, lateral, vertical);
 
 		//Spot 1 Commands
 		s1mF1.setMotors(motorR, motorL);
@@ -118,7 +117,7 @@ public class CheckPicto extends Segment {
 		s1mF3.setMotors(motorR, motorL);
 		s1rT.setMotor(turret);
 		s1mA.setMotors(motor1, motor2, motor3);
-		s1mC.setServos(claw, lateral, vertical);
+		//s1mC.setServos(claw, lateral, vertical);
 	}
 
 	//Runs at start
@@ -138,7 +137,7 @@ public class CheckPicto extends Segment {
 			commands[2] = s0mF1;
 			commands[3] = s0rT;
 			commands[4] = s0mA;
-			commands[5] = s0mC;
+			//commands[5] = s0mC;
 
 			//Changes second moveForward depending on which image was scanned
 			if (imageNumber == 2)
@@ -155,7 +154,7 @@ public class CheckPicto extends Segment {
 			commands[0] = s1mF1;
 			commands[1] = s1rT;
 			commands[2] = s1mA;
-			commands[3] = s1mC;
+			//commands[3] = s1mC;
 
 			//Changes first moveForward depending on which image was scanned
 			if (imageNumber == 2)

@@ -9,11 +9,12 @@ package commands;
 public class Command {
 
 	//Variables
-	public static double DIAMETER = 4;;
+	public static double DIAMETER = 4;
 	public static double CIRCUMFRENCE = 4 * Math.PI;
 	public static double ENCODERTICKS = 1680;
 	public static double WHEELDISTANCE = 16.5;
 	public static double WHEELCIRCUMFRENCE = 16.5 * 2 * Math.PI;
+	public static double FIX = (1 / 1.48);
 
 	//Initialization
 

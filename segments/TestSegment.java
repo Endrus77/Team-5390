@@ -28,14 +28,14 @@ public class TestSegment extends Segment {
 	private DcMotor motorR;
 	private DcMotor motorL;
 
-	private MoveForward f1 = new MoveForward(0.5, 0.5, 5, 5);
-	private MoveTurn t1 = new MoveTurn(0.5, 0, 90);
-	private MoveForward f2 = new MoveForward(0.5, 0.5, 5, 5);
-	private MoveTurn t2 = new MoveTurn(0.5, 0, 90);
-	private MoveForward f3 = new MoveForward(0.5, 0.5, 5, 5);
-	private MoveTurn t3 = new MoveTurn(0.5, 0, 90);
-	private MoveForward f4 = new MoveForward(0.5, 0.5, 5, 5);
-	private MoveTurn t4 = new MoveTurn(0.5, 0, 90);
+	private MoveForward f1 = new MoveForward(0.8, 0.8, 10, 10);
+	private MoveTurn t1 = new MoveTurn(0.8, 0, 90);
+	private MoveForward f2 = new MoveForward(0.8, 0.8, 10, 10);
+	private MoveTurn t2 = new MoveTurn(0.8, 0, 90);
+	private MoveForward f3 = new MoveForward(0.8, 0.8, 10, 10);
+	private MoveTurn t3 = new MoveTurn(0.8, 0, 90);
+	private MoveForward f4 = new MoveForward(0.8, 0.8, 10, 10);
+	private MoveTurn t4 = new MoveTurn(0.8, 0, 90);
 
 
 
@@ -95,8 +95,8 @@ public class TestSegment extends Segment {
 			else {
 				commands[index].init();
 				commands[index].start();
+				return true;
 			}
-			return true;
 		}
 	}
 

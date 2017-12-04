@@ -31,11 +31,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import segments.CheckBall;
-import segments.CheckPicto;
+import segments.CheckBallDrop;
+import segments.CheckBallHit;
 import segments.Segment;
 
 
@@ -52,8 +53,8 @@ import segments.Segment;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Forward", group="Linear Opmode")
-public class baseLoop extends LinearOpMode {
+@TeleOp(name="ballRR", group="Linear Opmode")
+public class ballRR extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
@@ -62,22 +63,15 @@ public class baseLoop extends LinearOpMode {
     //Motors
     private DcMotor mR;
     private DcMotor mL;
-    private DcMotor m1;
-    private DcMotor m2;
-    private DcMotor m3;
-    private DcMotor t;
-
-    //Servos
-    private Servo c;
-    private Servo l;
-    private Servo v;
-
-    //Spot and color
-    private int spt;
-    private int clr;
+    private DcMotor l;
+    private Servo bHl;
+    private Servo bA;
+    private Servo bHt;
 
     //Loop Counter
     private int loop;
+
+    private ColorSensor cS;
 
     @Override
     public void runOpMode() {
@@ -87,43 +81,48 @@ public class baseLoop extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        mR = hardwareMap.get(DcMotor.class, "");
-        mL = hardwareMap.get(DcMotor.class, "");
-        m1 = hardwareMap.get(DcMotor.class, "");
-        m2 = hardwareMap.get(DcMotor.class, "");
-        m3 = hardwareMap.get(DcMotor.class, "");
-        t = hardwareMap.get(DcMotor.class, "");
+        mR = hardwareMap.get(DcMotor.class, "right_drive");
+        l = hardwareMap.get(DcMotor.class, "lift");        mL = hardwareMap.get(DcMotor.class, "left_drive");
 
-        //Servos
-        c = hardwareMap.get(Servo.class, "");
-        l = hardwareMap.get(Servo.class, "");
-        v = hardwareMap.get(Servo.class, "");
-
-        //Loop
-        loop = 0;
-
-        //Spot and color
-        clr = 0;
-        spt = 0;
+        bHl = hardwareMap.get(Servo.class, "bHl");
+        bA = hardwareMap.get(Servo.class, "bA");
+        bHt = hardwareMap.get(Servo.class, "bHt");
+        cS = hardwareMap.get(ColorSensor.class, "cS");
 
         //Segments
-        CheckPicto checkPicto = new CheckPicto(m1, m2, m3, mR, mL, t, c, l, v, clr);
-        CheckBall checkBall = new CheckBall(m1, m2, m3, t, c, l, v, clr);
+        CheckBallDrop drop = new CheckBallDrop(bHl, bA, bHt);
+        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, -1);
+
 
         //Array
-        commands[0] = checkBall;
-        commands[1] = checkPicto;
-
+        commands[0] = drop;
+        commands[1] = hit;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        loop = 0;
+        int looping = 0;
+        telemetry.addData("Loop", "Loop: " + loop);
+        telemetry.update();
         while (loop < commands.length && opModeIsActive()) {
             commands[loop].init();
             commands[loop].start();
-            while (commands[loop].loop() && opModeIsActive());
+            looping = 0;
+            telemetry.addData("Init and Started", "Segment: " + loop);
+            telemetry.update();
+            while (commands[loop].loop() && opModeIsActive()) {
+                telemetry.addData("Looping", "Loop" + looping);
+                telemetry.update();
+                looping++;
+            }
+            telemetry.addData("About to stop", 0);
+            telemetry.update();
             commands[loop].stop();
+            telemetry.addData("Stopped", "Segment: " + loop);
             loop++;
+            telemetry.addData("Loop", "Loop: " + loop);
+            telemetry.update();
         }
     }
 }

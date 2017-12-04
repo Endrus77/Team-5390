@@ -25,8 +25,8 @@ public class MoveForward extends Command{
 	private int motorLE;
 
 	//Initialization
-
 	//Constructor
+
 	public MoveForward(double pR, double pL, double dR, double dL) {
 		//Sets to passed variables
 

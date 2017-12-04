@@ -8,39 +8,36 @@ package commands;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class MoveClaw extends Command {
+public class MoveServo extends Command {
 
 	//Variables
-	
+
 	//Servos
-	private Servo clawR;
-	private Servo clawL;
+	private Servo servo;
 	//Servo Position
-	private int clawPositionR;
-	private int clawPositionL;
+	private double servoPosition;
+	private double startPosition;
 	//Elapsed Time
 	private ElapsedTime runTime;
 
 	//Constructor
-	public MoveClaw(int cRP, int cLP) {
+	public MoveServo(double sP, double p) {
 		//Sets to passed variables
 
 		//Servo Positions
-		clawPositionR = cRP;
-		clawPositionL = cLP;
+		servoPosition = p;
+		startPosition = sP;
 	}
 
-	public void setServos(Servo cR, Servo cL) {
+	public void setServos(Servo s) {
 		//Servos
-		clawR = cR;
-		clawL = cL;
+		servo = s;
 	}
 	//Setup
 	@Override
 	public void init() {
 		//Reset servo positions
-		clawR.setPosition(0);
-		clawL.setPosition(1);
+		servo.setPosition(startPosition);
 		//Elapsed Time
 		runTime = new ElapsedTime();
 	}
@@ -50,8 +47,7 @@ public class MoveClaw extends Command {
 	@Override
 	public void start() {
 		//Set servo positionss
-		clawR.setPosition(clawPositionR);
-		clawL.setPosition(clawPositionL);
+		servo.setPosition(servoPosition);
 
 		//Reset Elapsed Time
 		runTime.reset();
@@ -61,7 +57,7 @@ public class MoveClaw extends Command {
 	@Override
 	public boolean loop() {
 		//Wait for 1 second
-		return (runTime.time() < 1);
+		return (runTime.time() < 1.4);
 	}
 
 	//Stops
