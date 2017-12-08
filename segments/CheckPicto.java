@@ -9,8 +9,8 @@ package segments;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import commands.CheckImg;
 import commands.Command;
+import colorDetection.ConceptVuMarkIdentification;
 import commands.MoveArm;
 import commands.MoveForward;
 import commands.MoveTurn;
@@ -47,7 +47,7 @@ public class CheckPicto extends Segment {
 	private Servo lateral;
 	private Servo vertical;
 
-	CheckImg checkImage = new CheckImg();
+	ConceptVuMarkIdentification pictoScan = new ConceptVuMarkIdentification();
 
 	//Spot 0 Commands
 	MoveForward s0mF = new MoveForward(0, 0, 0, 0);
@@ -123,8 +123,10 @@ public class CheckPicto extends Segment {
 	//Runs at start
 	//Runs once
 	public void start() {
-		int imageNumber;
-		imageNumber = checkImage.getValue();
+        // Value 1 is RIGHT, Value 2 is CENTER, Value 3 is LEFT
+	    int imageNumber;
+	    pictoScan.runOpMode();
+		imageNumber = pictoScan.pictoNum;
 
 		//Assume CheckImage returns int 1, 2, or 3
 		//Move next to shelf then place box directly to side instead of moving the arm a lot
