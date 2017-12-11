@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import commands.Command;
 import commands.MoveForward;
 import commands.MoveServo;
-import commands.MoveTurn;
 
 
 //import Commands
@@ -25,7 +24,7 @@ public class CheckBallHit extends Segment {
 	private int index;
 
 	//Command Array
-	private Command[] commands = new Command[6];
+	private Command[] commands = new Command[3];
 	//blank arrays here
 
 	//Color
@@ -52,14 +51,9 @@ public class CheckBallHit extends Segment {
 	//Initialization
 	private MoveServo hitR = new MoveServo(0.5, 0);
 	private MoveServo hitL = new MoveServo(0.5, 1);
-	private MoveForward moveForward = new MoveForward(0.5, 0.5, 17, 17);
-	private MoveForward moveBackwards = new MoveForward(-0.5, -0.5, 17, 17);
-	private MoveServo returnR = new MoveServo(0, 0.3);
-	private MoveServo returnL = new MoveServo(1, 0.3);
+	private MoveForward moveForward = new MoveForward(0.5, 0.5, 3, 3);
+	private MoveForward moveBackwards = new MoveForward(-0.5, -0.5, -3, -3);
 	private MoveServo raiseArm = new MoveServo(0.5, 0);
-	private MoveServo closeHolder = new MoveServo(0, 1);
-	private MoveTurn moveTurnF = new MoveTurn(0.5, 0, 85);
-	private MoveTurn moveTurnB = new MoveTurn(0.5, 1, 85);
 
 	//Constructor
 	//Add values to be taken here
@@ -87,14 +81,9 @@ public class CheckBallHit extends Segment {
 		//First move arm and turret
 		moveForward.setMotors(motorR, motorL);
 		moveBackwards.setMotors(motorR, motorL);
-		moveTurnF.setMotors(motorR, motorL);
-		moveTurnB.setMotors(motorR, motorL);
 		hitR.setServos(ballHitter);
 		hitL.setServos(ballHitter);
-		returnR.setServos(ballHitter);
-		returnL.setServos(ballHitter);
 		raiseArm.setServos(ballArm);
-		closeHolder.setServos(ballHolder);
 		colorSensor.enableLed(true);
 		//ReadBall.init();
 	}
@@ -112,18 +101,13 @@ public class CheckBallHit extends Segment {
 		//Intialize commands. Defualted to rotate right
 		commands[0] = hitR;
 		commands[1] = raiseArm;
-		commands[2] = returnR;
-		commands[3] = closeHolder;
-		commands[4] = moveForward;
-		commands[5] = moveTurnF;
+		commands[2] = moveForward;
 		//Switch to roate left if ball is on other side
 		if (imageNumber == color) {
 			commands[0] = hitL;
-			commands[2] = returnL;
 		}
-		if (spot == -1) {
-			commands[4] = moveBackwards;
-			commands[5] = moveTurnB;
+		if (spot == 2) {
+			commands[2] = moveBackwards;
 		}
 		index = 0;
 		commands[index].init();

@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import segments.CheckBallDrop;
 import segments.CheckBallHit;
+import segments.CheckPicto;
 import segments.Segment;
 
 
@@ -53,12 +54,12 @@ import segments.Segment;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="ballRR", group="Linear Opmode")
-public class ballRR extends LinearOpMode {
+@TeleOp(name="ballB1", group="Linear Opmode")
+public class ballB1 extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
-    private Segment[] commands = new Segment[2];
+    private Segment[] commands = new Segment[3];
 
     //Motors
     private DcMotor mR;
@@ -67,6 +68,8 @@ public class ballRR extends LinearOpMode {
     private Servo bHl;
     private Servo bA;
     private Servo bHt;
+    private Servo cR;
+    private Servo cL;
 
     //Loop Counter
     private int loop;
@@ -82,21 +85,25 @@ public class ballRR extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         mR = hardwareMap.get(DcMotor.class, "right_drive");
-        l = hardwareMap.get(DcMotor.class, "lift");        mL = hardwareMap.get(DcMotor.class, "left_drive");
-
+        mL = hardwareMap.get(DcMotor.class, "left_drive");
+        l = hardwareMap.get(DcMotor.class, "lift");
         bHl = hardwareMap.get(Servo.class, "bHl");
         bA = hardwareMap.get(Servo.class, "bA");
         bHt = hardwareMap.get(Servo.class, "bHt");
         cS = hardwareMap.get(ColorSensor.class, "cS");
+        cR = hardwareMap.get(Servo.class, "one");
+        cL = hardwareMap.get(Servo.class, "two");
 
         //Segments
-        CheckBallDrop drop = new CheckBallDrop(bHl, bA, bHt);
-        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, -1);
+        CheckBallDrop drop = new CheckBallDrop(bHl, bA, bHt, cR, cL);
+        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 0, 2);
+        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 2);
 
 
         //Array
         commands[0] = drop;
         commands[1] = hit;
+        commands[2] = picto;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();

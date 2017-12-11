@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -51,6 +52,7 @@ import segments.TestSegment;
  */
 
 @TeleOp(name="testLoop", group="Linear Opmode")
+@Disabled
 public class testLoop extends LinearOpMode {
 
     // Declare OpMode members.

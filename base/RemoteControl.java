@@ -65,7 +65,7 @@ public class RemoteControl extends LinearOpMode {
         DcMotor leftDrive;
         DcMotor rightDrive;
         DcMotor lift;
-        DcMotor board;
+        //DcMotor board;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -73,14 +73,13 @@ public class RemoteControl extends LinearOpMode {
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         lift = hardwareMap.get(DcMotor.class, "lift");
-        board = hardwareMap.get(DcMotor.class, "board");
+        //board = hardwareMap.get(DcMotor.class, "board");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         lift.setDirection(DcMotor.Direction.FORWARD);
-        board.setDirection(DcMotor.Direction.FORWARD);
 
 
         Servo clawR;
@@ -123,7 +122,7 @@ public class RemoteControl extends LinearOpMode {
             double leftPower;
             double rightPower;
             double liftPower;
-            double boardPower;
+            //double boardPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -139,12 +138,14 @@ public class RemoteControl extends LinearOpMode {
             clawRP = Range.clip(clawRP, 0, 1.0);
             clawLP = Range.clip(clawLP, 0, 1.0);
 
+            /*
             if (gamepad1.y)
                 boardPower = -0.7;
             else if (gamepad1.b)
                 boardPower = 0.7;
             else
                 boardPower = 0;
+                */
 
             if (gamepad1.left_trigger != 0)
                 liftPower = -0.5;
@@ -154,9 +155,9 @@ public class RemoteControl extends LinearOpMode {
                 liftPower = 0;
 
             double driveL = gamepad1.left_stick_y;
-            double driveR  =  gamepad1.right_stick_y;
-            leftPower    = Range.clip(driveL, -1.0, 1.0) ;
-            rightPower   = Range.clip(driveR, -1.0, 1.0) ;
+            double driveR =  gamepad1.right_stick_y;
+            leftPower = Range.clip(driveL, -1.0, 1.0) ;
+            rightPower = Range.clip(driveR, -1.0, 1.0) ;
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -166,7 +167,7 @@ public class RemoteControl extends LinearOpMode {
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
-            board.setPower(boardPower);
+            //board.setPower(boardPower);
             lift.setPower(liftPower);
             clawR.setPosition(clawRP);
             clawL.setPosition(clawLP);

@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import segments.CheckBallDrop;
 import segments.CheckBallHit;
+import segments.CheckPicto;
 import segments.Segment;
 
 
@@ -53,12 +54,12 @@ import segments.Segment;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="ballRF", group="Linear Opmode")
-public class ballRF extends LinearOpMode {
+@TeleOp(name="ballR1", group="Linear Opmode")
+public class ballR1 extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
-    private Segment[] commands = new Segment[2];
+    private Segment[] commands = new Segment[3];
 
     //Motors
     private DcMotor mR;
@@ -67,6 +68,8 @@ public class ballRF extends LinearOpMode {
     private Servo bHl;
     private Servo bA;
     private Servo bHt;
+    private Servo cR;
+    private Servo cL;
 
     //Loop Counter
     private int loop;
@@ -88,15 +91,19 @@ public class ballRF extends LinearOpMode {
         bA = hardwareMap.get(Servo.class, "bA");
         bHt = hardwareMap.get(Servo.class, "bHt");
         cS = hardwareMap.get(ColorSensor.class, "cS");
+        cR = hardwareMap.get(Servo.class, "one");
+        cL = hardwareMap.get(Servo.class, "two");
 
         //Segments
-        CheckBallDrop drop = new CheckBallDrop(bHl, bA, bHt);
+        CheckBallDrop drop = new CheckBallDrop(bHl, bA, bHt, cR, cL);
         CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, 1);
+        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 1);
 
 
         //Array
         commands[0] = drop;
         commands[1] = hit;
+        commands[2] = picto;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
