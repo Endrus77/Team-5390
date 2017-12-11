@@ -29,7 +29,6 @@
 package colorDetection;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
@@ -67,7 +66,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name="Concept: VuMark Id", group ="Concept")
-//@Disabled
 public class ConceptVuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
@@ -143,13 +141,13 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
-                if (vuMark != RelicRecoveryVuMark.CENTER && vuMark != RelicRecoveryVuMark.LEFT) {
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     pictoNum = 1;
                 }
-                else if (vuMark != RelicRecoveryVuMark.LEFT && vuMark != RelicRecoveryVuMark.RIGHT) {
+                else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     pictoNum = 2;
                 }
-                else if (vuMark != RelicRecoveryVuMark.RIGHT && vuMark != RelicRecoveryVuMark.LEFT) {
+                else if (vuMark == RelicRecoveryVuMark.LEFT) {
                     pictoNum = 3;
                 }
                 /* Found an instance of the template. In the actual game, you will probably
