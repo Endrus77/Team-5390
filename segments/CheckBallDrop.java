@@ -6,6 +6,7 @@
 
 package segments;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import commands.Command;
@@ -27,6 +28,7 @@ public class CheckBallDrop extends Segment {
 
 	//Motors
 	//Arm motors
+	private DcMotor lift;
 
 	//Servos
 	//Claw servos
@@ -45,7 +47,7 @@ public class CheckBallDrop extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallDrop(Servo bHl, Servo bA, Servo bHt, Servo cR, Servo cL) {
+	public CheckBallDrop(DcMotor l, Servo bHl, Servo bA, Servo bHt, Servo cR, Servo cL) {
 		//Set passed values to object values here
 
 		clawR = cR;
@@ -53,6 +55,7 @@ public class CheckBallDrop extends Segment {
 		ballHolder = bHl;
 		ballArm = bA;
 		ballHitter = bHt;
+		lift = l;
 	}
 
 	//Setup

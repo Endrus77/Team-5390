@@ -25,9 +25,8 @@ public class CheckImg extends Command {
     int cameraMonitorViewId;
 
     //Constructor
-    public CheckImg(int id) {
-        cameraMonitorViewId = id;
-    }
+    public CheckImg() {}
+    public void setId(int id) { cameraMonitorViewId = id; };
 
     private ElapsedTime runTime;
 

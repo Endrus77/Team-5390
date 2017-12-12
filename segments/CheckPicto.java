@@ -13,6 +13,7 @@ import commands.Command;
 import commands.MoveClaw;
 import commands.MoveForward;
 import commands.MoveTurn;
+import commands.CheckImg;
 import colorDetection.ConceptVuMarkIdentification;
 
 //import Commands
@@ -20,7 +21,7 @@ import colorDetection.ConceptVuMarkIdentification;
 public class CheckPicto extends Segment {
 
 	//Variables
-	
+
 	//Command Array
 	private Command[] commands = new Command[4];
 	//blank arrays here
@@ -28,6 +29,7 @@ public class CheckPicto extends Segment {
 	//Spot
 	//Corner is 0, straight is 1
 	private int spot;
+	private int cameraId;
 
 	//Motors
 	//Wheel motors
@@ -56,6 +58,7 @@ public class CheckPicto extends Segment {
 	MoveClaw openClaw = new MoveClaw(1, 0);
 	MoveForward moveBackF = new MoveForward(0.3, 0.3, 2, 2);
 	MoveForward moveBackB = new MoveForward(-0.3, -0.3, -2, -2);
+	CheckImg checkImg = new CheckImg();
 
 	ConceptVuMarkIdentification pictoScan = new ConceptVuMarkIdentification();
 
@@ -64,11 +67,12 @@ public class CheckPicto extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(DcMotor mR, DcMotor mL, Servo bHl, Servo bA, Servo bHt, Servo cR, Servo cL, int spt) {
+	public CheckPicto(DcMotor mR, DcMotor mL, Servo bHl, Servo bA, Servo bHt, Servo cR, Servo cL, int spt, int id) {
 		//Set passed values to object values here
 
 		//Spot
 		spot = spt;
+		cameraId = id;
 
 		//Motors
 		//Wheel motors
@@ -100,13 +104,15 @@ public class CheckPicto extends Segment {
 		openClaw.setServos(clawR, clawL);
 		moveBackF.setMotors(motorR, motorL);
 		moveBackB.setMotors(motorR, motorL);
+		checkImg.setId(cameraId);
 	}
 
 	//Runs at start
 	//Runs once
 	public void start() {
 		int imageNumber;
-		pictoScan.runOpMode();
+		checkImg.init();
+		checkImg.start();
 		/*imageNumber = pictoScan.pictoNum;*/
 		imageNumber = 2;
 

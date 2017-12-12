@@ -73,6 +73,7 @@ public class ballB1 extends LinearOpMode {
 
     //Loop Counter
     private int loop;
+    private int id;
 
     private ColorSensor cS;
 
@@ -93,11 +94,12 @@ public class ballB1 extends LinearOpMode {
         cS = hardwareMap.get(ColorSensor.class, "cS");
         cR = hardwareMap.get(Servo.class, "one");
         cL = hardwareMap.get(Servo.class, "two");
+        id = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
         //Segments
-        CheckBallDrop drop = new CheckBallDrop(bHl, bA, bHt, cR, cL);
+        CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
         CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 0, 2);
-        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 2);
+        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 2, id);
 
 
         //Array
