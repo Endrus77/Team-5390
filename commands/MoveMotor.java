@@ -7,14 +7,14 @@ package commands;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class RotateTurret extends Command {
+public class MoveMotor extends Command {
 
 	//Variables
-	
+
 	//Motor
 	private DcMotor motor;
 	//Power
-	private int motorP;
+	private double motorP;
 	//Angle
 	private int motorA;
 	//Motor Encoder Value
@@ -22,7 +22,7 @@ public class RotateTurret extends Command {
 
 
 	//Constructor
-	public RotateTurret(int p, int a) {
+	public MoveMotor(double p, int a) {
 		//Set to passed variables
 
 		//Power

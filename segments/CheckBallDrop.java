@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import commands.Command;
 import commands.MoveClaw;
+import commands.MoveMotor;
 import commands.MoveServo;
 
 
@@ -23,7 +24,7 @@ public class CheckBallDrop extends Segment {
 	private int index;
 
 	//Command Array
-	private Command[] commands = new Command[4];
+	private Command[] commands = new Command[5];
 	//blank arrays here
 
 	//Motors
@@ -41,6 +42,7 @@ public class CheckBallDrop extends Segment {
 
 	//Initialization
 	private MoveClaw closeClaw = new MoveClaw(0, 1);
+	private MoveMotor moveMotor = new MoveMotor(0.6 ,1080);
 	private MoveServo setH = new MoveServo(0, 0.3);
 	private MoveServo openHolder = new MoveServo(1, 0);
 	private MoveServo dropArm = new MoveServo(0, 0.5);
@@ -66,6 +68,7 @@ public class CheckBallDrop extends Segment {
 		openHolder.setServos(ballHolder);
 		dropArm.setServos(ballArm);
 		closeClaw.setServos(clawR, clawL);
+		moveMotor.setMotor(lift);
 	}
 
 	//Runs at start
@@ -74,9 +77,10 @@ public class CheckBallDrop extends Segment {
 
 		//Intialize commands. Defualted to rotate right
 		commands[0] = closeClaw;
-		commands[1] = setH;
-		commands[2] = openHolder;
-		commands[3] = dropArm;
+		commands[1] = moveMotor;
+		commands[2] = setH;
+		commands[3] = openHolder;
+		commands[4] = dropArm;
 
 		index = 0;
 		commands[index].init();
