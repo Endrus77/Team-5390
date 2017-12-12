@@ -84,7 +84,10 @@ public class CheckBallDrop extends Segment {
 
 		index = 0;
 		commands[index].init();
-		commands[index].start();}
+		commands[index].start();
+	}
+
+	public boolean conditional() { return false; }
 
 	//Loops
 	public boolean loop() {

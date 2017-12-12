@@ -120,6 +120,7 @@ public class ballB1 extends LinearOpMode {
             looping = 0;
             telemetry.addData("Init and Started", "Segment: " + loop);
             telemetry.update();
+            while (commands[loop].conditional() && opModeIsActive()) {}
             while (commands[loop].loop() && opModeIsActive()) {
                 telemetry.addData("Looping", "Loop" + looping);
                 telemetry.update();

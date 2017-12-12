@@ -110,38 +110,44 @@ public class CheckPicto extends Segment {
 	//Runs at start
 	//Runs once
 	public void start() {
-		int imageNumber;
 		checkImg.init();
 		checkImg.start();
-		/*imageNumber = pictoScan.pictoNum;*/
-		imageNumber = 2;
 
 		commands[2] = openClaw;
+	}
 
-		if (spot == 2) {
-			if (imageNumber == 1)
-				commands[0] = moveForward1;
-			if (imageNumber == 2)
-				commands[0] = moveForward2;
-			else if (imageNumber == 3)
-				commands[0] = moveForward3;
-			commands[1] = moveTurnF;
-			commands[3] = moveBackF;
-		}
+	public boolean conditional() {
+		if (checkImg.loop())
+			return true;
 		else {
-			if (imageNumber == 1)
-				commands[0] = moveBack1;
-			if (imageNumber == 2)
-				commands[0] = moveBack2;
-			else if (imageNumber == 3)
-				commands[0] = moveBack3;
-			commands[1] = moveTurnB;
-			commands[3] = moveBackB;
-		}
+			int imageNumber;
+			imageNumber = checkImg.getValue();
+			if (spot == 2) {
+				if (imageNumber == 1)
+					commands[0] = moveForward1;
+				if (imageNumber == 2)
+					commands[0] = moveForward2;
+				else if (imageNumber == 3)
+					commands[0] = moveForward3;
+				commands[1] = moveTurnF;
+				commands[3] = moveBackF;
+			}
+			else {
+				if (imageNumber == 1)
+					commands[0] = moveBack1;
+				if (imageNumber == 2)
+					commands[0] = moveBack2;
+				else if (imageNumber == 3)
+					commands[0] = moveBack3;
+				commands[1] = moveTurnB;
+				commands[3] = moveBackB;
+			}
 
-		index = 0;
-		commands[index].init();
-		commands[index].start();
+			index = 0;
+			commands[index].init();
+			commands[index].start();
+			return false;
+		}
 	}
 
 	//Loops

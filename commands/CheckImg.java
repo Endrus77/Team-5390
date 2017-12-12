@@ -93,6 +93,6 @@ public class CheckImg extends Command {
         }
 
     public int getValue() {
-        return (0);
+        return (pictoNum);
     }
 }

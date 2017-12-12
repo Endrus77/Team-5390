@@ -34,6 +34,10 @@ public class Segment {
 		//Run any start time processes: set motor positions, start elapsed time, Etc.
 	}
 
+	public boolean conditional() {
+		return false;
+	}
+
 	//Loops
 	public boolean loop() {
 		//Loop. Will most likely just be a while loop waiting for motors to reach position, or waiting set time for servos
