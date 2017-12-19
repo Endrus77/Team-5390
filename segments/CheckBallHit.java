@@ -51,6 +51,7 @@ public class CheckBallHit extends Segment {
 	//Initialization
 	private MoveServo hitR = new MoveServo(0.5, 0);
 	private MoveServo hitL = new MoveServo(0.5, 1);
+	private MoveServo empty = new MoveServo(0.5, 0.5);
 	private MoveForward moveForward = new MoveForward(0.5, 0.5, 3, 3);
 	private MoveForward moveBackwards = new MoveForward(-0.5, -0.5, -3, -3);
 	private MoveServo raiseArm = new MoveServo(0.5, 0);
@@ -83,6 +84,7 @@ public class CheckBallHit extends Segment {
 		moveBackwards.setMotors(motorR, motorL);
 		hitR.setServos(ballHitter);
 		hitL.setServos(ballHitter);
+		empty.setServos(ballArm);
 		raiseArm.setServos(ballArm);
 		colorSensor.enableLed(true);
 		//ReadBall.init();
@@ -92,10 +94,11 @@ public class CheckBallHit extends Segment {
 	//Runs once
 	public void start() {
 		int imageNumber;
+		imageNumber = -1;
 		//imageNumber = BeaconAnalyzer.bColor;
 		if (colorSensor.red() >= 1)
 			imageNumber = 1;
-		else
+		else if (colorSensor.blue() >= 1)
 			imageNumber = 0;
 
 		//Intialize commands. Defualted to rotate right
@@ -106,6 +109,8 @@ public class CheckBallHit extends Segment {
 		if (imageNumber == color) {
 			commands[0] = hitL;
 		}
+		else if (imageNumber == -1)
+			commands[0] = empty;
 		if (spot == 2) {
 			commands[2] = moveBackwards;
 		}

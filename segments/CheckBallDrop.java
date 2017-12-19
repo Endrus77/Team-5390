@@ -42,7 +42,7 @@ public class CheckBallDrop extends Segment {
 
 	//Initialization
 	private MoveClaw closeClaw = new MoveClaw(0, 1);
-	private MoveMotor moveMotor = new MoveMotor(0.6 ,1080);
+	private MoveMotor moveMotor = new MoveMotor(0.6 ,360);
 	private MoveServo setH = new MoveServo(0, 0.3);
 	private MoveServo openHolder = new MoveServo(1, 0);
 	private MoveServo dropArm = new MoveServo(0, 0.5);

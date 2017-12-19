@@ -79,7 +79,8 @@ public class CheckImg extends Command {
                 return false;
             }
         }
-        else if (runTime.time() > 999) {
+        else if (runTime.time() > 10) {
+            pictoNum = 2;
             return false;
         }
 

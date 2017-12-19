@@ -9,12 +9,13 @@ package segments;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuMarkIdentification;
+
+import commands.CheckImg;
 import commands.Command;
 import commands.MoveClaw;
 import commands.MoveForward;
 import commands.MoveTurn;
-import commands.CheckImg;
-import colorDetection.ConceptVuMarkIdentification;
 
 //import Commands
 
@@ -23,7 +24,7 @@ public class CheckPicto extends Segment {
 	//Variables
 
 	//Command Array
-	private Command[] commands = new Command[4];
+	private Command[] commands = new Command[6];
 	//blank arrays here
 
 	//Spot
@@ -47,17 +48,18 @@ public class CheckPicto extends Segment {
 	//CheckImg checkImage = new CheckImg();
 
 	//Spot 0 Commands
-	MoveForward moveForward1 = new MoveForward(0.5, 0.5, 6, 6);
+	MoveForward moveForward1 = new MoveForward(0.5, 0.5, 5, 5);
 	MoveForward moveForward2 = new MoveForward(0.5, 0.5, 11, 11);
-	MoveForward moveForward3 = new MoveForward(0.5, 0.5, 15, 15);
-	MoveForward moveBack1 = new MoveForward(-0.5, -0.5, -6, -6);
-	MoveForward moveBack2 = new MoveForward(-0.5, -0.5, -11, -11);
-	MoveForward moveBack3 = new MoveForward(-0.5, -0.5, -15, -15);
-	MoveTurn moveTurnF = new MoveTurn(0.5, 1, 85);
-	MoveTurn moveTurnB = new MoveTurn(-0.5, 1, -85);
+	MoveForward moveForward3 = new MoveForward(0.5, 0.5, 16, 16);
+	MoveForward moveForward4 = new MoveForward(0.5, 0.5, 3, 3);
+	MoveForward backUp = new MoveForward(-0.5, -0.5, 1, 1);
+	MoveForward empty = new MoveForward(0.5, 0.5, 0, 0);
+	MoveForward moveBack1 = new MoveForward(-0.5, -0.5, -7, -7);
+	MoveForward moveBack2 = new MoveForward(-0.5, -0.5, -10, -10);
+	MoveForward moveBack3 = new MoveForward(-0.5, -0.5, -14, -14);
+	MoveTurn moveTurnF = new MoveTurn(0.5, 1, 95);
+	MoveTurn moveTurnB = new MoveTurn(-0.5, 0, -95);
 	MoveClaw openClaw = new MoveClaw(1, 0);
-	MoveForward moveBackF = new MoveForward(0.3, 0.3, 2, 2);
-	MoveForward moveBackB = new MoveForward(-0.3, -0.3, -2, -2);
 	CheckImg checkImg = new CheckImg();
 
 	ConceptVuMarkIdentification pictoScan = new ConceptVuMarkIdentification();
@@ -96,14 +98,15 @@ public class CheckPicto extends Segment {
 		moveForward1.setMotors(motorR, motorL);
 		moveForward2.setMotors(motorR, motorL);
 		moveForward3.setMotors(motorR, motorL);
+		moveForward4.setMotors(motorR, motorL);
 		moveBack1.setMotors(motorR, motorL);
 		moveBack2.setMotors(motorR, motorL);
 		moveBack3.setMotors(motorR, motorL);
 		moveTurnF.setMotors(motorR, motorL);
 		moveTurnB.setMotors(motorR, motorL);
+		empty.setMotors(motorR, motorL);
 		openClaw.setServos(clawR, clawL);
-		moveBackF.setMotors(motorR, motorL);
-		moveBackB.setMotors(motorR, motorL);
+		backUp.setMotors(motorR, motorL);
 		checkImg.setId(cameraId);
 	}
 
@@ -113,7 +116,7 @@ public class CheckPicto extends Segment {
 		checkImg.init();
 		checkImg.start();
 
-		commands[2] = openClaw;
+		commands[3] = openClaw;
 	}
 
 	public boolean conditional() {
@@ -130,7 +133,8 @@ public class CheckPicto extends Segment {
 				else if (imageNumber == 3)
 					commands[0] = moveForward3;
 				commands[1] = moveTurnF;
-				commands[3] = moveBackF;
+				commands[2] = empty;
+				commands[4] = backUp;
 			}
 			else {
 				if (imageNumber == 1)
@@ -140,7 +144,8 @@ public class CheckPicto extends Segment {
 				else if (imageNumber == 3)
 					commands[0] = moveBack3;
 				commands[1] = moveTurnB;
-				commands[3] = moveBackB;
+				commands[2] = moveForward4;
+				commands[4] = empty;
 			}
 
 			index = 0;
