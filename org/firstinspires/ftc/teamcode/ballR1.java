@@ -98,8 +98,8 @@ public class ballR1 extends LinearOpMode {
 
         //Segments
         CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
-        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, 1);
-        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 1, id);
+        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, 2);
+        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 2, id, 1);
 
 
         //Array

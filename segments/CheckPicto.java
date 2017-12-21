@@ -31,6 +31,7 @@ public class CheckPicto extends Segment {
 	//Corner is 0, straight is 1
 	private int spot;
 	private int cameraId;
+	private int location;
 
 	//Motors
 	//Wheel motors
@@ -69,12 +70,13 @@ public class CheckPicto extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(DcMotor mR, DcMotor mL, Servo bHl, Servo bA, Servo bHt, Servo cR, Servo cL, int spt, int id) {
+	public CheckPicto(DcMotor mR, DcMotor mL, Servo bHl, Servo bA, Servo bHt, Servo cR, Servo cL, int spt, int id, int loc) {
 		//Set passed values to object values here
 
 		//Spot
 		spot = spt;
 		cameraId = id;
+		location = loc;
 
 		//Motors
 		//Wheel motors

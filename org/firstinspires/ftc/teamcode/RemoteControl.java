@@ -65,6 +65,7 @@ public class RemoteControl extends LinearOpMode {
         DcMotor leftDrive;
         DcMotor rightDrive;
         DcMotor lift;
+        DcMotor rotation;
         //DcMotor board;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -73,6 +74,8 @@ public class RemoteControl extends LinearOpMode {
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         lift = hardwareMap.get(DcMotor.class, "lift");
+        rotation = hardwareMap.get(DcMotor.class, "rotation");
+
         //board = hardwareMap.get(DcMotor.class, "board");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -80,6 +83,7 @@ public class RemoteControl extends LinearOpMode {
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         lift.setDirection(DcMotor.Direction.FORWARD);
+        rotation.setDirection(DcMotor.Direction.FORWARD);
 
 
         Servo clawR;
@@ -127,14 +131,16 @@ public class RemoteControl extends LinearOpMode {
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
-            if (gamepad1.right_trigger != 0) {
-                clawRP -= 0.2;
+            if (gamepad1.right_trigger != 0)
                 clawLP += 0.2;
-            }
-            else if (gamepad1.right_bumper) {
-                clawRP += 0.2;
+            else if (gamepad1.right_bumper)
                 clawLP -= 0.2;
-            }
+
+            if (gamepad1.left_trigger != 0)
+                clawRP += 0.2;
+            else if (gamepad1.left_bumper)
+                clawRP -= 0.2;
+
             clawRP = Range.clip(clawRP, 0, 1.0);
             clawLP = Range.clip(clawLP, 0, 1.0);
 
@@ -154,10 +160,9 @@ public class RemoteControl extends LinearOpMode {
             else
                 liftPower = 0;
 
-            double driveL = gamepad1.left_stick_y;
-            double driveR =  gamepad1.right_stick_y;
-            leftPower = Range.clip(driveL, -1.0, 1.0) ;
-            rightPower = Range.clip(driveR, -1.0, 1.0) ;
+            if (gamepad1.left_stick_y > 0) {
+                leftPower = 1;
+            }
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
