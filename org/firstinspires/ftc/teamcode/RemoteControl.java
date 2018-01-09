@@ -37,6 +37,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import commands.Command;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -85,7 +87,6 @@ public class RemoteControl extends LinearOpMode {
         lift.setDirection(DcMotor.Direction.FORWARD);
         rotation.setDirection(DcMotor.Direction.FORWARD);
 
-
         Servo clawR;
         Servo clawL;
         Servo ballArm;
@@ -126,6 +127,7 @@ public class RemoteControl extends LinearOpMode {
             double leftPower;
             double rightPower;
             double liftPower;
+            double rotationPower;
             //double boardPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
@@ -153,16 +155,39 @@ public class RemoteControl extends LinearOpMode {
                 boardPower = 0;
                 */
 
-            if (gamepad1.left_trigger != 0)
-                liftPower = -0.5;
-            else if (gamepad1.left_bumper)
-                liftPower = 0.5;
-            else
-                liftPower = 0;
+            liftPower = Range.clip(gamepad1.right_stick_y, -1, 1);
 
             if (gamepad1.left_stick_y > 0) {
                 leftPower = 1;
+                rightPower = 1;
+                if (gamepad1.left_stick_x > 0)
+                    rightPower -= gamepad1.left_stick_x * 2;if (gamepad1.left_stick_x > 0)
+                    rightPower -= gamepad1.left_stick_x * 2;
+                else if (gamepad1.left_stick_x < 0)
+                    leftPower -= Math.abs(gamepad1.left_stick_x * 2);
+                else if (gamepad1.left_stick_x < 0)
+                    leftPower -= Math.abs(gamepad1.left_stick_x * 2);
             }
+            else if (gamepad1.left_stick_y < 0) {
+                leftPower = -1;
+                rightPower = -1;
+                if (gamepad1.left_stick_x > 0)
+                    leftPower += gamepad1.left_stick_x * 2;
+                else if (gamepad1.left_stick_x < 0)
+                    rightPower += Math.abs(gamepad1.left_stick_x * 2);
+            }
+            else {
+                leftPower = 0;
+                rightPower = 0;
+            }
+
+            if (gamepad1.a && !rotation.isBusy()) {
+                rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rotation.setPower(0.5);
+                rotation.setTargetPosition((int)(Command.ENCODERTICKS / 2));
+            }
+
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
