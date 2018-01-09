@@ -55,7 +55,7 @@ import segments.Segment;
  */
 
 @TeleOp(name="ballB1", group="Linear Opmode")
-public class ballB1 extends LinearOpMode {
+public class ballB2 extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
@@ -99,7 +99,7 @@ public class ballB1 extends LinearOpMode {
         //Segments
         CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
         CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 0, 1);
-        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 1, id, 1);
+        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 1, id, 2);
 
 
         //Array

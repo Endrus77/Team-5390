@@ -95,7 +95,6 @@ public class CheckBallHit extends Segment {
 	public void start() {
 		int imageNumber;
 		imageNumber = -1;
-		//imageNumber = BeaconAnalyzer.bColor;
 		if (colorSensor.red() >= 1)
 			imageNumber = 1;
 		else if (colorSensor.blue() >= 1)
