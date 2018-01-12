@@ -24,7 +24,7 @@ public class CheckPicto extends Segment {
 	//Variables
 
 	//Command Array
-	private Command[] commands = new Command[7];
+	private Command[] commands = new Command[6];
 	//blank arrays here
 
 	//Spot
@@ -58,21 +58,20 @@ public class CheckPicto extends Segment {
     MoveForward moveForward7 = new MoveForward(0.5, 0.5, 5, 5);
     MoveForward moveForward8 = new MoveForward(0.5, 0.5, 5, 5);
     MoveForward moveForward9 = new MoveForward(0.5, 0.5, 5, 5);
+    MoveForward moveForward10 = new MoveForward(0.5, 0.5, 5, 5);
+    MoveForward moveForward11 = new MoveForward(0.5, 0.5, 5, 5);
+    MoveForward moveForward12 = new MoveForward(0.5, 0.5, 5, 5);
 	MoveForward backUp = new MoveForward(-0.5, -0.5, 1, 1);
 	MoveForward forwardUp = new MoveForward(0.5, 0.5, -1, -1);
 	MoveForward empty = new MoveForward(0.5, 0.5, 0, 0);
 	MoveForward moveBack1 = new MoveForward(-0.5, -0.5, -7, -7);
 	MoveForward moveBack2 = new MoveForward(-0.5, -0.5, -10, -10);
 	MoveForward moveBack3 = new MoveForward(-0.5, -0.5, -14, -14);
-    MoveForward moveBack4 = new MoveForward(-0.5, -0.5, -7, -7);
-    MoveForward moveBack5 = new MoveForward(-0.5, -0.5, -10, -10);
-    MoveForward moveBack6 = new MoveForward(-0.5, -0.5, -14, -14);
-    MoveForward moveBack7 = new MoveForward(-0.5, -0.5, -10, -10);
 	//p- power of motors. w- which wheel will be powered (1 is left, 0 is right). a- angle of rotation.
 	MoveTurn moveTurnF = new MoveTurn(0.5, 1, 95);
 	MoveTurn moveTurnB = new MoveTurn(-0.5, 0, -95);
     MoveTurn moveTurnE = new MoveTurn(0.5, 1, 95);
-    MoveTurn moveTurnA = new MoveTurn(-0.5, 0, -95);
+    MoveTurn moveTurnA = new MoveTurn(0.5, 0, -95);
 	MoveClaw openClaw = new MoveClaw(1, 0);
 	CheckImg checkImg = new CheckImg();
 
@@ -131,17 +130,17 @@ public class CheckPicto extends Segment {
 		checkImg.init();
 		checkImg.start();
 
-		commands[5] = openClaw;
+		commands[4] = openClaw;
 	}
 
 	public boolean conditional() {
 		if (checkImg.loop())
 			return true;
 		else {
-			int imageNumber;
-			imageNumber = checkImg.getValue();
-			//red side
-			if (spot == 2)
+            int imageNumber;
+            imageNumber = checkImg.getValue();
+            //red side
+            if (spot == 2)
                 if (location == 1) {
                     if (imageNumber == 1)
                         commands[0] = moveForward1;
@@ -152,15 +151,14 @@ public class CheckPicto extends Segment {
                     commands[1] = moveTurnF;
                     commands[2] = empty;
                     commands[3] = empty;
-                    commands[4] = empty;
-                    commands[6] = backUp;
+                    commands[5] = backUp;
                 }
 
-			    //red corner
+                //red corner
                 else {
-			        // still needs to be changed and calibrate this
-                        commands[0] = moveForward5;
-                        commands[1] = moveTurnA;
+                    // still needs to be changed and calibrate this
+                    commands[0] = moveForward5;
+                    commands[1] = moveTurnA;
                     if (imageNumber == 1)
                         commands[2] = moveForward6;
                     if (imageNumber == 2)
@@ -168,41 +166,37 @@ public class CheckPicto extends Segment {
                     else if (imageNumber == 3)
                         commands[2] = moveForward8;
                     commands[3] = moveTurnE;
-                    commands[4] = empty;
-                    commands[6] = backUp;
+                    commands[5] = backUp;
                 }
-			//blue side
-			else
-			    if (location == 1) {
-				    if (imageNumber == 1)
-					    commands[0] = moveBack1;
-				    if (imageNumber == 2)
-					    commands[0] = moveBack2;
-				    else if (imageNumber == 3)
-					    commands[0] = moveBack3;
-				    commands[1] = moveTurnB;
-				    commands[2] = moveForward4;
-				    commands[3] = empty;
-				    commands[4] = empty;
-				    commands[6] = forwardUp;
-			    }
-			    //blue corner
-			    else {
-			    //needs to be changed and calibrated
-                    commands[0] = moveBack4;
-                    commands[1] = moveTurnE;
+                //blue side
+            else
+                if (location == 1) {
                     if (imageNumber == 1)
-                        commands[2] = moveBack5;
+                        commands[0] = moveBack1;
                     if (imageNumber == 2)
-                        commands[2] = moveBack6;
+                        commands[0] = moveBack2;
                     else if (imageNumber == 3)
-                        commands[2] = moveBack7;
-                    commands[3] = moveTurnA;
-                    commands[4] = moveForward9;
-                    commands[6] = forwardUp;
+                        commands[0] = moveBack3;
+                    commands[1] = moveTurnB;
+                    commands[2] = moveForward4;
+                    commands[3] = empty;
+                    commands[5] = forwardUp;
                 }
-            }
-
+                //blue corner
+                else {
+                    //needs to be changed and calibrated
+                    commands[0] = moveTurnA;
+                    if (imageNumber == 1)
+                        commands[1] = moveForward9;
+                    if (imageNumber == 2)
+                        commands[1] = moveForward10;
+                    else if (imageNumber == 3)
+                        commands[1] = moveForward11;
+                    commands[2] = moveTurnA;
+                    commands[3] = moveForward12;
+                    commands[5] = backUp;
+                }
+        }
 			index = 0;
 			commands[index].init();
 			commands[index].start();
