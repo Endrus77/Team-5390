@@ -120,6 +120,7 @@ public class RemoteControl extends LinearOpMode {
         clawL.setPosition(clawLP);
         ballArm.setPosition(0);
 
+        int rot = 1;
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -157,22 +158,20 @@ public class RemoteControl extends LinearOpMode {
 
             liftPower = Range.clip(gamepad1.right_stick_y, -1, 1);
 
-            if (gamepad1.left_stick_y > 0) {
+            /*
+            if (gamepad1.left_stick_y > 0 || (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y == 0)) {
                 leftPower = 1;
                 rightPower = 1;
                 if (gamepad1.left_stick_x > 0)
-                    rightPower -= gamepad1.left_stick_x * 2;if (gamepad1.left_stick_x > 0)
-                    rightPower -= gamepad1.left_stick_x * 2;
-                else if (gamepad1.left_stick_x < 0)
-                    leftPower -= Math.abs(gamepad1.left_stick_x * 2);
+                    rightPower -= Math.abs(gamepad1.left_stick_x * 2);
                 else if (gamepad1.left_stick_x < 0)
                     leftPower -= Math.abs(gamepad1.left_stick_x * 2);
             }
-            else if (gamepad1.left_stick_y < 0) {
+            else if (gamepad1.left_stick_y < 0 || (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y == 0)) {
                 leftPower = -1;
                 rightPower = -1;
                 if (gamepad1.left_stick_x > 0)
-                    leftPower += gamepad1.left_stick_x * 2;
+                    leftPower += Math.abs(gamepad1.left_stick_x * 2);
                 else if (gamepad1.left_stick_x < 0)
                     rightPower += Math.abs(gamepad1.left_stick_x * 2);
             }
@@ -184,9 +183,16 @@ public class RemoteControl extends LinearOpMode {
             if (gamepad1.a && !rotation.isBusy()) {
                 rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rotation.setPower(0.5);
-                rotation.setTargetPosition((int)(Command.ENCODERTICKS / 2));
+                rotation.setPower(0.5 * rot);
+                rotation.setTargetPosition((int)(Command.ENCODERTICKS / 2 * rot));
+                rot *= -1;
             }
+            */
+
+            leftPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
+            leftPower = Range.clip(leftPower, -1, 1);
+            rightPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
+            rightPower = Range.clip(rightPower, -1, 1);
 
 
             // Tank Mode uses one stick to control each wheel.
