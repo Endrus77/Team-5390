@@ -54,8 +54,8 @@ import segments.Segment;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="ballB1", group="Linear Opmode")
-public class ballB1 extends LinearOpMode {
+@TeleOp(name="ballR1", group="Linear Opmode")
+public class ballR2 extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
@@ -98,8 +98,8 @@ public class ballB1 extends LinearOpMode {
 
         //Segments
         CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
-        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 0, 1);
-        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 1, id, 1);
+        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, 2);
+        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 2, id, 2);
 
 
         //Array
@@ -120,7 +120,6 @@ public class ballB1 extends LinearOpMode {
             looping = 0;
             telemetry.addData("Init and Started", "Segment: " + loop);
             telemetry.update();
-            while (commands[loop].conditional() && opModeIsActive()) {}
             while (commands[loop].loop() && opModeIsActive()) {
                 telemetry.addData("Looping", "Loop" + looping);
                 telemetry.update();
