@@ -36,29 +36,25 @@ public class CheckBallHit extends Segment {
 	//Arm motors
 	private DcMotor motorR;
 	private DcMotor motorL;
-	private DcMotor lateral;
 
 	//Servos
 	//Claw servos
-	private Servo clawR;
-	private Servo clawL;
-	private Servo ballHolder;
 	private Servo ballArm;
 	private Servo ballHitter;
 
 	private ColorSensor colorSensor;
 
 	//Initialization
-	private MoveServo hitR = new MoveServo(0.5, 0);
-	private MoveServo hitL = new MoveServo(0.5, 1);
-	private MoveServo empty = new MoveServo(0.5, 0.5);
-	private MoveForward moveForward = new MoveForward(0.5, 0.5, 3, 3);
-	private MoveForward moveBackwards = new MoveForward(-0.5, -0.5, -3, -3);
-	private MoveServo raiseArm = new MoveServo(0.5, 0);
+	private MoveServo hitR = new MoveServo(0.5, 0); //hit right ball
+	private MoveServo hitL = new MoveServo(0.5, 1); //hit left ball
+	private MoveServo empty = new MoveServo(0.5, 0.5); //pad command array so nothng breaks
+	private MoveForward moveForward = new MoveForward(0.5, 0.5, 3, 3); //move fowards
+	private MoveForward moveBackwards = new MoveForward(-0.5, -0.5, -3, -3); //move back
+	private MoveServo raiseArm = new MoveServo(0.5, 0); //raise the ball hitting arm
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallHit(DcMotor mL, DcMotor mR, DcMotor l, Servo bHl, Servo bA, Servo bHt, ColorSensor cS, int clr, int spt){
+	public CheckBallHit(DcMotor mL, DcMotor mR, DcMotor l, Servo bA, Servo bHt, ColorSensor cS, int clr, int spt){
 		//Set passed values to object values here
 
 		//Color
@@ -69,7 +65,6 @@ public class CheckBallHit extends Segment {
 		motorR = mR;
 		motorL = mL;
 
-		ballHolder = bHl;
 		ballArm = bA;
 		ballHitter = bHt;
 
