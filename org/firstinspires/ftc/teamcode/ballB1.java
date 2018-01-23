@@ -108,7 +108,7 @@ public class ballB1 extends LinearOpMode {
         //Checks pictogram then moves to crypto box and drops block before backing up.
         //spt - 1 is blue side 2 is red side
         //loc - 0 is corner 1 is straight
-        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 2, id, 1);
+        CheckPicto picto = new CheckPicto(mR, mL, cR, cL, 2, id, 1);
 
 
         //Array

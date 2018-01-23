@@ -129,6 +129,12 @@ public class RemoteControl extends LinearOpMode {
         //Variable to keep track or direction of lift rotation
         int rot = 1;
         // run until the end of the match (driver presses STOP)
+
+        rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rotation.setPower(0.25 * rot);
+        rotation.setTargetPosition((int)(Command.ENCODERTICKS / 8 * rot));
+
         while (opModeIsActive()) {
 
             //Motor powers
@@ -147,13 +153,13 @@ public class RemoteControl extends LinearOpMode {
                 clawLP -= 0.2;
 
             if (gamepad1.left_trigger != 0)
-                clawRP += 0.2;
-            else if (gamepad1.left_bumper)
                 clawRP -= 0.2;
+            else if (gamepad1.left_bumper)
+                clawRP += 0.2;
 
             //Clip claw postions to make sure they're within range
-            clawRP = Range.clip(clawRP, 0, 1.0);
-            clawLP = Range.clip(clawLP, 0, 1.0);
+            clawRP = Range.clip(clawRP, 0.2, 1.0);
+            clawLP = Range.clip(clawLP, 0, 0.8);
 
             /*
             if (gamepad1.y)
@@ -166,7 +172,7 @@ public class RemoteControl extends LinearOpMode {
 
             //Lift is controlled by right stick
             //Clip value to make sure they're within range
-            liftPower = Range.clip(gamepad1.right_stick_y, -1, 1);
+            liftPower = Range.clip(-gamepad1.right_stick_y, -1, 1);
 
             /*Old arcade style remote - ignore
             if (gamepad1.left_stick_y > 0 || (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y == 0)) {
@@ -186,18 +192,43 @@ public class RemoteControl extends LinearOpMode {
                     rightPower += Math.abs(gamepad1.left_stick_x * 2);
             }
             else {
-                leftPower = 0;
+                leftPower =0;
                 rightPower = 0;
             }
+            */
 
-            if (gamepad1.a && !rotation.isBusy()) {
+            //Spins lift
+            //Doesn't run if it is already running, or if one of the claws isn't closed
+            //Flips rot sign every time it rotates so it spins back and forth
+            if (gamepad1.a && !rotation.isBusy()) { // && clawRP == 1 && clawLP == 0) {
                 rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rotation.setPower(0.5 * rot);
+                rotation.setPower(0.25 * rot);
                 rotation.setTargetPosition((int)(Command.ENCODERTICKS / 2 * rot));
                 rot *= -1;
             }
-            */
+
+            if (gamepad1.b && !rotation.isBusy()) { // && clawRP == 1 && clawLP == 0) {
+                rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rotation.setPower(0.25 * rot);
+                rotation.setTargetPosition((int)(Command.ENCODERTICKS / 8 * rot));
+                rot *= -1;
+            }
+
+            if (gamepad1.dpad_left && !rotation.isBusy()) {
+                rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rotation.setPower(0.10);
+                rotation.setTargetPosition((int)(Command.ENCODERTICKS / 20));
+            }
+
+            if (gamepad1.dpad_right && !rotation.isBusy()) {
+                rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rotation.setPower(-0.10);
+                rotation.setTargetPosition((int)(-Command.ENCODERTICKS / 20));
+            }
 
             //Arcade style driving
             //Left is Y value minus X value. When X is to the left, left wheel goes faster. When X is to the right, left wheel goes slower, then negative.

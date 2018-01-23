@@ -41,11 +41,11 @@ public class CheckBallDrop extends Segment {
 	private Servo ballHitter;
 
 	//Initialization
-	private MoveClaw closeClaw = new MoveClaw(0, 1);
+	private MoveServo closeClaw = new MoveServo(0, 1);
 	private MoveMotor moveMotor = new MoveMotor(0.6 ,360);
 	private MoveServo setH = new MoveServo(0, 0.3);
 	private MoveServo openHolder = new MoveServo(1, 0);
-	private MoveServo dropArm = new MoveServo(0, 0.5);
+	private MoveServo dropArm = new MoveServo(0, 0.8);
 
 	//Constructor
 	//Add values to be taken here
@@ -63,11 +63,10 @@ public class CheckBallDrop extends Segment {
 	//Setup
 	public void init () {
 		//Make commands
-		//First move arm and turret
 		setH.setServos(ballHitter);
 		openHolder.setServos(ballHolder);
 		dropArm.setServos(ballArm);
-		closeClaw.setServos(clawR, clawL);
+		closeClaw.setServos(clawR);
 		moveMotor.setMotor(lift);
 	}
 

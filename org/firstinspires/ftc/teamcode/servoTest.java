@@ -70,7 +70,10 @@ public class servoTest extends LinearOpMode {
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         MoveServo moveServo = new MoveServo(0, 1);
+        MoveServo moveServo2 = new MoveServo(1, 0);
+
         moveServo.setServos(s);
+        moveServo2.setServos(s);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -80,5 +83,9 @@ public class servoTest extends LinearOpMode {
         moveServo.start();
         while (moveServo.loop() && opModeIsActive());
         moveServo.stop();
+        moveServo2.init();
+        moveServo2.start();
+        while (moveServo2.loop() && opModeIsActive());
+        moveServo2.stop();
     }
 }

@@ -54,7 +54,7 @@ import segments.Segment;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="ballB1", group="Linear Opmode")
+@TeleOp(name="ballB2", group="Linear Opmode")
 public class ballB2 extends LinearOpMode {
 
     // Declare OpMode members.
@@ -97,12 +97,22 @@ public class ballB2 extends LinearOpMode {
         id = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
         //Segments
+        //Check individual objects to see the required variables
+        //Moves the arm between the two balls
         CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
-        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 0, 1);
-        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 1, id, 2);
+        //Checks ball color, then hits one of the balls, then moves in front of the pictogram
+        //Changes based on clr and spt.
+        //clr - 0 is blue, 1 is red
+        //spt - 1 is blue side 2 is red side
+        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, 2);
+        //Checks pictogram then moves to crypto box and drops block before backing up.
+        //spt - 1 is blue side 2 is red side
+        //loc - 0 is corner 1 is straight
+        CheckPicto picto = new CheckPicto(mR, mL, cR, cL, 2, id, 1);
 
 
         //Array
+        //Place commands in command array
         commands[0] = drop;
         commands[1] = hit;
         commands[2] = picto;
@@ -114,13 +124,18 @@ public class ballB2 extends LinearOpMode {
         int looping = 0;
         telemetry.addData("Loop", "Loop: " + loop);
         telemetry.update();
+        //Loop through command array while Op Mode is running
         while (loop < commands.length && opModeIsActive()) {
+            //Initialize and start current segment
             commands[loop].init();
             commands[loop].start();
             looping = 0;
             telemetry.addData("Init and Started", "Segment: " + loop);
             telemetry.update();
+            //Run conditional loop of current segment
+            //Does things like check the ball or check pictogram
             while (commands[loop].conditional() && opModeIsActive()) {}
+            //Run the loop of the current segment
             while (commands[loop].loop() && opModeIsActive()) {
                 telemetry.addData("Looping", "Loop" + looping);
                 telemetry.update();
@@ -128,8 +143,10 @@ public class ballB2 extends LinearOpMode {
             }
             telemetry.addData("About to stop", 0);
             telemetry.update();
+            //Stop the current segment
             commands[loop].stop();
             telemetry.addData("Stopped", "Segment: " + loop);
+            //Move onto the next segment
             loop++;
             telemetry.addData("Loop", "Loop: " + loop);
             telemetry.update();

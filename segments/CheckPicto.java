@@ -16,6 +16,7 @@ import commands.Command;
 import commands.MoveClaw;
 import commands.MoveForward;
 import commands.MoveTurn;
+import commands.MoveServo;
 
 //import Commands
 
@@ -46,32 +47,32 @@ public class CheckPicto extends Segment {
 	//CheckImg checkImage = new CheckImg();
 
 	//Spot 0 Commands
-	MoveForward moveForward1 = new MoveForward(0.5, 0.5, 5, 5); //red side right
-	MoveForward moveForward2 = new MoveForward(0.5, 0.5, 11, 11); //red side center
-	MoveForward moveForward3 = new MoveForward(0.5, 0.5, 16, 16); //red side left
-	MoveForward moveForward4 = new MoveForward(0.5, 0.5, 3, 3); //blue side constant
-	MoveForward moveForward5 = new MoveForward(0.5, 0.5, 5, 5); //red corner constant
-    MoveForward moveForward6 = new MoveForward(0.5, 0.5, 5, 4); //red corner right
-    MoveForward moveForward7 = new MoveForward(0.5, 0.5, 5, 9); //red corner center
-    MoveForward moveForward8 = new MoveForward(0.5, 0.5, 5, 14); //red corner left
-    MoveForward moveForward9 = new MoveForward(0.5, 0.5, 5, 4); //blue corner right
-    MoveForward moveForward10 = new MoveForward(0.5, 0.5, 5, 9); //blue corner center
-    MoveForward moveForward11 = new MoveForward(0.5, 0.5, 5, 14); //blue corner left
-    MoveForward moveForward12 = new MoveForward(0.5, 0.5, 5, 7); //blue corner constant
-	MoveForward backUp = new MoveForward(-0.5, -0.5, 1, 1); //back up slightly
-	MoveForward empty = new MoveForward(0.5, 0.5, 0, 0); //used to pad the command array so nothing breaks
-	MoveForward moveBack1 = new MoveForward(-0.5, -0.5, -7, -7); //blue side right
-	MoveForward moveBack2 = new MoveForward(-0.5, -0.5, -10, -10); //blue side center
-	MoveForward moveBack3 = new MoveForward(-0.5, -0.5, -14, -14); //blue side left
+	private MoveForward moveForward1 = new MoveForward(0.5, 0.5, 5, 5); //red side right
+	private MoveForward moveForward2 = new MoveForward(0.5, 0.5, 11, 11); //red side center
+	private MoveForward moveForward3 = new MoveForward(0.5, 0.5, 16, 16); //red side left
+	private MoveForward moveForward4 = new MoveForward(0.5, 0.5, 3, 3); //blue side constant
+	private MoveForward moveForward5 = new MoveForward(0.5, 0.5, 5, 5); //red corner constant
+	private MoveForward moveForward6 = new MoveForward(0.5, 0.5, 5, 5); //red corner right
+	private MoveForward moveForward7 = new MoveForward(0.5, 0.5, 5, 5); //red corner center
+	private MoveForward moveForward8 = new MoveForward(0.5, 0.5, 5, 5); //red corner left
+	private MoveForward moveForward9 = new MoveForward(0.5, 0.5, 5, 5); //blue corner right
+	private MoveForward moveForward10 = new MoveForward(0.5, 0.5, 5, 5); //blue corner center
+	private MoveForward moveForward11 = new MoveForward(0.5, 0.5, 5, 5); //blue corner left
+	private MoveForward moveForward12 = new MoveForward(0.5, 0.5, 5, 5); //blue corner constant
+	private MoveForward backUp = new MoveForward(-0.5, -0.5, 1, 1); //back up slightly
+	private MoveForward empty = new MoveForward(0.5, 0.5, 0, 0); //used to pad the command array so nothing breaks
+	private MoveForward moveBack1 = new MoveForward(-0.5, -0.5, -7, -7); //blue side right
+	private MoveForward moveBack2 = new MoveForward(-0.5, -0.5, -10, -10); //blue side center
+	private MoveForward moveBack3 = new MoveForward(-0.5, -0.5, -14, -14); //blue side left
 	//p- power of motors. w- which wheel will be powered (1 is left, 0 is right). a- angle of rotation.
-	MoveTurn moveTurnF = new MoveTurn(0.5, 1, 95); //red side turn into crypto box
-	MoveTurn moveTurnB = new MoveTurn(-0.5, 0, -95); // blue side turn away from crypto box
-    MoveTurn moveTurnE = new MoveTurn(0.5, 1, 95); // red corner turn into crypto box
-    MoveTurn moveTurnA = new MoveTurn(0.5, 1, -95); //red corner turn off of balance board
-    MoveTurn moveTurnD = new MoveTurn(0.5, 1, -95); //blue corner turn off of balance board
-    MoveTurn moveTurnC = new MoveTurn(0.5, 0, -95); //blue corner turn into crypto box
-	MoveClaw openClaw = new MoveClaw(1, 0); //opens claw and drops the cube
-	CheckImg checkImg = new CheckImg(); //runs the program for checking the pictograpgh
+	private MoveTurn moveTurnF = new MoveTurn(0.5, 1, 95); //red side turn into crypto box
+	private MoveTurn moveTurnB = new MoveTurn(-0.5, 0, -95); // blue side turn away from crypto box
+	private MoveTurn moveTurnE = new MoveTurn(0.5, 1, 95); // red corner turn into crypto box
+	private MoveTurn moveTurnA = new MoveTurn(0.5, 0, -95); //red corner turn off of balance board
+	private MoveTurn moveTurnD = new MoveTurn(0.5, 0, -95); //blue corner turn off of balance board
+	private MoveTurn moveTurnC = new MoveTurn(0.5, 0, -95); //blue corner turn into crypto box
+	private MoveServo openClaw = new MoveServo(1, 0); //opens claw and drops the cube
+	private CheckImg checkImg = new CheckImg(); //runs the program for checking the pictograpgh
 
 
 	private int index;
@@ -123,7 +124,7 @@ public class CheckPicto extends Segment {
         moveTurnD.setMotors(motorR, motorL);
         moveTurnC.setMotors(motorR, motorL);
 		empty.setMotors(motorR, motorL);
-		openClaw.setServos(clawR, clawL);
+		openClaw.setServos( clawR);
 		backUp.setMotors(motorR, motorL);
 		checkImg.setId(cameraId);
 	}

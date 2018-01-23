@@ -24,7 +24,7 @@ public class CheckBallHit extends Segment {
 	private int index;
 
 	//Command Array
-	private Command[] commands = new Command[3];
+	private Command[] commands = new Command[4];
 	//blank arrays here
 
 	//Color
@@ -39,6 +39,7 @@ public class CheckBallHit extends Segment {
 
 	//Servos
 	//Claw servos
+	private Servo ballHolder;
 	private Servo ballArm;
 	private Servo ballHitter;
 
@@ -48,13 +49,14 @@ public class CheckBallHit extends Segment {
 	private MoveServo hitR = new MoveServo(0.5, 0); //hit right ball
 	private MoveServo hitL = new MoveServo(0.5, 1); //hit left ball
 	private MoveServo empty = new MoveServo(0.5, 0.5); //pad command array so nothng breaks
-	private MoveForward moveForward = new MoveForward(0.5, 0.5, 3, 3); //move fowards
+	private MoveForward moveForward = new MoveForward(0.5, 0.5, 5, 5); //move fowards
 	private MoveForward moveBackwards = new MoveForward(-0.5, -0.5, -3, -3); //move back
-	private MoveServo raiseArm = new MoveServo(0.5, 0); //raise the ball hitting arm
+	private MoveServo raiseArm = new MoveServo(0.8, 0); //raise the ball hitting arm
+	private MoveServo closeHolder = new MoveServo(0, 0);
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallHit(DcMotor mL, DcMotor mR, DcMotor l, Servo bA, Servo bHt, ColorSensor cS, int clr, int spt){
+	public CheckBallHit(DcMotor mL, DcMotor mR, DcMotor l, Servo bHl, Servo bA, Servo bHt, ColorSensor cS, int clr, int spt){
 		//Set passed values to object values here
 
 		//Color
@@ -65,6 +67,7 @@ public class CheckBallHit extends Segment {
 		motorR = mR;
 		motorL = mL;
 
+		ballHolder = bHl;
 		ballArm = bA;
 		ballHitter = bHt;
 
@@ -81,6 +84,7 @@ public class CheckBallHit extends Segment {
 		hitL.setServos(ballHitter);
 		empty.setServos(ballArm);
 		raiseArm.setServos(ballArm);
+		closeHolder.setServos(ballHolder);
 		colorSensor.enableLed(true);
 		//ReadBall.init();
 	}
@@ -98,7 +102,9 @@ public class CheckBallHit extends Segment {
 		//Intialize commands. Defualted to rotate right
 		commands[0] = hitR;
 		commands[1] = raiseArm;
-		commands[2] = moveForward;
+		commands[2] = closeHolder;
+		commands[3] = empty;
+		//commands[3] = moveForward;
 		//Switch to roate left if ball is on other side
 		if (imageNumber == color) {
 			commands[0] = hitL;
@@ -106,7 +112,8 @@ public class CheckBallHit extends Segment {
 		else if (imageNumber == -1)
 			commands[0] = empty;
 		if (spot == 2) {
-			commands[2] = moveBackwards;
+			commands[3] = empty;
+			//commands[3] = moveBackwards;
 		}
 		index = 0;
 		commands[index].init();
@@ -135,8 +142,5 @@ public class CheckBallHit extends Segment {
 
 	//Stops
 	public void stop(){
-		//Stop motors
-		motorR.setPower(0);
-		motorL.setPower(1);
 	}
 }

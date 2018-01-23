@@ -59,7 +59,7 @@ public class ballR1 extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
-    private Segment[] commands = new Segment[3];
+    private Segment[] commands = new Segment[2];
 
     //Motors
     private DcMotor mR;
@@ -108,13 +108,13 @@ public class ballR1 extends LinearOpMode {
         //Checks pictogram then moves to crypto box and drops block before backing up.
         //spt - 1 is blue side 2 is red side
         //loc - 0 is corner 1 is straight
-        CheckPicto picto = new CheckPicto(mR, mL, bHl, bA, bHt, cR, cL, 2, id, 1);
+        CheckPicto picto = new CheckPicto(mR, mL, cR, cL, 2, id, 1);
 
 
         //Array
         commands[0] = drop;
         commands[1] = hit;
-        commands[2] = picto;
+        //commands[2] = picto;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
