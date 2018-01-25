@@ -54,12 +54,12 @@ import segments.Segment;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="ballR1", group="Linear Opmode")
-public class ballR1 extends LinearOpMode {
+@TeleOp(name="redCorner", group="Linear Opmode")
+public class redCorner extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
-    private Segment[] commands = new Segment[2];
+    private Segment[] commands = new Segment[3];
 
     //Motors
     private DcMotor mR;
@@ -96,25 +96,26 @@ public class ballR1 extends LinearOpMode {
         cL = hardwareMap.get(Servo.class, "two");
         id = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
+        //loc - 0 is corner 1 is straight
+        int loc = 0;
+        //clr - 0 is blue side , 1 is red side
+        int clr = 1;
+
         //Segments
         //Check individual objects to see the required variables
         //Moves the arm between the two balls
         CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
         //Checks ball color, then hits one of the balls, then moves in front of the pictogram
-        //Changes based on clr and spt.
-        //clr - 0 is blue, 1 is red
-        //spt - 1 is blue side 2 is red side
-        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, 1, 2);
+        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, clr);
         //Checks pictogram then moves to crypto box and drops block before backing up.
-        //spt - 1 is blue side 2 is red side
-        //loc - 0 is corner 1 is straight
-        CheckPicto picto = new CheckPicto(mR, mL, cR, cL, 2, id, 1);
+        CheckPicto picto = new CheckPicto(mR, mL, cR, cL, clr, id, loc);
 
 
         //Array
+        //Place commands in command array
         commands[0] = drop;
         commands[1] = hit;
-        //commands[2] = picto;
+        commands[2] = picto;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();

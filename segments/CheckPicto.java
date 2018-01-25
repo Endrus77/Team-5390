@@ -30,7 +30,7 @@ public class CheckPicto extends Segment {
 
 	//Spot: blue is 1, red is 2
     //Location: side is 1, corner is 2
-	private int spot;
+	private int color;
 	private int cameraId;
 	private int location;
 
@@ -79,11 +79,11 @@ public class CheckPicto extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(DcMotor mR, DcMotor mL, Servo cR, Servo cL, int spt, int id, int loc) {
+	public CheckPicto(DcMotor mR, DcMotor mL, Servo cR, Servo cL, int clr, int id, int loc) {
 		//Set passed values to object values here
 
 		//Spot
-		spot = spt;
+		color = clr;
 		cameraId = id;
 		location = loc;
 
@@ -145,7 +145,7 @@ public class CheckPicto extends Segment {
             int imageNumber;
             imageNumber = checkImg.getValue();
             //Red Team
-            if (spot == 2)
+            if (color == 1)
                 //red side
                 if (location == 1) {
                     //Right

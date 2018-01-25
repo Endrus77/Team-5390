@@ -28,9 +28,8 @@ public class CheckBallHit extends Segment {
 	//blank arrays here
 
 	//Color
-	//1 is blue, 2 is red
+	//0 is blue, 1 is red
 	private int color;
-	private int spot;
 
 	//Motors
 	//Arm motors
@@ -56,12 +55,11 @@ public class CheckBallHit extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallHit(DcMotor mL, DcMotor mR, DcMotor l, Servo bHl, Servo bA, Servo bHt, ColorSensor cS, int clr, int spt){
+	public CheckBallHit(DcMotor mL, DcMotor mR, DcMotor l, Servo bHl, Servo bA, Servo bHt, ColorSensor cS, int clr){
 		//Set passed values to object values here
 
 		//Color
 		color = clr;
-		spot = spt;
 
 		//Motors
 		motorR = mR;
@@ -95,25 +93,23 @@ public class CheckBallHit extends Segment {
 		int imageNumber;
 		imageNumber = -1;
 		if (colorSensor.red() >= 1)
-			imageNumber = 1;
-		else if (colorSensor.blue() >= 1)
 			imageNumber = 0;
+		else if (colorSensor.blue() >= 1)
+			imageNumber = 1;
 
 		//Intialize commands. Defualted to rotate right
 		commands[0] = hitR;
 		commands[1] = raiseArm;
 		commands[2] = closeHolder;
-		commands[3] = empty;
-		//commands[3] = moveForward;
-		//Switch to roate left if ball is on other side
+		commands[3] = moveForward;
+		//Switch to rotate left if ball is on other side
 		if (imageNumber == color) {
 			commands[0] = hitL;
 		}
 		else if (imageNumber == -1)
 			commands[0] = empty;
-		if (spot == 2) {
-			commands[3] = empty;
-			//commands[3] = moveBackwards;
+		if (color == 0) {
+			commands[3] = moveBackwards;
 		}
 		index = 0;
 		commands[index].init();
