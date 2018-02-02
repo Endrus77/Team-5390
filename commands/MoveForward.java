@@ -62,7 +62,7 @@ public class MoveForward extends Command{
 	public void setMotors(DcMotor mRF, DcMotor mRB, DcMotor mLF, DcMotor mLB) {
 		//Motors
 		motorR = mRF;
-		motorL = mLF
+		motorL = mLF;
 		motorRB = mRB;
 		motorLB = mLB;
 	}
