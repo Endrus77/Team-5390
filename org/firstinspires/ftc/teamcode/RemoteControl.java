@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -64,8 +65,10 @@ public class RemoteControl extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        DcMotor leftDrive;
-        DcMotor rightDrive;
+        DcMotor leftFrontDrive;
+        DcMotor leftBackDrive;
+        DcMotor rightFrontDrive;
+        DcMotor rightBackDrive;
         DcMotor lift;
         DcMotor rotation;
         //DcMotor board;
@@ -73,8 +76,10 @@ public class RemoteControl extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         lift = hardwareMap.get(DcMotor.class, "lift");
         rotation = hardwareMap.get(DcMotor.class, "rotation");
 
@@ -82,8 +87,10 @@ public class RemoteControl extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         lift.setDirection(DcMotor.Direction.FORWARD);
         rotation.setDirection(DcMotor.Direction.FORWARD);
 
@@ -138,8 +145,10 @@ public class RemoteControl extends LinearOpMode {
         while (opModeIsActive()) {
 
             //Motor powers
-            double leftPower;
-            double rightPower;
+            double leftFrontPower;
+            double leftBackPower;
+            double rightFrontPower;
+            double rightBackPower;
             double liftPower;
             double rotationPower;
             //double boardPower;
@@ -231,14 +240,35 @@ public class RemoteControl extends LinearOpMode {
             }
 
             //Arcade style driving
-            //Left is Y value minus X value. When X is to the left, left wheel goes faster. When X is to the right, left wheel goes slower, then negative.
+            //Left Front is Y value minus X value. When X is to the left, left wheel goes faster. When X is to the right, left wheel goes slower, then negative.
             //Clip value to make sure they're within range
-            leftPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
-            leftPower = Range.clip(leftPower, -1, 1);
-            //Right is Y value plus X value. When X is to the left, right wheel goes slower, then negative. When X is to the right, right wheel goes faster.
+            leftFrontPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
+            leftFrontPower = Range.clip(leftFrontPower, -1, 1);
+            //Left Back is Y value plus X value. When X is to the left, left wheel goes faster. When X is to the right, left wheel goes slower, then negative.
             //Clip value to make sure they're within range
-            rightPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
-            rightPower = Range.clip(rightPower, -1, 1);
+            leftBackPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
+            leftBackPower = Range.clip(leftBackPower, -1, 1);
+            //Right Front is Y value plus X value. When X is to the left, right wheel goes slower, then negative. When X is to the right, right wheel goes faster.
+            //Clip value to make sure they're within range
+            rightFrontPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
+            rightFrontPower = Range.clip(rightFrontPower, -1, 1);
+            //Right Front is Y value minus X value. When X is to the left, right wheel goes slower, then negative. When X is to the right, right wheel goes faster.
+            //Clip value to make sure they're within range
+            rightBackPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
+            rightBackPower = Range.clip(rightBackPower, -1, 1);
+
+
+            //Rotation of robot
+            if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
+                leftFrontPower = -gamepad1.right_stick_x;
+                leftFrontPower = Range.clip(leftFrontPower, -1, 1);
+                leftBackPower = -gamepad1.right_stick_x;
+                leftBackPower = Range.clip(leftBackPower, -1, 1);
+                rightFrontPower = gamepad1.right_stick_x;
+                rightFrontPower = Range.clip(rightFrontPower, -1, 1);
+                rightBackPower = gamepad1.right_stick_x;
+                rightBackPower = Range.clip(rightBackPower, -1, 1);
+            }
 
 
             // Tank Mode uses one stick to control each wheel.
@@ -247,8 +277,10 @@ public class RemoteControl extends LinearOpMode {
             // rightPower = -gamepad1.right_stick_y ;
 
             //Set motor powers
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
+            leftFrontDrive.setPower(leftFrontPower);
+            leftBackDrive.setPower(leftBackPower);
+            rightFrontDrive.setPower(rightFrontPower);
+            rightBackDrive.setPower(rightBackPower);
             //board.setPower(boardPower);
             lift.setPower(liftPower);
 
@@ -258,7 +290,7 @@ public class RemoteControl extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
             telemetry.addData("Lift", "Power: " + liftPower);
             //telemetry.addData("Color", "Red Value: " + colorSensor.red());
             telemetry.update();
