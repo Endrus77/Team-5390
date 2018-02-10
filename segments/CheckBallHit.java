@@ -12,7 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import commands.Command;
 import commands.MoveForward;
-import commands.MoveServo;
+import commands.MoveServo;;
+import commands.MoveForwardFour;
 
 
 //import Commands
@@ -33,8 +34,10 @@ public class CheckBallHit extends Segment {
 
 	//Motors
 	//Arm motors
-	private DcMotor motorR;
-	private DcMotor motorL;
+	private DcMotor motorRF;
+	private DcMotor motorRB;
+	private DcMotor motorLF;
+	private DcMotor motorLB;
 
 	//Servos
 	//Claw servos
@@ -48,22 +51,23 @@ public class CheckBallHit extends Segment {
 	private MoveServo hitR = new MoveServo(0.5, 0); //hit right ball
 	private MoveServo hitL = new MoveServo(0.5, 1); //hit left ball
 	private MoveServo empty = new MoveServo(0.5, 0.5); //pad command array so nothng breaks
-	private MoveForward moveForward = new MoveForward(0.5, 0.5, 5, 5); //move fowards
-	private MoveForward moveBackwards = new MoveForward(-0.5, -0.5, -3, -3); //move back
+	private MoveForwardFour moveRight = new MoveForwardFour(0.75, -0.75, -0.75, 0.75, 4.24, -4.24, -4.24, 4.24); //move Right
 	private MoveServo raiseArm = new MoveServo(0.8, 0); //raise the ball hitting arm
 	private MoveServo closeHolder = new MoveServo(0, 0);
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallHit(DcMotor mL, DcMotor mR, DcMotor l, Servo bHl, Servo bA, Servo bHt, ColorSensor cS, int clr){
+	public CheckBallHit(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor l, Servo bHl, Servo bA, Servo bHt, ColorSensor cS, int clr){
 		//Set passed values to object values here
 
 		//Color
 		color = clr;
 
 		//Motors
-		motorR = mR;
-		motorL = mL;
+		motorRF = mRF;
+		motorRB = mRB;
+		motorLF = mLF;
+		motorLB = mLB;
 
 		ballHolder = bHl;
 		ballArm = bA;
@@ -76,8 +80,7 @@ public class CheckBallHit extends Segment {
 	public void init () {
 		//Make commands
 		//First move arm and turret
-		moveForward.setMotors(motorR, motorL);
-		moveBackwards.setMotors(motorR, motorL);
+		moveRight.setMotors(motorRF, motorRB, motorLF, motorLB);
 		hitR.setServos(ballHitter);
 		hitL.setServos(ballHitter);
 		empty.setServos(ballArm);
@@ -101,16 +104,13 @@ public class CheckBallHit extends Segment {
 		commands[0] = hitR;
 		commands[1] = raiseArm;
 		commands[2] = closeHolder;
-		commands[3] = moveForward;
+		commands[3] = moveRight;
 		//Switch to rotate left if ball is on other side
 		if (imageNumber == color) {
 			commands[0] = hitL;
 		}
 		else if (imageNumber == -1)
 			commands[0] = empty;
-		if (color == 0) {
-			commands[3] = moveBackwards;
-		}
 		index = 0;
 		commands[index].init();
 		commands[index].start();

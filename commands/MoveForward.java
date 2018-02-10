@@ -43,16 +43,6 @@ public class MoveForward extends Command{
 		motorLD = dL;
 	}
 
-	public MoveForward(double pR, double pL, double dR, double dL, boolean isFourWheel) {
-	//Power
-		motorRP = pR;
-		motorLP = pL;
-		//Distance
-		motorRD = dR;
-		motorLD = dL;
-		fourWheel = isFourWheel;
-	}
-
 	public void setMotors(DcMotor mR, DcMotor mL) {
 		//Motors
 		motorR = mR;
@@ -82,15 +72,6 @@ public class MoveForward extends Command{
 		motorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		motorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-		if (fourWheel) {
-			motorRB.setDirection(DcMotor.Direction.FORWARD);
-			motorLB.setDirection(DcMotor.Direction.REVERSE);
-			motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-			motorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-			motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-			motorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-		}
 	}
 
 	//Runs at start
@@ -104,13 +85,6 @@ public class MoveForward extends Command{
 		//Set motor positions
 		motorR.setTargetPosition(motorRE);
 		motorL.setTargetPosition(motorLE);
-
-		if (fourWheel) {
-			motorRB.setPower(motorRP);
-			motorLB.setPower(motorLP);
-			motorRB.setTargetPosition(motorRE);
-			motorLB.setTargetPosition(motorLE);
-		}
 	}
 
 	//Loops
@@ -129,9 +103,5 @@ public class MoveForward extends Command{
 		//Stop motors
 		motorR.setPower(0);
 		motorL.setPower(0);
-		if (fourWheel) {
-			motorRB.setPower(0);
-			motorLB.setPower(0);
-		}
 	}
 }

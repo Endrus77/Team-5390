@@ -62,8 +62,10 @@ public class blueCorner extends LinearOpMode {
     private Segment[] commands = new Segment[3];
 
     //Motors
-    private DcMotor mR;
-    private DcMotor mL;
+    private DcMotor mRF;
+    private DcMotor mRB;
+    private DcMotor mLF;
+    private DcMotor mLB;
     private DcMotor l;
     private Servo bHl;
     private Servo bA;
@@ -85,8 +87,11 @@ public class blueCorner extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        mR = hardwareMap.get(DcMotor.class, "right_drive");
-        mL = hardwareMap.get(DcMotor.class, "left_drive");
+        // step (using the FTC Robot Controller app on the phone).
+        mRF = hardwareMap.get(DcMotor.class, "right_front_drive");
+        mRB = hardwareMap.get(DcMotor.class, "right_back_drive");
+        mLF  = hardwareMap.get(DcMotor.class, "left_front_drive");
+        mLB = hardwareMap.get(DcMotor.class, "left_back_drive");
         l = hardwareMap.get(DcMotor.class, "lift");
         bHl = hardwareMap.get(Servo.class, "bHl");
         bA = hardwareMap.get(Servo.class, "bA");
@@ -106,9 +111,9 @@ public class blueCorner extends LinearOpMode {
         //Moves the arm between the two balls
         CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
         //Checks ball color, then hits one of the balls, then moves in front of the pictogram
-        CheckBallHit hit = new CheckBallHit(mR, mL, l, bHl, bA, bHt, cS, clr);
+        CheckBallHit hit = new CheckBallHit(mRF, mLF, mRB, mLB, l, bHl, bA, bHt, cS, clr);
         //Checks pictogram then moves to crypto box and drops block before backing up.
-        CheckPicto picto = new CheckPicto(mR, mL, cR, cL, clr, id, loc);
+        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, cR, cL, clr, id, loc);
 
 
         //Array

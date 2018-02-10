@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import commands.MoveServo;
 
@@ -55,37 +56,51 @@ public class servoTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private Servo s;
+    private Servo bA;
+    private Servo bHt;
+    private Servo bHl;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        s = hardwareMap.get(Servo.class, "one");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        MoveServo moveServo = new MoveServo(0, 1);
-        MoveServo moveServo2 = new MoveServo(1, 0);
-
-        moveServo.setServos(s);
-        moveServo2.setServos(s);
+        bA = hardwareMap.get(Servo.class, "bA");
+        bHt = hardwareMap.get(Servo.class, "bHt");
+        bHl = hardwareMap.get(Servo.class, "bHl");
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-        moveServo.init();
-        moveServo.start();
-        while (moveServo.loop() && opModeIsActive());
-        moveServo.stop();
-        moveServo2.init();
-        moveServo2.start();
-        while (moveServo2.loop() && opModeIsActive());
-        moveServo2.stop();
+        while (opModeIsActive()) {
+            double bAPos = 0;
+            double bHlPos = 0;
+            double bHtPos= 0;
+
+            if (gamepad1.left_stick_y > 0)
+                bAPos += 0.1;
+            else if (gamepad1.left_stick_y < 0)
+                bAPos -= 0.1;
+
+            if (gamepad1.right_stick_y > 0)
+                bHlPos += 0.1;
+            else if (gamepad1.right_stick_y < 0)
+                bHlPos -= 0.1;
+
+            if (gamepad1.left_bumper)
+                bHtPos += 0.1;
+            if (gamepad1.right_bumper)
+                bHtPos -= 0.1;
+
+            bA.setPosition(Range.clip(bAPos, 0, 1));
+            bHl.setPosition(Range.clip(bHlPos, 0, 1));
+            bHt.setPosition(Range.clip(bHtPos, 0, 1));
+
+            telemetry.addData("bA Position", bAPos);
+            telemetry.addData("bHl Position", bHlPos);
+            telemetry.addData("bHt Position", bHtPos);
+            telemetry.update();
+        }
     }
 }

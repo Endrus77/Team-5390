@@ -42,7 +42,7 @@ public class CheckBallDrop extends Segment {
 
 	//Initialization
 	private MoveServo closeClaw = new MoveServo(0, 1);
-	private MoveMotor moveMotor = new MoveMotor(0.6 ,360);
+	private MoveMotor moveMotor = new MoveMotor(0.6 ,720);
 	private MoveServo setH = new MoveServo(0, 0.3);
 	private MoveServo openHolder = new MoveServo(1, 0);
 	private MoveServo dropArm = new MoveServo(0, 0.8);
@@ -74,7 +74,7 @@ public class CheckBallDrop extends Segment {
 	//Runs once
 	public void start() {
 
-		//Intialize commands. Defualted to rotate right
+		//Intialize commands. Defaulted to rotate right
 		commands[0] = closeClaw;
 		commands[1] = moveMotor;
 		commands[2] = setH;

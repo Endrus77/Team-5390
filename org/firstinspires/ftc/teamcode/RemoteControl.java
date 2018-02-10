@@ -81,18 +81,18 @@ public class RemoteControl extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         lift = hardwareMap.get(DcMotor.class, "lift");
-        rotation = hardwareMap.get(DcMotor.class, "rotation");
+        //rotation = hardwareMap.get(DcMotor.class, "rotation");
 
         //board = hardwareMap.get(DcMotor.class, "board");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         lift.setDirection(DcMotor.Direction.FORWARD);
-        rotation.setDirection(DcMotor.Direction.FORWARD);
+        //rotation.setDirection(DcMotor.Direction.FORWARD);
 
         Servo clawR;
         Servo clawL;
@@ -102,8 +102,8 @@ public class RemoteControl extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         clawR = hardwareMap.get(Servo.class, "one");
-        clawL = hardwareMap.get(Servo.class, "two");
-        ballArm = hardwareMap.get(Servo.class, "bA");
+        //clawL = hardwareMap.get(Servo.class, "two");
+        //ballArm = hardwareMap.get(Servo.class, "bA");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -126,21 +126,21 @@ public class RemoteControl extends LinearOpMode {
 
         //Initial claw positions
         double clawRP = 1;
-        double clawLP = 0;
+        //double clawLP = 0;
 
         //Set initial claw postions
         clawR.setPosition(clawRP);
-        clawL.setPosition(clawLP);
-        ballArm.setPosition(0);
+        //clawL.setPosition(clawLP);
+        //ballArm.setPosition(0);
 
         //Variable to keep track or direction of lift rotation
         int rot = 1;
         // run until the end of the match (driver presses STOP)
 
-        rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rotation.setPower(0.25 * rot);
-        rotation.setTargetPosition((int)(Command.ENCODERTICKS / 8 * rot));
+        //rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //rotation.setPower(0.25 * rot);
+        //rotation.setTargetPosition((int)(Command.ENCODERTICKS / 8 * rot));
 
         while (opModeIsActive()) {
 
@@ -156,10 +156,12 @@ public class RemoteControl extends LinearOpMode {
 
             //Claw controls
             //Each side of bumpers controls open/close lf claws
+            /*
             if (gamepad1.right_trigger != 0)
                 clawLP += 0.2;
             else if (gamepad1.right_bumper)
                 clawLP -= 0.2;
+                */
 
             if (gamepad1.left_trigger != 0)
                 clawRP -= 0.2;
@@ -168,7 +170,7 @@ public class RemoteControl extends LinearOpMode {
 
             //Clip claw postions to make sure they're within range
             clawRP = Range.clip(clawRP, 0.2, 1.0);
-            clawLP = Range.clip(clawLP, 0, 0.8);
+            //clawLP = Range.clip(clawLP, 0, 0.8);
 
             /*
             if (gamepad1.y)
@@ -181,7 +183,7 @@ public class RemoteControl extends LinearOpMode {
 
             //Lift is controlled by right stick
             //Clip value to make sure they're within range
-            liftPower = Range.clip(-gamepad1.right_stick_y, -1, 1);
+            liftPower = Range.clip(-gamepad1.right_stick_y / 2, -0.5, 0.5);
 
             /*Old arcade style remote - ignore
             if (gamepad1.left_stick_y > 0 || (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y == 0)) {
@@ -209,6 +211,7 @@ public class RemoteControl extends LinearOpMode {
             //Spins lift
             //Doesn't run if it is already running, or if one of the claws isn't closed
             //Flips rot sign every time it rotates so it spins back and forth
+            /*
             if (gamepad1.a && !rotation.isBusy()) { // && clawRP == 1 && clawLP == 0) {
                 rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -238,6 +241,7 @@ public class RemoteControl extends LinearOpMode {
                 rotation.setPower(-0.10);
                 rotation.setTargetPosition((int)(-Command.ENCODERTICKS / 20));
             }
+            */
 
             //Arcade style driving
             //Left Front is Y value minus X value. When X is to the left, left wheel goes faster. When X is to the right, left wheel goes slower, then negative.
@@ -259,7 +263,7 @@ public class RemoteControl extends LinearOpMode {
 
 
             //Rotation of robot
-            if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0) {
+            if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0 && gamepad1.right_stick_y == 0) {
                 leftFrontPower = -gamepad1.right_stick_x;
                 leftFrontPower = Range.clip(leftFrontPower, -1, 1);
                 leftBackPower = -gamepad1.right_stick_x;
@@ -286,7 +290,7 @@ public class RemoteControl extends LinearOpMode {
 
             //Set claw powers
             clawR.setPosition(clawRP);
-            clawL.setPosition(clawLP);
+            //clawL.setPosition(clawLP);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
