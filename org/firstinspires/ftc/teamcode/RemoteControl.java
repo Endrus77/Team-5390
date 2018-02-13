@@ -87,11 +87,11 @@ public class RemoteControl extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        lift.setDirection(DcMotor.Direction.FORWARD);
+        lift.setDirection(DcMotor.Direction.REVERSE);
         //rotation.setDirection(DcMotor.Direction.FORWARD);
 
         Servo clawR;
@@ -183,7 +183,7 @@ public class RemoteControl extends LinearOpMode {
 
             //Lift is controlled by right stick
             //Clip value to make sure they're within range
-            liftPower = Range.clip(-gamepad1.right_stick_y / 2, -0.5, 0.5);
+            liftPower = Range.clip(-gamepad1.right_stick_y / 2, -0.15, 0.5);
 
             /*Old arcade style remote - ignore
             if (gamepad1.left_stick_y > 0 || (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y == 0)) {
@@ -246,21 +246,20 @@ public class RemoteControl extends LinearOpMode {
             //Arcade style driving
             //Left Front is Y value minus X value. When X is to the left, left wheel goes faster. When X is to the right, left wheel goes slower, then negative.
             //Clip value to make sure they're within range
-            leftFrontPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
+            leftFrontPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
             leftFrontPower = Range.clip(leftFrontPower, -1, 1);
             //Left Back is Y value plus X value. When X is to the left, left wheel goes faster. When X is to the right, left wheel goes slower, then negative.
             //Clip value to make sure they're within range
-            leftBackPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
+            leftBackPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
             leftBackPower = Range.clip(leftBackPower, -1, 1);
             //Right Front is Y value plus X value. When X is to the left, right wheel goes slower, then negative. When X is to the right, right wheel goes faster.
             //Clip value to make sure they're within range
-            rightFrontPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
+            rightFrontPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
             rightFrontPower = Range.clip(rightFrontPower, -1, 1);
             //Right Front is Y value minus X value. When X is to the left, right wheel goes slower, then negative. When X is to the right, right wheel goes faster.
             //Clip value to make sure they're within range
-            rightBackPower = gamepad1.left_stick_y - gamepad1.left_stick_x;
+            rightBackPower = gamepad1.left_stick_y + gamepad1.left_stick_x;
             rightBackPower = Range.clip(rightBackPower, -1, 1);
-
 
             //Rotation of robot
             if (gamepad1.left_stick_x == 0 && gamepad1.left_stick_y == 0 && gamepad1.right_stick_y == 0) {
@@ -274,6 +273,47 @@ public class RemoteControl extends LinearOpMode {
                 rightBackPower = Range.clip(rightBackPower, -1, 1);
             }
 
+            //For testing mechanin wheels
+            if (gamepad1.dpad_up) {
+                leftFrontPower = 0.75;
+                leftBackPower = 0.75;
+                rightFrontPower = 0.75;
+                rightBackPower = 0.75;
+            }
+            if (gamepad1.dpad_left) {
+                leftFrontPower = -0.75;
+                leftBackPower = 0.75;
+                rightFrontPower = 0.75;
+                rightBackPower = -0.75;
+            }
+            if (gamepad1.dpad_down) {
+                leftFrontPower = -0.75;
+                leftBackPower = -0.75;
+                rightFrontPower = -0.75;
+                rightBackPower = -0.75;
+            }
+            if (gamepad1.dpad_right) {
+                leftFrontPower = 0.75;
+                leftBackPower = -0.75;
+                rightFrontPower = -0.75;
+                rightBackPower = 0.75;
+            }
+            if (gamepad1.y) {
+                leftBackPower = 0.75;
+                rightFrontPower = 0.75;
+            }
+            if (gamepad1.b) {
+                leftFrontPower = -0.75;
+                rightBackPower = -0.75;
+            }
+            if (gamepad1.a) {
+                leftFrontPower = 0.75;
+                rightBackPower = 0.75;
+            }
+            if (gamepad1.x) {
+                leftBackPower = -0.75;
+                rightFrontPower = -0.75;
+            }
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -296,6 +336,7 @@ public class RemoteControl extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
             telemetry.addData("Lift", "Power: " + liftPower);
+            telemetry.addData("Y pressed", "" + gamepad1.dpad_up);
             //telemetry.addData("Color", "Red Value: " + colorSensor.red());
             telemetry.update();
         }

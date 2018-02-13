@@ -27,7 +27,7 @@ public class CheckPicto extends Segment {
 	//Variables
 
 	//Command Array
-	private Command[] commands = new Command[6];
+	private Command[] commands = new Command[7];
 	//blank arrays here
 
 	//Spot: blue is 1, red is 2
@@ -63,9 +63,9 @@ public class CheckPicto extends Segment {
 
 	//Red Corner
 	private MoveForwardFour mFRCOffBoard = new MoveForwardFour(0.75, -0.75, -0.75, 0.75, 10, -10, -10, 10); //red corner off board
-	private MoveForwardFour mFRCRightCrypto = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 3, 3, 3, 3); //red corner right
-	private MoveForwardFour mFRCCenterCrypto = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 8, 8, 8, 8); //red corner center
-	private MoveForwardFour mFRCLeftCrypto = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 13, 13, 13, 13); //red corner left
+	private MoveForwardFour mFRCRightCrypto = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -13, -13, -13, -13); //red corner right
+	private MoveForwardFour mFRCCenterCrypto = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -8, -8, -8, -8); //red corner center
+	private MoveForwardFour mFRCLeftCrypto = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -3, -3, -3, -3); //red corner left
 	private MoveTurnInPlace mTRCIntoBox = new MoveTurnInPlace(0.5, 90); // red corner turn into crypto box
 
 	//Left Straight
@@ -76,12 +76,13 @@ public class CheckPicto extends Segment {
 
 	//Left Corner
 	private MoveForwardFour mFBCOffBoard = new MoveForwardFour(-0.75, 0.75, 0.75, -0.75, -25, 25, 25, -25); //blue corner over board
-	private MoveForwardFour mFBCRightCrypto = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 3, 3, 3, 3); //blue side right
-	private MoveForwardFour mFBCCenterCrypto = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 8, 8, 8, 8); //blue side center
-	private MoveForwardFour mFBCLeftCrypto = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 13, 13, 13, 13); //blue side left
+	private MoveForwardFour mFBCLeftCrypto = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -13, -13, -13, -13); //blue side right
+	private MoveForwardFour mFBCCenterCrypto = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -8, -8, -8, -8); //blue side center
+	private MoveForwardFour mFBCRightCrypto = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -3, -3, -3, -3); //blue side left
 	private MoveTurnInPlace mTBCIntoBox = new MoveTurnInPlace(0.5, -90); //red corner turn into crypto box
 
 	//All
+	private MoveForwardFour mFABackAfterCheck = new MoveForwardFour(0.5, 0.5, 0.5, -0.5, -15, -15, -15, -15);
 	private MoveForwardFour mFAForwardBeforeTurn = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 2, 2, 2, 2);
 	private MoveForwardFour mFAForwardAfterTurn = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 4, 4, 4, 4);
 	private MoveForwardFour mFABackAfterTurn = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5,-2, -2, -2, -2); //back up slightly
@@ -177,35 +178,36 @@ public class CheckPicto extends Segment {
                 //Red Side
                 if (location == 1) {
                     //Right
+					commands[0] = mFABackAfterCheck;
                     if (imageNumber == 1)
-                        commands[0] = mFRSRightCrypto;
+                        commands[1] = mFRSRightCrypto;
                     //Center
                     if (imageNumber == 2)
-                        commands[0] = mFRSCenterCrypto;
+                        commands[1] = mFRSCenterCrypto;
                     //Left
                     else if (imageNumber == 3)
-                        commands[0] = mFRSLeftCrypto;
-                    commands[1] = mFAForwardBeforeTurn;
+                        commands[1] = mFRSLeftCrypto;
                     commands[2] = mTRSIntoBox;
                     commands[3] = mFAForwardAfterTurn;
                     commands[4] = openClaw;
                     commands[5] = mFABackAfterTurn;
+                    commands[6] = empty;
                 }
 
                 //Red Corner
                 else {
                     // still needs to be changed and calibrated
-                    commands[0] = mFRCOffBoard;
+					commands[0] = mFABackAfterCheck;
+					commands[1] = mFRCOffBoard;
                     //Right
                     if (imageNumber == 1)
-                        commands[1] = mFRCRightCrypto;
+                        commands[2] = mFRCRightCrypto;
                     //Center
                     if (imageNumber == 2)
-                        commands[1] = mFRCCenterCrypto;
+                        commands[2] = mFRCCenterCrypto;
                     //Left
                     else if (imageNumber == 3)
-                        commands[1] = mFRCLeftCrypto;
-                    commands[2] = mFAForwardBeforeTurn;
+                        commands[2] = mFRCLeftCrypto;
                     commands[3] = mTRCIntoBox;
                     commands[4] = mFAForwardAfterTurn;
                     commands[5] = openClaw;
@@ -217,34 +219,35 @@ public class CheckPicto extends Segment {
                 if (location == 1) {
                     // still needs to be changed and calibrated
                     //Right
+					commands[0] = mFABackAfterCheck;
                     if (imageNumber == 1)
-                        commands[0] = mFBSRightCrypto;
+                        commands[1] = mFBSRightCrypto;
                     //Center
                     if (imageNumber == 2)
-                        commands[0] = mFBSCenterCrypto;
+                        commands[1] = mFBSCenterCrypto;
                     //Left
                     else if (imageNumber == 3)
-                        commands[0] = mFBSLeftCrypto;
-                    commands[1] = mFAForwardBeforeTurn;
+                        commands[1] = mFBSLeftCrypto;
                     commands[2] = mTBSIntoBox;
                     commands[3] = mFAForwardAfterTurn;
 					commands[4] = openClaw;
                     commands[5] = mFABackAfterTurn;
+                    commands[6] = empty;
                 }
                 //Blue Corner
                 else {
                     //needs to be changed and calibrated
-                    commands[0] = mFBCOffBoard;
+                    commands[0] = mFABackAfterCheck;
+                    commands[1] = mFBCOffBoard;
                     //Right
                     if (imageNumber == 1)
-                        commands[1] = mFBCRightCrypto;
+                        commands[2] = mFBCRightCrypto;
                     //Center
                     if (imageNumber == 2)
-                        commands[1] = mFBCCenterCrypto;
+                        commands[2] = mFBCCenterCrypto;
                     //Left
                     else if (imageNumber == 3)
-                        commands[1] = mFBCLeftCrypto;
-                    commands[2] = mFAForwardBeforeTurn;
+                        commands[2] = mFBCLeftCrypto;
                     commands[3] = mTBCIntoBox;
                     commands[4] = mFAForwardAfterTurn;
                     commands[5] = openClaw;
