@@ -71,7 +71,6 @@ public class redStraight extends LinearOpMode {
     private Servo bA;
     private Servo bHt;
     private Servo cR;
-    private Servo cL;
 
     //Loop Counter
     private int loop;
@@ -98,7 +97,6 @@ public class redStraight extends LinearOpMode {
         bHt = hardwareMap.get(Servo.class, "bHt");
         cS = hardwareMap.get(ColorSensor.class, "cS");
         cR = hardwareMap.get(Servo.class, "one");
-        cL = hardwareMap.get(Servo.class, "two");
         id = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
         //loc - 0 is corner 1 is straight
@@ -109,11 +107,11 @@ public class redStraight extends LinearOpMode {
         //Segments
         //Check individual objects to see the required variables
         //Moves the arm between the two balls
-        CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR, cL);
+        CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR);
         //Checks ball color, then hits one of the balls, then moves in front of the pictogram
         CheckBallHit hit = new CheckBallHit(mRF, mLF, mRB, mLB, l, bHl, bA, bHt, cS, clr);
         //Checks pictogram then moves to crypto box and drops block before backing up.
-        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, cR, cL, clr, id, loc);
+        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, cR, clr, id, loc);
 
 
         //Array

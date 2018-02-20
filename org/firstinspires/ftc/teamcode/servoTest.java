@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -60,6 +61,8 @@ public class servoTest extends LinearOpMode {
     private Servo bHt;
     private Servo bHl;
 
+
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -69,14 +72,19 @@ public class servoTest extends LinearOpMode {
         bHt = hardwareMap.get(Servo.class, "bHt");
         bHl = hardwareMap.get(Servo.class, "bHl");
 
+
+        ColorSensor colorSensor;
+        colorSensor = hardwareMap.get(ColorSensor.class, "cS");
+        colorSensor.enableLed(true);
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        double bAPos = 0;
+        double bHlPos = 0;
+        double bHtPos= 0.5;
 
         while (opModeIsActive()) {
-            double bAPos = 0;
-            double bHlPos = 0;
-            double bHtPos= 0;
 
             if (gamepad1.left_stick_y > 0)
                 bAPos += 0.1;
@@ -93,13 +101,19 @@ public class servoTest extends LinearOpMode {
             if (gamepad1.right_bumper)
                 bHtPos -= 0.1;
 
-            bA.setPosition(Range.clip(bAPos, 0, 1));
-            bHl.setPosition(Range.clip(bHlPos, 0, 1));
-            bHt.setPosition(Range.clip(bHtPos, 0, 1));
+            bAPos = Range.clip(bAPos, 0 ,1);
+            bHtPos = Range.clip(bHtPos, 0 ,1);
+            bHlPos = Range.clip(bHlPos, 0 ,1);
+
+            bA.setPosition(bAPos);
+            bHl.setPosition(bHlPos);
+            bHt.setPosition(bHtPos);
 
             telemetry.addData("bA Position", bAPos);
             telemetry.addData("bHl Position", bHlPos);
             telemetry.addData("bHt Position", bHtPos);
+            telemetry.addData("Color", "Red Value: " + colorSensor.red());
+            telemetry.addData("Color", "Blue Value: " + colorSensor.blue());
             telemetry.update();
         }
     }

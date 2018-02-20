@@ -71,6 +71,9 @@ public class RemoteControl extends LinearOpMode {
         DcMotor rightBackDrive;
         DcMotor lift;
         DcMotor rotation;
+
+        Servo bA;
+        Servo bHl;
         //DcMotor board;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -81,6 +84,8 @@ public class RemoteControl extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         lift = hardwareMap.get(DcMotor.class, "lift");
+        bA = hardwareMap.get(Servo.class, "bA");
+        bHl = hardwareMap.get(Servo.class, "bHl");
         //rotation = hardwareMap.get(DcMotor.class, "rotation");
 
         //board = hardwareMap.get(DcMotor.class, "board");
@@ -111,13 +116,11 @@ public class RemoteControl extends LinearOpMode {
 
         //Color Sensor
         //Only for testing - not used in remote
-        /*
         ColorSensor colorSensor;
 
         colorSensor = hardwareMap.get(ColorSensor.class, "cS");
 
         colorSensor.enableLed(true);
-        */
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -125,7 +128,7 @@ public class RemoteControl extends LinearOpMode {
 
 
         //Initial claw positions
-        double clawRP = 1;
+        double clawRP = 0;
         //double clawLP = 0;
 
         //Set initial claw postions
@@ -135,6 +138,7 @@ public class RemoteControl extends LinearOpMode {
 
         //Variable to keep track or direction of lift rotation
         int rot = 1;
+        boolean pressed = false;
         // run until the end of the match (driver presses STOP)
 
         //rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -156,20 +160,28 @@ public class RemoteControl extends LinearOpMode {
 
             //Claw controls
             //Each side of bumpers controls open/close lf claws
-            /*
+
             if (gamepad1.right_trigger != 0)
-                clawLP += 0.2;
-            else if (gamepad1.right_bumper)
-                clawLP -= 0.2;
-                */
-
-            if (gamepad1.left_trigger != 0)
-                clawRP -= 0.2;
-            else if (gamepad1.left_bumper)
                 clawRP += 0.2;
+            else if (gamepad1.right_bumper)
+                clawRP -= 0.2;
 
+            /*
+            if (gamepad1.left_bumper && !pressed) {
+                if (clawRP == 1)
+                    clawRP = 0;
+                else
+                    clawRP = 1;
+                pressed = true;
+            }
+            */
+
+            /*
+            if (pressed && !gamepad1.left_bumper)
+                pressed = false;
+            */
             //Clip claw postions to make sure they're within range
-            clawRP = Range.clip(clawRP, 0.2, 1.0);
+            clawRP = Range.clip(clawRP, 0, 0.8);
             //clawLP = Range.clip(clawLP, 0, 0.8);
 
             /*
@@ -298,22 +310,14 @@ public class RemoteControl extends LinearOpMode {
                 rightFrontPower = -0.75;
                 rightBackPower = 0.75;
             }
-            if (gamepad1.y) {
-                leftBackPower = 0.75;
-                rightFrontPower = 0.75;
-            }
-            if (gamepad1.b) {
-                leftFrontPower = -0.75;
-                rightBackPower = -0.75;
-            }
-            if (gamepad1.a) {
-                leftFrontPower = 0.75;
-                rightBackPower = 0.75;
-            }
-            if (gamepad1.x) {
-                leftBackPower = -0.75;
-                rightFrontPower = -0.75;
-            }
+            if (gamepad1.y)
+                bA.setPosition(0);
+            if (gamepad1.b)
+                bHl.setPosition(0);
+            if (gamepad1.a)
+                bA.setPosition(1);
+            if (gamepad1.x)
+                bHl.setPosition(1);
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -337,7 +341,7 @@ public class RemoteControl extends LinearOpMode {
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
             telemetry.addData("Lift", "Power: " + liftPower);
             telemetry.addData("Y pressed", "" + gamepad1.dpad_up);
-            //telemetry.addData("Color", "Red Value: " + colorSensor.red());
+            telemetry.addData("Color", "Red Value: " + colorSensor.red());
             telemetry.update();
         }
     }

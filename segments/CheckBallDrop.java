@@ -34,7 +34,6 @@ public class CheckBallDrop extends Segment {
 	//Servos
 	//Claw servos
 	private Servo clawR;
-	private Servo clawL;
 
 	private Servo ballHolder;
 	private Servo ballArm;
@@ -42,18 +41,17 @@ public class CheckBallDrop extends Segment {
 
 	//Initialization
 	private MoveServo closeClaw = new MoveServo(0, 1);
-	private MoveMotor moveMotor = new MoveMotor(0.6 ,720);
-	private MoveServo setH = new MoveServo(0, 0.3);
+	private MoveMotor moveMotor = new MoveMotor(0.5 ,-30);
+	private MoveServo setH = new MoveServo(0, 0.5);
 	private MoveServo openHolder = new MoveServo(1, 0);
-	private MoveServo dropArm = new MoveServo(0, 0.8);
+	private MoveServo dropArm = new MoveServo(0, 0.9);
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallDrop(DcMotor l, Servo bHl, Servo bA, Servo bHt, Servo cR, Servo cL) {
+	public CheckBallDrop(DcMotor l, Servo bHl, Servo bA, Servo bHt, Servo cR) {
 		//Set passed values to object values here
 
 		clawR = cR;
-		clawL = cL;
 		ballHolder = bHl;
 		ballArm = bA;
 		ballHitter = bHt;

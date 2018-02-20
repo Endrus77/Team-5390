@@ -57,7 +57,7 @@ public class MoveServo extends Command {
 	@Override
 	public boolean loop() {
 		//Wait for 1 second
-		return (runTime.time() < 0.6);
+		return (runTime.time() < 0.5);
 	}
 
 	//Stops

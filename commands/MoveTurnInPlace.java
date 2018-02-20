@@ -5,6 +5,7 @@
 package commands;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class MoveTurnInPlace extends Command {
 
@@ -39,7 +40,7 @@ public class MoveTurnInPlace extends Command {
 		angle = a;
 	}
 
-	public void setMotors(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB) {
+	public void setMotors(DcMotor mRF, DcMotor mRB, DcMotor mLF, DcMotor mLB) {
 		//Motors
 		motorRF = mRF;
 		motorLF = mLF;
@@ -79,12 +80,12 @@ public class MoveTurnInPlace extends Command {
 		//Set speed and position
 		motorRF.setPower(motorP);
 		motorRF.setTargetPosition(motorE);
-		motorLF.setPower(motorP);
-		motorLF.setTargetPosition(motorE);
+		motorLF.setPower(-motorP);
+		motorLF.setTargetPosition(-motorE);
 		motorRB.setPower(motorP);
 		motorRB.setTargetPosition(motorE);
-		motorLB.setPower(motorP);
-		motorLB.setTargetPosition(motorE);
+		motorLB.setPower(-motorP);
+		motorLB.setTargetPosition(-motorE);
 	}
 
 	//Loops

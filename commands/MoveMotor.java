@@ -42,7 +42,7 @@ public class MoveMotor extends Command {
 		motorE = (int)((motorA / 360) * Command.ENCODERTICKS);
 
 		//Sets direction
-		motor.setDirection(DcMotor.Direction.FORWARD);
+		motor.setDirection(DcMotor.Direction.REVERSE);
 
 		//Sets encoders
 		motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -6,6 +6,7 @@
 package commands;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class MoveForwardFour extends Command{
 
@@ -52,7 +53,7 @@ public class MoveForwardFour extends Command{
 		motorLDB = dLB;
 	}
 
-	public void setMotors(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB) {
+	public void setMotors(DcMotor mRF, DcMotor mRB, DcMotor mLF, DcMotor mLB) {
 		//Motors
 		motorRF = mRF;
 		motorLF = mLF;
@@ -70,10 +71,10 @@ public class MoveForwardFour extends Command{
 		motorLEB = (int)((motorLDB / Command.CIRCUMFRENCE) * Command.ENCODERTICKS);
 		
 		//Set directions
-		motorRF.setDirection(DcMotor.Direction.FORWARD);
-		motorLF.setDirection(DcMotor.Direction.REVERSE);
-		motorRB.setDirection(DcMotor.Direction.FORWARD);
-		motorLB.setDirection(DcMotor.Direction.REVERSE);
+		motorRF.setDirection(DcMotor.Direction.REVERSE);
+		motorLF.setDirection(DcMotor.Direction.FORWARD);
+		motorRB.setDirection(DcMotor.Direction.REVERSE);
+		motorLB.setDirection(DcMotor.Direction.FORWARD);
 		//Sets encoders
 		motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		motorRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);

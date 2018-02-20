@@ -9,6 +9,7 @@ package segments;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import commands.Command;
 import commands.MoveForward;
@@ -31,6 +32,9 @@ public class CheckBallHit extends Segment {
 	//Color
 	//0 is blue, 1 is red
 	private int color;
+	int imageNumber;
+
+	private ElapsedTime runTime;
 
 	//Motors
 	//Arm motors
@@ -51,9 +55,10 @@ public class CheckBallHit extends Segment {
 	private MoveServo hitR = new MoveServo(0.5, 0); //hit right ball
 	private MoveServo hitL = new MoveServo(0.5, 1); //hit left ball
 	private MoveServo empty = new MoveServo(0.5, 0.5); //pad command array so nothng breaks
-	private MoveForwardFour moveRight = new MoveForwardFour(0.75, -0.75, -0.75, 0.75, 4.24, -4.24, -4.24, 4.24); //move Right
-	private MoveServo raiseArm = new MoveServo(0.8, 0); //raise the ball hitting arm
-	private MoveServo closeHolder = new MoveServo(0, 0);
+	private MoveForwardFour moveForward = new MoveForwardFour(0.75, 0.75, 0.75, 0.75, 2.1, 2.1, 2.1, 2.1); //move forward
+	private MoveForwardFour moveBack = new MoveForwardFour(-0.75, -0.75, -0.75, -0.75, -2.1, -2.1, -2.1, -2.1); //move back
+	private MoveServo raiseArm = new MoveServo(1, 0); //raise the ball hitting arm
+	private MoveServo closeHolder = new MoveServo(0, 1);
 
 	//Constructor
 	//Add values to be taken here
@@ -80,7 +85,8 @@ public class CheckBallHit extends Segment {
 	public void init () {
 		//Make commands
 		//First move arm and turret
-		moveRight.setMotors(motorRF, motorRB, motorLF, motorLB);
+		moveForward.setMotors(motorRF, motorRB, motorLF, motorLB);
+		moveBack.setMotors(motorRF, motorRB, motorLF, motorLB);
 		hitR.setServos(ballHitter);
 		hitL.setServos(ballHitter);
 		empty.setServos(ballArm);
@@ -88,35 +94,44 @@ public class CheckBallHit extends Segment {
 		closeHolder.setServos(ballHolder);
 		colorSensor.enableLed(true);
 		//ReadBall.init();
+		runTime = new ElapsedTime();
 	}
 
 	//Runs at start
 	//Runs once
 	public void start() {
-		int imageNumber;
 		imageNumber = -1;
-		if (colorSensor.red() >= 1)
-			imageNumber = 0;
-		else if (colorSensor.blue() >= 1)
-			imageNumber = 1;
-
-		//Intialize commands. Defualted to rotate right
-		commands[0] = hitR;
-		commands[1] = raiseArm;
-		commands[2] = closeHolder;
-		commands[3] = moveRight;
-		//Switch to rotate left if ball is on other side
-		if (imageNumber == color) {
-			commands[0] = hitL;
-		}
-		else if (imageNumber == -1)
-			commands[0] = empty;
-		index = 0;
-		commands[index].init();
-		commands[index].start();
 	}
 
-	public boolean conditional() { return false; }
+	public boolean conditional() {
+		if (imageNumber == -1 && runTime.time() < 2) {
+			if (colorSensor.red() >= 1)
+				imageNumber = 1;
+			else if (colorSensor.blue() >= 1)
+				imageNumber = 0;
+		}
+		else {
+			//Intialize commands. Defualted to rotate right
+			commands[0] = hitL;
+			commands[1] = raiseArm;
+			commands[2] = closeHolder;
+			commands[3] = moveForward;
+			//Switch to rotate left if ball is on other side
+			if (imageNumber == color)
+				commands[0] = hitR;
+			else if (imageNumber == -1)
+				commands[0] = empty;
+		/*
+		if (color == 0)
+			commands[3] = moveBack;
+		index = 0;
+		*/
+			commands[index].init();
+			commands[index].start();
+			return false;
+		}
+		return true;
+	}
 
 
 	//Loops
