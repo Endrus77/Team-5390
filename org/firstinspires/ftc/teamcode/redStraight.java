@@ -67,6 +67,9 @@ public class redStraight extends LinearOpMode {
     private DcMotor mLF;
     private DcMotor mLB;
     private DcMotor l;
+    private DcMotor iL;
+    private DcMotor iR;
+    private DcMotor f;
     private Servo bHl;
     private Servo bA;
     private Servo bHt;
@@ -97,6 +100,9 @@ public class redStraight extends LinearOpMode {
         bHt = hardwareMap.get(Servo.class, "bHt");
         cS = hardwareMap.get(ColorSensor.class, "cS");
         cR = hardwareMap.get(Servo.class, "one");
+        iL = hardwareMap.get(DcMotor.class, "intakeLeft");
+        iR = hardwareMap.get(DcMotor.class, "intakeRight");
+        f = hardwareMap.get(DcMotor.class, "flipper");
         id = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
         //loc - 0 is corner 1 is straight
@@ -111,7 +117,7 @@ public class redStraight extends LinearOpMode {
         //Checks ball color, then hits one of the balls, then moves in front of the pictogram
         CheckBallHit hit = new CheckBallHit(mRF, mLF, mRB, mLB, l, bHl, bA, bHt, cS, clr);
         //Checks pictogram then moves to crypto box and drops block before backing up.
-        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, cR, clr, id, loc);
+        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, iL, iR, f, cR, clr, id, loc);
 
 
         //Array

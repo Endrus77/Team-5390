@@ -19,6 +19,7 @@ import commands.MoveTurn;
 import commands.MoveServo;
 import commands.MoveForwardFour;
 import commands.MoveTurnInPlace;
+import commands.SetMotor;
 
 //import Commands
 
@@ -42,6 +43,9 @@ public class CheckPicto extends Segment {
 	private DcMotor motorLF;
 	private DcMotor motorRB;
 	private DcMotor motorLB;
+	private DcMotor intakeLeft;
+	private DcMotor intakeRight;
+	private DcMotor flip;
 
 	//Servos
 	//Claw servos
@@ -99,7 +103,7 @@ public class CheckPicto extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, Servo cR, int clr, int id, int loc) {
+	public CheckPicto(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, Servo cR, int clr, int id, int loc) {
 		//Set passed values to object values here
 
 		//Spot
@@ -113,6 +117,9 @@ public class CheckPicto extends Segment {
 		motorLF = mLF;
 		motorRB = mRB;
 		motorLB = mLB;
+		intakeLeft = iL;
+		intakeRight = iR;
+		flip = f;
 
 		clawR = cR;
 
@@ -168,6 +175,10 @@ public class CheckPicto extends Segment {
 	//Runs at start
 	//Runs once
 	public void start() {
+		intakeLeft.setDirection(DcMotor.Direction.REVERSE);
+		intakeRight.setDirection(DcMotor.Direction.FORWARD);
+		intakeLeft.setPower(0.5);
+		intakeRight.setPower(0.5);
 		checkImg.init();
 		checkImg.start();
 	}
@@ -293,5 +304,7 @@ public class CheckPicto extends Segment {
 
 	//Stops
 	public void stop(){
+		intakeLeft.setPower(0);
+		intakeRight.setPower(0);
 	}
 }
