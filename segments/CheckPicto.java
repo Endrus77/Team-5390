@@ -29,7 +29,7 @@ public class CheckPicto extends Segment {
 	//Variables
 
 	//Command Array
-	private Command[] commands = new Command[9];
+	private Command[] commands = new Command[10];
 	//blank arrays here
 
 	//Spot: blue is 1, red is 2
@@ -47,12 +47,13 @@ public class CheckPicto extends Segment {
 	private DcMotor intakeLeft;
 	private DcMotor intakeRight;
 	private DcMotor flip;
+	private Servo holder;
 
 	//CheckImg checkImage = new CheckImg();
 
 	//Spot 0 Commands
 	//Key:
-	//mF = MoveForward, mT = MoveTurn
+	//mF = MoveForward, mT = MoveTurn, mM = MoveMotor, mS = moveServo
 	//R = Red, B = Blue, A = all
 	//S = Straight, C = Corner
 	//Red Straight
@@ -88,8 +89,9 @@ public class CheckPicto extends Segment {
 	private MoveForwardFour mFAForwardBeforeHit = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 8, 8, 8, 8); //move forward befor hit
 	private MoveForwardFour mFABackAfterTurn = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5,-2, -2, -2, -2); //back up slightly
 	private MoveForwardFour mFABackBeforeHit = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -8, -8, -8, -8); //back up more
-	private MoveMotor mMFlipFlipper = new MoveMotor(-0.5, -90);
-	private MoveMotor mMResetFlipper = new MoveMotor(0.5, 90);
+	private MoveMotor mMAFlipFlipper = new MoveMotor(-0.5, -90);
+	private MoveMotor mMAResetFlipper = new MoveMotor(0.5, 90);
+	private MoveServo mSAOpenHolder = new MoveServo(0, 1);
 	private CheckImg checkImg = new CheckImg(); //runs the program for checking the pictograpgh
 
 	//Misc
@@ -100,7 +102,7 @@ public class CheckPicto extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, int clr, int id, int loc) {
+	public CheckPicto(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, Servo h, int clr, int id, int loc) {
 		//Set passed values to object values here
 
 		//Spot
@@ -117,6 +119,9 @@ public class CheckPicto extends Segment {
 		intakeLeft = iL;
 		intakeRight = iR;
 		flip = f;
+
+		//Servos
+		holder = h;
 	}
 
 	//Setup
@@ -156,8 +161,9 @@ public class CheckPicto extends Segment {
 		mFAForwardBeforeHit.setMotors(motorRF, motorRB, motorLF, motorLB);
 		mFABackAfterTurn.setMotors(motorRF, motorRB, motorLF, motorLB);
 		mFABackBeforeHit.setMotors(motorRF, motorRB, motorLF, motorLB);
-		mMFlipFlipper.setMotor(flip);
-		mMResetFlipper.setMotor(flip);
+		mMAFlipFlipper.setMotor(flip);
+		mMAResetFlipper.setMotor(flip);
+		mSAOpenHolder.setServos(holder);
 		checkImg.setId(cameraId);
 
 		//Misc
@@ -169,8 +175,8 @@ public class CheckPicto extends Segment {
 	public void start() {
 		intakeLeft.setDirection(DcMotor.Direction.REVERSE);
 		intakeRight.setDirection(DcMotor.Direction.FORWARD);
-		intakeLeft.setPower(0.5);
-		intakeRight.setPower(0.5);
+		intakeLeft.setPower(0.4);
+		intakeRight.setPower(0.4);
 		checkImg.init();
 		checkImg.start();
 	}
@@ -197,11 +203,12 @@ public class CheckPicto extends Segment {
                     commands[1] = mFRSAwayBeforeTurn;
                     commands[2] = mTRSIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-                    commands[4] = mMFlipFlipper;
-                    commands[5] = mMResetFlipper;
-                    commands[6] = mFABackBeforeHit;
-                    commands[7] = mFAForwardBeforeHit;
-                    commands[8] = mFABackAfterTurn;
+                    commands[4] = mSAOpenHolder;
+                    commands[5] = mMAFlipFlipper;
+                    commands[6] = mMAResetFlipper;
+                    commands[7] = mFABackBeforeHit;
+                    commands[8] = mFAForwardBeforeHit;
+                    commands[9] = mFABackAfterTurn;
                 }
 
                 //Red Corner
@@ -219,11 +226,12 @@ public class CheckPicto extends Segment {
                         commands[1] = mFRCLeftCrypto;
                     commands[2] = mTRCIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-					commands[4] = mMFlipFlipper;
-					commands[5] = mMResetFlipper;
-					commands[6] = mFABackBeforeHit;
-					commands[7] = mFAForwardBeforeHit;
-					commands[8] = mFABackAfterTurn;
+					commands[4] = mSAOpenHolder;
+					commands[5] = mMAFlipFlipper;
+					commands[6] = mMAResetFlipper;
+					commands[7] = mFABackBeforeHit;
+					commands[8] = mFAForwardBeforeHit;
+					commands[9] = mFABackAfterTurn;
                 }
             //Blue Team
             else
@@ -242,11 +250,12 @@ public class CheckPicto extends Segment {
                     commands[1] = mFBSAwayBeforeTurn;
                     commands[2] = mTBSIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-					commands[4] = mMFlipFlipper;
-					commands[5] = mMResetFlipper;
-					commands[6] = mFABackBeforeHit;
-					commands[7] = mFAForwardBeforeHit;
-					commands[8] = mFABackAfterTurn;
+					commands[4] = mSAOpenHolder;
+					commands[5] = mMAFlipFlipper;
+					commands[6] = mMAResetFlipper;
+					commands[7] = mFABackBeforeHit;
+					commands[8] = mFAForwardBeforeHit;
+					commands[9] = mFABackAfterTurn;
                 }
 
                 //Blue Corner
@@ -264,11 +273,12 @@ public class CheckPicto extends Segment {
                         commands[1] = mFBCLeftCrypto;
                     commands[2] = mTBCIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-					commands[4] = mMFlipFlipper;
-					commands[5] = mMResetFlipper;
-					commands[6] = mFABackBeforeHit;
-					commands[7] = mFAForwardBeforeHit;
-					commands[8] = mFABackAfterTurn;
+					commands[4] = mSAOpenHolder;
+					commands[5] = mMAFlipFlipper;
+					commands[6] = mMAResetFlipper;
+					commands[7] = mFABackBeforeHit;
+					commands[8] = mFAForwardBeforeHit;
+					commands[9] = mFABackAfterTurn;
                 }
         }
 			index = 0;

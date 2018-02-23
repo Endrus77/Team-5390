@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import commands.Command;
 
@@ -51,7 +52,7 @@ import commands.Command;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="IntakeRemote", group="Linear Opmode")
+@TeleOp(name="Remote", group="Linear Opmode")
 public class IntakeRemote extends LinearOpMode {
 
     // Declare OpMode members.
@@ -70,8 +71,9 @@ public class IntakeRemote extends LinearOpMode {
         DcMotor intakeRight;
         DcMotor flip;
 
-        boolean pressed = false;
-        int flipEncoderDistance = (int)(Command.ENCODERTICKS * (2 / 3));
+        Servo holder;
+
+        int flipEncoderDistance = 1350;
 
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -84,6 +86,7 @@ public class IntakeRemote extends LinearOpMode {
         intakeLeft  = hardwareMap.get(DcMotor.class, "intakeLeft");
         intakeRight  = hardwareMap.get(DcMotor.class, "intakeRight");
         flip = hardwareMap.get(DcMotor.class, "flip");
+        holder = hardwareMap.get(Servo.class, "holder");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -104,6 +107,11 @@ public class IntakeRemote extends LinearOpMode {
         runtime.reset();
 
         int direction = -1;
+        int position = 1;
+        boolean pressed = false;
+        boolean buttonPressed =false;
+
+        holder.setPosition(0);
 
         while (opModeIsActive()) {
 
@@ -172,8 +180,8 @@ public class IntakeRemote extends LinearOpMode {
             }
 
             if (gamepad1.left_bumper) {
-                intakeLeftPower = 0.5;
-                intakeRightPower = 0.5;
+                intakeLeftPower = 0.4;
+                intakeRightPower = 0.4;
             }
             else {
                 intakeLeftPower = 0;
@@ -184,13 +192,23 @@ public class IntakeRemote extends LinearOpMode {
                 flip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 flip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 pressed = true;
-                flip.setPower(0.5 * direction);
+                flip.setPower(1 * direction);
                 flip.setTargetPosition(flipEncoderDistance * direction);
             }
 
             if (pressed && gamepad1.right_trigger == 0) {
                 direction *= -1;
                 pressed = false;
+            }
+
+            if (gamepad1.x && !buttonPressed) {
+                buttonPressed = true;
+                holder.setPosition(position);
+            }
+
+            if (!gamepad1.x && buttonPressed) {
+                buttonPressed = false;
+                position = (position == 1) ? 0 : 1;
             }
 
             //flipPower = Range.clip(gamepad1.right_stick_y / 2, -0.5, 0.5);

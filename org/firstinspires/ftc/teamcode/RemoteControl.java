@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -55,6 +56,7 @@ import commands.Command;
  */
 
 @TeleOp(name="Remote", group="Linear Opmode")
+@Disabled
 public class RemoteControl extends LinearOpMode {
 
     // Declare OpMode members.

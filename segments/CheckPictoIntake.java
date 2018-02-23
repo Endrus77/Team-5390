@@ -24,7 +24,7 @@ public class CheckPictoIntake extends Segment {
 	//Variables
 
 	//Command Array
-	private Command[] commands = new Command[12];
+	private Command[] commands = new Command[16];
 	//blank arrays here
 
 	//Spot: blue is 1, red is 2
@@ -45,13 +45,13 @@ public class CheckPictoIntake extends Segment {
 
 	//Servos
 	//Claw servos
-	private Servo clawR;
+	private Servo holder;
 
 	//CheckImg checkImage = new CheckImg();
 
 	//Spot 0 Commands
 	//Key:
-	//mF = MoveForward, mT = MoveTurn
+	//mF = MoveForward, mT = MoveTurn, mM = MoveMotor, mS = moveServo
 	//R = Red, B = Blue, A = all
 	//S = Straight, C = Corner
 	//Red Straight
@@ -76,6 +76,8 @@ public class CheckPictoIntake extends Segment {
 	private MoveForwardFour mFABackAfterBlock2 = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -3, -3, -3, -3);
 	private MoveMotor mMAFlipFlipper = new MoveMotor(-0.5, -90);
 	private MoveMotor mMAResetFlipper = new MoveMotor(0.5, 90);
+	private MoveServo mSAOpenHolder = new MoveServo(0, 1);
+	private MoveServo mSACloseHolder = new MoveServo(1, 0);
 
 	private CheckImg checkImg = new CheckImg(); //runs the program for checking the pictograpgh
 
@@ -87,7 +89,7 @@ public class CheckPictoIntake extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPictoIntake(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, int clr, int id, int loc) {
+	public CheckPictoIntake(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, Servo h, int clr, int id, int loc) {
 		//Set passed values to object values here
 
 		//Spot
@@ -104,6 +106,7 @@ public class CheckPictoIntake extends Segment {
 		intakeLeft = iL;
 		intakeRight = iR;
 		flip = f;
+		holder = h;
 	}
 
 	//Setup
@@ -133,6 +136,8 @@ public class CheckPictoIntake extends Segment {
 		mMAFlipFlipper.setMotor(flip);
 		mMAResetFlipper.setMotor(flip);
 		checkImg.setId(cameraId);
+		mSAOpenHolder.setServos(holder);
+		mSACloseHolder.setServos(holder);
 
 		//Misc
 		empty.setMotors(motorRF, motorLF);
@@ -143,8 +148,8 @@ public class CheckPictoIntake extends Segment {
 	public void start() {
 		intakeLeft.setDirection(DcMotor.Direction.REVERSE);
 		intakeRight.setDirection(DcMotor.Direction.FORWARD);
-		intakeLeft.setPower(0.5);
-		intakeRight.setPower(0.5);
+		intakeLeft.setPower(0.4);
+		intakeRight.setPower(0.4);
 		checkImg.init();
 		checkImg.start();
 	}
@@ -172,13 +177,17 @@ public class CheckPictoIntake extends Segment {
 					commands[2] = mTRSIntoBox;
 					commands[3] = mFABackBeforeBlock1;
 					commands[4] = mFAForwardAfterBlock1;
-					commands[5] = mMAFlipFlipper;
-					commands[6] = mMAResetFlipper;
-					commands[7] = mFABackBeforeBlock2;
-					commands[8] = mFAForwardAfterBlock2;
-					commands[9] = mMAFlipFlipper;
-					commands[10] = mMAResetFlipper;
-					commands[11] = mFABackAfterBlock2;
+					commands[5] = mSAOpenHolder;
+					commands[6] = mMAFlipFlipper;
+					commands[7] = mMAResetFlipper;
+					commands[8] = mSACloseHolder;
+					commands[9] = mFABackBeforeBlock2;
+					commands[10] = mFAForwardAfterBlock2;
+					commands[11] = mSAOpenHolder;
+					commands[12] = mMAFlipFlipper;
+					commands[13] = mMAResetFlipper;
+					commands[14] = mSACloseHolder;
+					commands[15] = mFABackAfterBlock2;
 				}
 			}
 			//Blue Team
@@ -198,13 +207,17 @@ public class CheckPictoIntake extends Segment {
 					commands[2] = mTBSIntoBox;
 					commands[3] = mFABackBeforeBlock1;
 					commands[4] = mFAForwardAfterBlock1;
-					commands[5] = mMAFlipFlipper;
-					commands[6] = mMAResetFlipper;
-					commands[7] = mFABackBeforeBlock2;
-					commands[8] = mFAForwardAfterBlock2;
-					commands[9] = mMAFlipFlipper;
-					commands[10] = mMAResetFlipper;
-					commands[11] = mFABackAfterBlock2;
+					commands[5] = mSAOpenHolder;
+					commands[6] = mMAFlipFlipper;
+					commands[7] = mMAResetFlipper;
+					commands[8] = mSACloseHolder;
+					commands[9] = mFABackBeforeBlock2;
+					commands[10] = mFAForwardAfterBlock2;
+					commands[11] = mSAOpenHolder;
+					commands[12] = mMAFlipFlipper;
+					commands[13] = mMAResetFlipper;
+					commands[14] = mSACloseHolder;
+					commands[15] = mFABackAfterBlock2;
 				}
 			}
 		}

@@ -35,10 +35,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import segments.CheckBallDrop;
-import segments.CheckBallHit;
 import segments.CheckPicto;
 import segments.CheckPictoFoward;
+import segments.CheckPictoIntake;
 import segments.Segment;
 
 
@@ -55,8 +54,8 @@ import segments.Segment;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="redStraight", group="Linear Opmode")
-public class redStraight extends LinearOpMode {
+@TeleOp(name="redStraightIntake", group="Linear Opmode")
+public class redStraightIntake extends LinearOpMode {
 
     // Declare OpMode members.
     //Array
@@ -113,7 +112,7 @@ public class redStraight extends LinearOpMode {
         //CheckBallHit hit = new CheckBallHit(mRF, mLF, mRB, mLB, bA, cS, clr);
         //Checks pictogram then moves to crypto box and drops block before backing up.
         CheckPictoFoward forward = new CheckPictoFoward(mRF, mLF, mRB, mLB);
-        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, iL, iR, f, h, clr, id, loc);
+        CheckPictoIntake picto = new CheckPictoIntake(mRF, mLF, mRB, mLB, iL, iR, f, h, clr, id, loc);
 
 
         //Array
