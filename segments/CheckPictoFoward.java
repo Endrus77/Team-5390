@@ -10,14 +10,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import commands.Command;
-import commands.MoveClaw;
-import commands.MoveMotor;
+import commands.MoveForwardFour;
 import commands.MoveServo;
 
 
 //import Commands
 
-public class CheckBallDrop extends Segment {
+public class CheckPictoFoward extends Segment {
 
 	//Variables
 
@@ -28,24 +27,27 @@ public class CheckBallDrop extends Segment {
 	//blank arrays here
 
 	//Motors
-	//Arm motors
-
-	//Servos
-	private Servo ballArm;
+	private DcMotor motorRF;
+	private DcMotor motorLF;
+	private DcMotor motorRB;
+	private DcMotor motorLB;
 
 	//Initialization
-	private MoveServo dropArm = new MoveServo(0, 0.9);
+	private MoveForwardFour forward = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 2.1, 2.1, 2.1, 2.1);
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallDrop(Servo bA) {
+	public CheckPictoFoward(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB) {
 		//Set passed values to object values here
-		ballArm = bA;
+		motorRF = mRF;
+		motorLF = mLF;
+		motorRB = mRB;
+		motorLB = mLB;
 	}
 
 	//Setup
 	public void init () {
-		dropArm.setServos(ballArm);
+		forward.setMotors(motorRF, motorRB, motorLF, motorLB);
 	}
 
 	//Runs at start
@@ -53,7 +55,7 @@ public class CheckBallDrop extends Segment {
 	public void start() {
 
 		//Intialize commands. Defaulted to rotate right
-		commands[0] = dropArm;
+		commands[0] = forward;
 
 		index = 0;
 		commands[index].init();

@@ -19,7 +19,7 @@ import commands.MoveTurnInPlace;
 
 //import Commands
 
-public class CheckPicto2 extends Segment {
+public class CheckPictoIntake extends Segment {
 
 	//Variables
 
@@ -87,7 +87,7 @@ public class CheckPicto2 extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto2(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, int clr, int id, int loc) {
+	public CheckPictoIntake(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, int clr, int id, int loc) {
 		//Set passed values to object values here
 
 		//Spot

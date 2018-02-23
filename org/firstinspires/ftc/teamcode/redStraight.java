@@ -66,14 +66,10 @@ public class redStraight extends LinearOpMode {
     private DcMotor mRB;
     private DcMotor mLF;
     private DcMotor mLB;
-    private DcMotor l;
     private DcMotor iL;
     private DcMotor iR;
     private DcMotor f;
-    private Servo bHl;
     private Servo bA;
-    private Servo bHt;
-    private Servo cR;
 
     //Loop Counter
     private int loop;
@@ -94,12 +90,8 @@ public class redStraight extends LinearOpMode {
         mRB = hardwareMap.get(DcMotor.class, "right_back_drive");
         mLF  = hardwareMap.get(DcMotor.class, "left_front_drive");
         mLB = hardwareMap.get(DcMotor.class, "left_back_drive");
-        l = hardwareMap.get(DcMotor.class, "lift");
-        bHl = hardwareMap.get(Servo.class, "bHl");
         bA = hardwareMap.get(Servo.class, "bA");
-        bHt = hardwareMap.get(Servo.class, "bHt");
         cS = hardwareMap.get(ColorSensor.class, "cS");
-        cR = hardwareMap.get(Servo.class, "one");
         iL = hardwareMap.get(DcMotor.class, "intakeLeft");
         iR = hardwareMap.get(DcMotor.class, "intakeRight");
         f = hardwareMap.get(DcMotor.class, "flipper");
@@ -113,11 +105,11 @@ public class redStraight extends LinearOpMode {
         //Segments
         //Check individual objects to see the required variables
         //Moves the arm between the two balls
-        CheckBallDrop drop = new CheckBallDrop(l, bHl, bA, bHt, cR);
+        CheckBallDrop drop = new CheckBallDrop(bA);
         //Checks ball color, then hits one of the balls, then moves in front of the pictogram
-        CheckBallHit hit = new CheckBallHit(mRF, mLF, mRB, mLB, l, bHl, bA, bHt, cS, clr);
+        CheckBallHit hit = new CheckBallHit(mRF, mLF, mRB, mLB, bA, cS, clr);
         //Checks pictogram then moves to crypto box and drops block before backing up.
-        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, iL, iR, f, cR, clr, id, loc);
+        CheckPicto picto = new CheckPicto(mRF, mLF, mRB, mLB, iL, iR, f, clr, id, loc);
 
 
         //Array

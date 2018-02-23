@@ -52,17 +52,15 @@ public class CheckBallHit extends Segment {
 	private ColorSensor colorSensor;
 
 	//Initialization
-	private MoveServo hitR = new MoveServo(0.5, 0); //hit right ball
-	private MoveServo hitL = new MoveServo(0.5, 1); //hit left ball
 	private MoveServo empty = new MoveServo(0.5, 0.5); //pad command array so nothng breaks
 	private MoveForwardFour moveForward = new MoveForwardFour(0.75, 0.75, 0.75, 0.75, 2.1, 2.1, 2.1, 2.1); //move forward
+	private MoveForwardFour moveForwardAfterBack = new MoveForwardFour(0.75, 0.75, 0.75, 0.75, 4.2, 4.2, 4.2, 4.2); //move forward
 	private MoveForwardFour moveBack = new MoveForwardFour(-0.75, -0.75, -0.75, -0.75, -2.1, -2.1, -2.1, -2.1); //move back
 	private MoveServo raiseArm = new MoveServo(1, 0); //raise the ball hitting arm
-	private MoveServo closeHolder = new MoveServo(0, 1);
 
 	//Constructor
 	//Add values to be taken here
-	public CheckBallHit(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor l, Servo bHl, Servo bA, Servo bHt, ColorSensor cS, int clr){
+	public CheckBallHit(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, Servo bA, ColorSensor cS, int clr){
 		//Set passed values to object values here
 
 		//Color
@@ -74,9 +72,7 @@ public class CheckBallHit extends Segment {
 		motorLF = mLF;
 		motorLB = mLB;
 
-		ballHolder = bHl;
 		ballArm = bA;
-		ballHitter = bHt;
 
 		colorSensor = cS;
 	}
@@ -87,11 +83,8 @@ public class CheckBallHit extends Segment {
 		//First move arm and turret
 		moveForward.setMotors(motorRF, motorRB, motorLF, motorLB);
 		moveBack.setMotors(motorRF, motorRB, motorLF, motorLB);
-		hitR.setServos(ballHitter);
-		hitL.setServos(ballHitter);
 		empty.setServos(ballArm);
 		raiseArm.setServos(ballArm);
-		closeHolder.setServos(ballHolder);
 		colorSensor.enableLed(true);
 		//ReadBall.init();
 		runTime = new ElapsedTime();
@@ -112,20 +105,16 @@ public class CheckBallHit extends Segment {
 		}
 		else {
 			//Intialize commands. Defualted to rotate right
-			commands[0] = hitL;
+			commands[0] = moveForward;
 			commands[1] = raiseArm;
-			commands[2] = closeHolder;
-			commands[3] = moveForward;
+			commands[2] = empty;
 			//Switch to rotate left if ball is on other side
-			if (imageNumber == color)
-				commands[0] = hitR;
+			if (imageNumber == color) {
+				commands[0] = moveBack;
+				commands[2] = moveForwardAfterBack;
+			}
 			else if (imageNumber == -1)
-				commands[0] = empty;
-		/*
-		if (color == 0)
-			commands[3] = moveBack;
-		index = 0;
-		*/
+				commands[2] = moveForward;
 			commands[index].init();
 			commands[index].start();
 			return false;

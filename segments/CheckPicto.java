@@ -20,6 +20,7 @@ import commands.MoveServo;
 import commands.MoveForwardFour;
 import commands.MoveTurnInPlace;
 import commands.SetMotor;
+import commands.MoveMotor;
 
 //import Commands
 
@@ -46,10 +47,6 @@ public class CheckPicto extends Segment {
 	private DcMotor intakeLeft;
 	private DcMotor intakeRight;
 	private DcMotor flip;
-
-	//Servos
-	//Claw servos
-	private Servo clawR;
 
 	//CheckImg checkImage = new CheckImg();
 
@@ -91,8 +88,8 @@ public class CheckPicto extends Segment {
 	private MoveForwardFour mFAForwardBeforeHit = new MoveForwardFour(0.5, 0.5, 0.5, 0.5, 8, 8, 8, 8); //move forward befor hit
 	private MoveForwardFour mFABackAfterTurn = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5,-2, -2, -2, -2); //back up slightly
 	private MoveForwardFour mFABackBeforeHit = new MoveForwardFour(-0.5, -0.5, -0.5, -0.5, -8, -8, -8, -8); //back up more
-	private MoveServo openClaw = new MoveServo(1, 0); //opens claw and drops the cube
-	private MoveServo closeClaw = new MoveServo(0, 1); //closes claw
+	private MoveMotor mMFlipFlipper = new MoveMotor(-0.5, -90);
+	private MoveMotor mMResetFlipper = new MoveMotor(0.5, 90);
 	private CheckImg checkImg = new CheckImg(); //runs the program for checking the pictograpgh
 
 	//Misc
@@ -103,7 +100,7 @@ public class CheckPicto extends Segment {
 
 	//Constructor
 	//Add values to be taken here
-	public CheckPicto(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, Servo cR, int clr, int id, int loc) {
+	public CheckPicto(DcMotor mRF, DcMotor mLF, DcMotor mRB, DcMotor mLB, DcMotor iL, DcMotor iR, DcMotor f, int clr, int id, int loc) {
 		//Set passed values to object values here
 
 		//Spot
@@ -120,11 +117,6 @@ public class CheckPicto extends Segment {
 		intakeLeft = iL;
 		intakeRight = iR;
 		flip = f;
-
-		clawR = cR;
-
-		//Servos
-		//Claw Servos\
 	}
 
 	//Setup
@@ -164,8 +156,8 @@ public class CheckPicto extends Segment {
 		mFAForwardBeforeHit.setMotors(motorRF, motorRB, motorLF, motorLB);
 		mFABackAfterTurn.setMotors(motorRF, motorRB, motorLF, motorLB);
 		mFABackBeforeHit.setMotors(motorRF, motorRB, motorLF, motorLB);
-		openClaw.setServos( clawR);
-		closeClaw.setServos(clawR);
+		mMFlipFlipper.setMotor(flip);
+		mMResetFlipper.setMotor(flip);
 		checkImg.setId(cameraId);
 
 		//Misc
@@ -205,9 +197,9 @@ public class CheckPicto extends Segment {
                     commands[1] = mFRSAwayBeforeTurn;
                     commands[2] = mTRSIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-                    commands[4] = openClaw;
-                    commands[5] = mFABackBeforeHit;
-                    commands[6] = closeClaw;
+                    commands[4] = mMFlipFlipper;
+                    commands[5] = mMResetFlipper;
+                    commands[6] = mFABackBeforeHit;
                     commands[7] = mFAForwardBeforeHit;
                     commands[8] = mFABackAfterTurn;
                 }
@@ -227,9 +219,9 @@ public class CheckPicto extends Segment {
                         commands[1] = mFRCLeftCrypto;
                     commands[2] = mTRCIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-                    commands[4] = openClaw;
-					commands[5] = mFABackBeforeHit;
-					commands[6] = closeClaw;
+					commands[4] = mMFlipFlipper;
+					commands[5] = mMResetFlipper;
+					commands[6] = mFABackBeforeHit;
 					commands[7] = mFAForwardBeforeHit;
 					commands[8] = mFABackAfterTurn;
                 }
@@ -250,9 +242,9 @@ public class CheckPicto extends Segment {
                     commands[1] = mFBSAwayBeforeTurn;
                     commands[2] = mTBSIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-					commands[4] = openClaw;
-					commands[5] = mFABackBeforeHit;
-					commands[6] = closeClaw;
+					commands[4] = mMFlipFlipper;
+					commands[5] = mMResetFlipper;
+					commands[6] = mFABackBeforeHit;
 					commands[7] = mFAForwardBeforeHit;
 					commands[8] = mFABackAfterTurn;
                 }
@@ -272,9 +264,9 @@ public class CheckPicto extends Segment {
                         commands[1] = mFBCLeftCrypto;
                     commands[2] = mTBCIntoBox;
                     commands[3] = mFAForwardAfterTurn;
-                    commands[4] = openClaw;
-					commands[5] = mFABackBeforeHit;
-					commands[6] = closeClaw;
+					commands[4] = mMFlipFlipper;
+					commands[5] = mMResetFlipper;
+					commands[6] = mFABackBeforeHit;
 					commands[7] = mFAForwardBeforeHit;
 					commands[8] = mFABackAfterTurn;
                 }
