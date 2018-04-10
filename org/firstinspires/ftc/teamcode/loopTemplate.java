@@ -73,7 +73,7 @@ public class loopTemplate extends LinearOpMode {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         // step (using the FTC Robot Controller app on the phone).
-        
+
 
         //Segments
         //Check individual objects to see the required variables
@@ -97,12 +97,11 @@ public class loopTemplate extends LinearOpMode {
             //Run conditional loop of current segment
             //Does things like check the sensors
             while (commands[loop].conditional() && opModeIsActive()) {}
+            commands[loop].build();
             //Run the loop of the current segment
             while (commands[loop].loop() && opModeIsActive()) {
                 looping++;
             }
-            //Stop the current segment
-            commands[loop].build();
             //Move onto the next segment
             loop++;
         }
