@@ -9,11 +9,17 @@ package segments;
 //import Commands
 
 
+import java.util.ArrayList;
+
+import commands.Command;
+
 public class Segment {
 
 	//Variables
-	//Command Array
-	//Command[] commands = new Command[];
+	private int index = 0;
+
+	//Command ArrayList
+	private ArrayList<Command> commands = new ArrayList<Command>(0);
 
 	//Initialization
 
@@ -28,24 +34,34 @@ public class Segment {
 		//Run any initialization procedures: motor encoders, reset runtime, Etc.
 	}
 
-	//Runs at start
-	//Runs once
-	public void start() {
-		//Run any start time processes: set motor positions, start elapsed time, Etc.
+	public boolean conditional() {
+		//Conditional loop
+		return false;
 	}
 
-	public boolean conditional() {
-		return false;
+	public void build() {
+		//Create the command array here
 	}
 
 	//Loops
 	public boolean loop() {
-		//Loop. Will most likely just be a while loop waiting for motors to reach position, or waiting set time for servos
-		return true;
+		if (commands.get(index).loop())
+			return true;
+		else {
+			commands.get(index).stop();
+			index++;
+			if (index == commands.size())
+				return false;
+			else {
+				commands.get(index).init();
+				commands.get(index).start();
+			}
+			return true;
+		}
 	}
 
-	//Stops
-	public void stop(){
-		//Stop motors
+	public void addCommand(Command c) {
+		//Add command to commands array
+		commands.add(c);
 	}
 }
