@@ -30,5 +30,6 @@ public class Robot{
 
 	public Map getHardware() {
 		return hardware;
+		//get values from returned Map with hardware.get((DcMotor)key) replacing DcMotor with the appropriate hardware class
 	}
 }
