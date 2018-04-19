@@ -6,9 +6,13 @@ package commands;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import robots.Robot;
+
 public class MoveTurn extends Command {
 
 	//Variables
+	//Robot
+	private Robot robot;
 	//Motors
 	private DcMotor motorR;
 	private DcMotor motorL;
@@ -27,9 +31,11 @@ public class MoveTurn extends Command {
 
 	//Constructor
 	//Add values to be taken here
-	public MoveTurn(double p, int w, double a) {
+	public MoveTurn(Robot r, double p, int w, double a) {
 		//Set passed values to object values here
 
+		//Robot
+		robot = r;
 		//Power
 		motorP = p;
 
@@ -39,10 +45,10 @@ public class MoveTurn extends Command {
 		wheel = w;
 	}
 
-	public void setMotors(DcMotor mR, DcMotor mL) {
+	public void setMotors(String mR, String mL) {
 		//Motors
-		motorR = mR;
-		motorL = mL;
+		motorR = (DcMotor)robot.getHardware().get(mR);
+		motorL = (DcMotor)robot.getHardware().get(mL);
 	}
 
 	//Setup

@@ -8,10 +8,14 @@ package commands;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import robots.Robot;
+
 public class MoveServo extends Command {
 
 	//Variables
 
+	//Robot
+	private Robot robot;
 	//Servos
 	private Servo servo;
 	//Servo Position
@@ -21,17 +25,19 @@ public class MoveServo extends Command {
 	private ElapsedTime runTime;
 
 	//Constructor
-	public MoveServo(double sP, double p) {
+	public MoveServo(Robot r, double sP, double p) {
 		//Sets to passed variables
 
+		//Robot
+		robot = r;
 		//Servo Positions
 		servoPosition = p;
 		startPosition = sP;
 	}
 
-	public void setServos(Servo s) {
+	public void setServos(String s) {
 		//Servos
-		servo = s;
+		servo = (Servo)robot.getHardware().get(s);
 	}
 	//Setup
 	@Override

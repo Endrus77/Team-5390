@@ -7,10 +7,14 @@ package commands;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import robots.Robot;
+
 public class MoveMotor extends Command {
 
 	//Variables
 
+	//Robot
+	private Robot robot;
 	//Motor
 	private DcMotor motor;
 	//Power
@@ -22,18 +26,20 @@ public class MoveMotor extends Command {
 
 
 	//Constructor
-	public MoveMotor(double p, int a) {
+	public MoveMotor(Robot r, double p, int a) {
 		//Set to passed variables
 
+		//Robot
+		robot = r;
 		//Power
 		motorP = p;
 		//Angle
 		motorA = a;
 	}
 
-	public void setMotor(DcMotor m) {
+	public void setMotor(String m) {
 		//Motor
-		motor = m;
+		motor = (DcMotor)robot.getHardware().get(m);
 	}
 
 	//Setup

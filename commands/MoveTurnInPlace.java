@@ -7,9 +7,13 @@ package commands;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import robots.Robot;
+
 public class MoveTurnInPlace extends Command {
 
 	//Variables
+	//Robot
+	private Robot robot;
 	//Motors
 	private DcMotor motorRF;
 	private DcMotor motorLF;
@@ -30,9 +34,11 @@ public class MoveTurnInPlace extends Command {
 
 	//Constructor
 	//Add values to be taken here
-	public MoveTurnInPlace(double p, double a) {
+	public MoveTurnInPlace(Robot r, double p, double a) {
 		//Set passed values to object values here
 
+		//Robot
+		robot = r;
 		//Power
 		motorP = p;
 
@@ -40,12 +46,12 @@ public class MoveTurnInPlace extends Command {
 		angle = a;
 	}
 
-	public void setMotors(DcMotor mRF, DcMotor mRB, DcMotor mLF, DcMotor mLB) {
+	public void setMotors(String mRF, String mRB, String mLF, String mLB) {
 		//Motors
-		motorRF = mRF;
-		motorLF = mLF;
-		motorRB = mRB;
-		motorLB = mLB;
+		motorRF = (DcMotor)robot.getHardware().get(mRF);
+		motorLF = (DcMotor)robot.getHardware().get(mRB);
+		motorRB = (DcMotor)robot.getHardware().get(mLF);
+		motorLB = (DcMotor)robot.getHardware().get(mLB);
 	}
 
 	//Setup

@@ -6,12 +6,15 @@
 package commands;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import robots.Robot;
 
 public class MoveForwardFour extends Command{
 
 	//Variables
 
+	//Robot
+	private Robot robot;
 	//Motors
 	private DcMotor motorRF;
 	private DcMotor motorLF;
@@ -32,15 +35,15 @@ public class MoveForwardFour extends Command{
 	private int motorLEF;
 	private int motorREB;
 	private int motorLEB;
-	//Is Four Wheeled?
-	boolean fourWheel;
 
 	//Initialization
 	//Constructor
 
-	public MoveForwardFour(double pRF, double pLF, double pRB, double pLB, double dRF, double dLF, double dRB, double dLB) {
+	public MoveForwardFour(Robot r, double pRF, double pLF, double pRB, double pLB, double dRF, double dLF, double dRB, double dLB) {
 		//Sets to passed variables
 
+		//Robot
+		robot = r;
 		//Power
 		motorRPF = pRF;
 		motorLPF = pLF;
@@ -53,12 +56,12 @@ public class MoveForwardFour extends Command{
 		motorLDB = dLB;
 	}
 
-	public void setMotors(DcMotor mRF, DcMotor mRB, DcMotor mLF, DcMotor mLB) {
+	public void setMotors(String mRF, String mRB, String mLF, String mLB) {
 		//Motors
-		motorRF = mRF;
-		motorLF = mLF;
-		motorRB = mRB;
-		motorLB = mLB;
+		motorRF = (DcMotor)robot.getHardware().get(mRF);
+		motorLF = (DcMotor)robot.getHardware().get(mRB);
+		motorRB = (DcMotor)robot.getHardware().get(mLF);
+		motorLB = (DcMotor)robot.getHardware().get(mLB);
 	}
 
 	//Setup

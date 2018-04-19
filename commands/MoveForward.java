@@ -6,17 +6,18 @@
 package commands;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import robots.Robot;
 
 public class MoveForward extends Command{
 
 	//Variables
-	
+
+	//Robot
+	private Robot robot;
 	//Motors
 	private DcMotor motorR;
 	private DcMotor motorL;
-	private DcMotor motorRB;
-	private DcMotor motorLB;
 	//Motor Powers
 	private double motorRP;
 	private double motorLP;
@@ -26,15 +27,15 @@ public class MoveForward extends Command{
 	//Motor Encoder Values
 	private int motorRE;
 	private int motorLE;
-	//Is Four Wheeled?
-	boolean fourWheel;
 
 	//Initialization
 	//Constructor
 
-	public MoveForward(double pR, double pL, double dR, double dL) {
+	public MoveForward(Robot r, double pR, double pL, double dR, double dL) {
 		//Sets to passed variables
 
+		//Robot
+		robot = r;
 		//Power
 		motorRP = pR;
 		motorLP = pL;
@@ -43,18 +44,10 @@ public class MoveForward extends Command{
 		motorLD = dL;
 	}
 
-	public void setMotors(DcMotor mR, DcMotor mL) {
+	public void setMotors(String mR, String mL) {
 		//Motors
-		motorR = mR;
-		motorL = mL;
-	}
-
-	public void setMotors(DcMotor mRF, DcMotor mRB, DcMotor mLF, DcMotor mLB) {
-		//Motors
-		motorR = mRF;
-		motorL = mLF;
-		motorRB = mRB;
-		motorLB = mLB;
+		motorR = (DcMotor)robot.getHardware().get(mR);
+		motorL = (DcMotor)robot.getHardware().get(mL);
 	}
 
 	//Setup
@@ -91,10 +84,7 @@ public class MoveForward extends Command{
 	@Override
 	public boolean loop() {
 		//Wait for motors to stop moving
-		if (fourWheel)
-			return (motorR.isBusy() || motorL.isBusy() || motorRB.isBusy() || motorLB.isBusy());
-		else
-			return (motorR.isBusy() || motorL.isBusy());
+		return (motorR.isBusy() || motorL.isBusy());
 	}
 
 	//Stops
