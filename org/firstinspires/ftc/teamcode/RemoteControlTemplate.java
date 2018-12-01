@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import commands.*;
 
 
 /**
@@ -62,48 +63,27 @@ public class RemoteControlTemplate extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        DcMotor leftFrontDrive;
-        DcMotor leftBackDrive;
-        DcMotor rightFrontDrive;
-        DcMotor rightBackDrive;
-        DcMotor lift;
-        DcMotor rotation;
+        DcMotor test;
 
-        Servo bA;
-        Servo bHl;
         //DcMotor board;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        lift = hardwareMap.get(DcMotor.class, "lift");
-        bA = hardwareMap.get(Servo.class, "bA");
-        bHl = hardwareMap.get(Servo.class, "bHl");
-        //rotation = hardwareMap.get(DcMotor.class, "rotation");
+        test  = hardwareMap.get(DcMotor.class, "test");
 
         //board = hardwareMap.get(DcMotor.class, "board");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        lift.setDirection(DcMotor.Direction.REVERSE);
+        test.setDirection(DcMotor.Direction.REVERSE);
         //rotation.setDirection(DcMotor.Direction.FORWARD);
 
-        Servo clawR;
-        Servo clawL;
-        Servo ballArm;
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        clawR = hardwareMap.get(Servo.class, "one");
+        //clawR = hardwareMap.get(Servo.class, "one");
         //clawL = hardwareMap.get(Servo.class, "two");
         //ballArm = hardwareMap.get(Servo.class, "bA");
 
@@ -113,11 +93,14 @@ public class RemoteControlTemplate extends LinearOpMode {
 
         //Color Sensor
         //Only for testing - not used in remote
+        /*
         ColorSensor colorSensor;
+
 
         colorSensor = hardwareMap.get(ColorSensor.class, "cS");
 
         colorSensor.enableLed(true);
+        */
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -125,11 +108,11 @@ public class RemoteControlTemplate extends LinearOpMode {
 
 
         //Initial claw positions
-        double clawRP = 0;
+        //double clawRP = 0;
         //double clawLP = 0;
 
         //Set initial claw postions
-        clawR.setPosition(clawRP);
+        //clawR.setPosition(clawRP);
         //clawL.setPosition(clawLP);
         //ballArm.setPosition(0);
 
@@ -146,19 +129,14 @@ public class RemoteControlTemplate extends LinearOpMode {
         while (opModeIsActive()) {
 
             //Motor powers
-            double leftFrontPower;
-            double leftBackPower;
-            double rightFrontPower;
-            double rightBackPower;
-            double liftPower;
-            double rotationPower;
+            double Test;
             //double boardPower;
 
 
             //Controller stuff here (needs better comments)
 
             if (gamepad1.a) {
-
+            Test = 0.5
             }
 
             if (gamepad1.b) {

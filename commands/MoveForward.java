@@ -31,7 +31,7 @@ public class MoveForward extends Command{
 	//Initialization
 	//Constructor
 
-	public MoveForward(Robot r, double pR, double pL, double dR, double dL) {
+	public MoveForward(double pR, double pL, double dR, double dL) {
 		//Sets to passed variables
 
 		//Robot

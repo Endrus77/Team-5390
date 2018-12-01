@@ -16,25 +16,23 @@ public class MoveMotor extends Command {
 	//Robot
 	private Robot robot;
 	//Motor
-	private DcMotor motor;
+	private DcMotor motorTest;
 	//Power
-	private double motorP;
+	private double motorPTest;
 	//Angle
-	private int motorA;
-	//Motor Encoder Value
-	private int motorE;
+	private int motorATest;
 
 
 	//Constructor
-	public MoveMotor(double p, int a) {
+	public MoveMotor(Robot r, double p, int a) {
 		//Set to passed variables
 
 		//Robot
 		robot = r;
 		//Power
-		motorP = p;
+		motorPTest = p;
 		//Angle
-		motorA = a;
+		motorATest = a;
 	}
 
 	public void setMotor(String m) {
@@ -44,15 +42,9 @@ public class MoveMotor extends Command {
 
 	//Setup
 	public void init() {
-		//Encoder
-		motorE = (int)((motorA / 360) * Command.ENCODERTICKS);
 
 		//Sets direction
 		motor.setDirection(DcMotor.Direction.REVERSE);
-
-		//Sets encoders
-		motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	
 	}
 
